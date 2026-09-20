@@ -19,16 +19,30 @@ button{border:0;border-radius:8px;background:#1769ed;color:#fff;padding:11px 17p
 .panel{padding:18px}.panel h2{font-size:18px}.table{overflow:auto}.tr{min-width:760px;display:grid;grid-template-columns:2.1fr 1.3fr 1fr .8fr .8fr;align-items:center;border-top:1px solid #edf1f5;padding:13px 8px;font-size:14px}
 .head{background:#f8fafc;font-weight:650}.tr input{margin-right:8px}.tr em{font-style:normal;padding:5px 11px;border-radius:20px}.alta{background:#ffe0df;color:#d92d20}.normal{background:#e3efff;color:#1769ed}.baja{background:#dcf8e2;color:#23823c}.pending{background:#fff1c9;color:#956200}
 .right{background:#f8fbff;color:#263750;border-left:1px solid #e3e9f0;padding-top:100px}.right p{background:white;border:1px solid #e4eaf1;padding:13px;border-radius:10px;font-size:13px}.rem{margin-top:20px;background:#fff8e8;border-radius:10px;padding:15px;font-size:13px}
-.overlay{position:fixed;inset:0;background:#10233b88;display:grid;place-items:center}.modal{background:white;width:min(500px,92vw);padding:25px;border-radius:15px;box-shadow:0 25px 80px #0004}.modal label{display:grid;gap:5px;font-size:13px;font-weight:650;margin:13px 0}.modal input,.modal select,.modal textarea{font:inherit;padding:10px;border:1px solid #d5dce5;border-radius:7px}.modal textarea{min-height:75px}.actions{display:flex;justify-content:flex-end;gap:10px}.ghost{background:#e9eef5;color:#24364d}.status{font-size:13px;margin:12px 0;color:#68768b}.error{color:#c62828}
+.overlay{position:fixed;inset:0;background:#10233b88;display:grid;place-items:center}.modal{background:white;width:min(500px,92vw);padding:25px;border-radius:15px;box-shadow:0 25px 80px #0004}.modal label{display:grid;gap:5px;font-size:13px;font-weight:650;margin:13px 0}.modal input,.modal select,.modal textarea{font:inherit;padding:10px;border:1px solid #d5dce5;border-radius:7px}.modal textarea{min-height:75px}.actions{display:flex;justify-content:flex-end;gap:10px}.ghost{background:#e9eef5;color:#24364d}.status{font-size:13px;margin:12px 0;color:#68768b}.error{color:#c62828}.authscreen{min-height:100vh;display:grid;place-items:center;background:#f5f8fc;padding:24px}.authcard{width:min(420px,94vw);background:white;border:1px solid #e2e8f0;border-radius:18px;padding:34px;box-shadow:0 18px 60px #15325a18;text-align:center}.authlogo{display:inline-block;background:#2874ef;color:white;border-radius:12px;padding:9px 14px;font-size:24px;font-weight:800}.authcard h1{margin:16px 0 5px}.authcard p{color:#68768b}.google{margin:24px auto 0;font-size:15px}.userbox{display:flex;align-items:center;gap:9px;margin-top:18px;padding-top:15px;border-top:1px solid #29415d;font-size:13px}.avatar{width:32px;height:32px;border-radius:50%;object-fit:cover;background:#fff}.logout{background:transparent;padding:3px;color:#cbd7e5;font-size:12px}
 @media(max-width:1000px){.app{grid-template-columns:80px 1fr}.app>aside{padding:20px 10px}.brand span,nav a:not(.active),.app>aside h4,.app>aside p,.bottom{display:none}.brand{justify-content:center}.right{display:none}.stats{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:650px){.app{display:block}.app>aside{display:none}main{padding:18px}.stats{grid-template-columns:1fr 1fr}.panel{padding:10px}}
 </style>
 </head>
 <body>
-<div class="app">
+<div id="authScreen" class="authscreen">
+  <div class="authcard">
+    <div class="authlogo">✓</div>
+    <h1>TareasPlus</h1>
+    <p>Organiza. Colabora. Cumple.</p>
+    <button id="login" class="google">Continuar con Google</button>
+    <div id="authError" class="status error"></div>
+  </div>
+</div>
+<div class="app" id="appShell" style="display:none">
 <aside><div class="brand"><b>✓</b><span>TareasPlus<small>Organiza. Colabora. Cumple.</small></span></div>
 <nav><a class="active">⌂ Inicio</a><a>✓ Mis tareas</a><a>☷ Todas las tareas</a><a>✓ Completadas</a></nav>
-<h4>LISTAS / PROYECTOS</h4><p>🔵 Consejo de Dirección</p><p>🟢 Administración</p><p>🟠 Personal</p><p>🟣 Eventos</p><p>＋ Nueva lista</p><div class="bottom">⚙ Ajustes</div></aside>
+<h4>LISTAS / PROYECTOS</h4><p>🔵 Consejo de Dirección</p><p>🟢 Administración</p><p>🟠 Personal</p><p>🟣 Eventos</p><p>＋ Nueva lista</p>
+<div id="userBox" class="userbox" style="display:none">
+  <img id="avatar" class="avatar" alt="">
+  <div><div id="userName"></div><button id="logout" class="logout">Cerrar sesión</button></div>
+</div>
+<div class="bottom">⚙ Ajustes</div></aside>
 <main><header><div><h1>¡Hola!</h1><p>Aquí tienes un resumen de tus tareas</p></div><button id="new">＋ Nueva tarea</button></header>
 <div id="status" class="status">Conectando con Firebase…</div>
 <section class="stats"><div class="card"><strong id="count">0</strong><span>Mis tareas</span><small>pendientes</small></div><div class="card"><strong class="red" id="overdue">0</strong><span>Tareas vencidas</span><small>pendientes</small></div><div class="card"><strong id="soon">0</strong><span>Próximas (3 días)</span><small>pendientes</small></div><div class="card"><strong id="done">0</strong><span>Completadas</span><small>tareas</small></div></section>
@@ -45,7 +59,8 @@ button{border:0;border-radius:8px;background:#1769ed;color:#fff;padding:11px 17p
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, updateDoc, doc } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, updateDoc, doc, query, where } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 
 const firebaseConfig={
  apiKey:"AIzaSyDca0zhf5ECMHG3tIuKqpcTnO1vGHY0uh4",
@@ -57,7 +72,11 @@ const firebaseConfig={
 };
 const app=initializeApp(firebaseConfig);
 const db=getFirestore(app);
+const auth=getAuth(app);
+const provider=new GoogleAuthProvider();
 const tasksRef=collection(db,"tasks");
+let unsubscribeTasks=null;
+let currentUser=null;
 let tasks=[];
 const status=document.getElementById("status");
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -78,13 +97,38 @@ function render(){
  document.querySelectorAll(".complete").forEach(x=>x.onchange=async()=>updateDoc(doc(db,"tasks",x.dataset.id),{completed:x.checked,updatedAt:serverTimestamp()}));
  stats();
 }
-onSnapshot(tasksRef,snap=>{tasks=snap.docs.map(d=>({id:d.id,...d.data()}));tasks.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));render();status.textContent="✓ Sincronizado con Firebase";status.classList.remove("error")},err=>{console.error(err);status.textContent="No se puede acceder a Firestore: "+err.message;status.classList.add("error")});
+function subscribeTasks(user){
+ if(unsubscribeTasks) unsubscribeTasks();
+ const q=query(tasksRef,where("ownerId","==",user.uid));
+ unsubscribeTasks=onSnapshot(q,snap=>{
+   tasks=snap.docs.map(d=>({id:d.id,...d.data()}));
+   tasks.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+   render(); status.textContent="✓ Sincronizado con Firebase"; status.classList.remove("error");
+ },err=>{console.error(err);status.textContent="No se puede acceder a Firestore: "+err.message;status.classList.add("error")});
+}
+document.getElementById("login").onclick=async()=>{try{document.getElementById("authError").textContent="";await signInWithPopup(auth,provider)}catch(err){document.getElementById("authError").textContent=err.message}};
+document.getElementById("logout").onclick=()=>signOut(auth);
+onAuthStateChanged(auth,user=>{
+ currentUser=user;
+ const authScreen=document.getElementById("authScreen"), shell=document.getElementById("appShell");
+ if(user){
+   authScreen.style.display="none"; shell.style.display="grid";
+   document.getElementById("userBox").style.display="flex";
+   document.getElementById("userName").textContent=user.displayName||user.email||"Usuario";
+   const av=document.getElementById("avatar"); av.src=user.photoURL||""; av.style.display=user.photoURL?"block":"none";
+   subscribeTasks(user);
+ }else{
+   if(unsubscribeTasks){unsubscribeTasks();unsubscribeTasks=null}
+   tasks=[]; render(); shell.style.display="none"; authScreen.style.display="grid";
+ }
+});
 
 const ov=document.getElementById("overlay");
 document.getElementById("new").onclick=()=>ov.style.display="grid";
 document.getElementById("cancel").onclick=()=>ov.style.display="none";
 document.getElementById("form").onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target);try{
- await addDoc(tasksRef,{title:f.get("title"),description:f.get("description")||"",list:f.get("list"),date:f.get("date")||"",priority:f.get("priority"),completed:false,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});
+ if(!currentUser) throw new Error("Debes iniciar sesión.");
+ await addDoc(tasksRef,{ownerId:currentUser.uid,ownerEmail:currentUser.email||"",title:f.get("title"),description:f.get("description")||"",list:f.get("list"),date:f.get("date")||"",priority:f.get("priority"),completed:false,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});
  ov.style.display="none";e.target.reset();
 }catch(err){alert("No se pudo guardar: "+err.message)}};
 </script>

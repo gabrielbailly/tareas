@@ -1,3 +1,4 @@
 # TareasPlus
 
-Versión conectada a Firebase Firestore para GitHub Pages.
+Versión con Firebase Authentication (Google) y Firestore.
+Antes de probar, pega el contenido de firestore.rules en Firestore > Reglas y pulsa Publicar.
