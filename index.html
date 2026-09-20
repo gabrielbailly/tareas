@@ -17,7 +17,7 @@
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
 import{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
-import{getFirestore,collection,addDoc,onSnapshot,serverTimestamp,updateDoc,doc,query,where,getDocs,writeBatch}from"https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+import{getFirestore,collection,addDoc,onSnapshot,serverTimestamp,updateDoc,doc,query,where,getDocs,arrayUnion}from"https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 const cfg={apiKey:"AIzaSyDca0zhf5ECMHG3tIuKqpcTnO1vGHY0uh4",authDomain:"tareas-6e2c1.firebaseapp.com",projectId:"tareas-6e2c1",storageBucket:"tareas-6e2c1.firebasestorage.app",messagingSenderId:"958876171362",appId:"1:958876171362:web:886628c7adaf159008a53b"};
 const app=initializeApp(cfg),auth=getAuth(app),db=getFirestore(app),provider=new GoogleAuthProvider();
 let user=null,projects=[],tasks=[],selectedProject=null,view="mine",unsubs=[];
@@ -37,8 +37,21 @@ function subscribeTasks(){if(unsubs[1]){unsubs[1]();unsubs.splice(1,1)};if(!proj
 $("navMine").onclick=()=>{view="mine";selectedProject=null;renderAll()};$("navAll").onclick=()=>{view="all";selectedProject=null;renderAll()};$("navDone").onclick=()=>{view="done";selectedProject=null;renderAll()};
 $("newList").onclick=()=>{$("listModal").style.display="grid"};$("listForm").onsubmit=async e=>{e.preventDefault();let f=new FormData(e.target),ref=await addDoc(collection(db,"projects"),{name:f.get("name"),ownerId:user.uid,memberIds:[user.uid],members:{[user.uid]:{email:user.email||"",name:user.displayName||user.email||"Usuario",role:"owner"}},createdAt:serverTimestamp()});selectedProject=ref.id;view="project";closeAll();e.target.reset()};
 $("invite").onclick=()=>{$("inviteModal").style.display="grid"};$("inviteForm").onsubmit=async e=>{e.preventDefault();let p=currentP();if(!p)return;let email=String(new FormData(e.target).get("email")).trim().toLowerCase();await addDoc(collection(db,"invites"),{projectId:p.id,projectName:p.name,email,invitedBy:user.uid,status:"pending",createdAt:serverTimestamp()});alert("Invitación registrada. Cuando esa persona inicie sesión con "+email+", se añadirá automáticamente a la lista.");closeAll();e.target.reset()};
-async function acceptInvites(){if(!user.email)return;let q=query(collection(db,"invites"),where("email","==",user.email.toLowerCase()),where("status","==","pending")),s=await getDocs(q);for(const inv of s.docs){let x=inv.data(),pd=await getDocs(query(collection(db,"projects"),where("__name__","==",x.projectId)));if(pd.empty)continue;let p=pd.docs[0],data=p.data(),members=data.members||{},ids=data.memberIds||[];members[user.uid]={email:user.email,name:user.displayName||user.email,role:"member"};if(!ids.includes(user.uid))ids.push(user.uid);await updateDoc(doc(db,"projects",p.id),{members,memberIds:ids});await updateDoc(doc(db,"invites",inv.id),{status:"accepted",acceptedBy:user.uid,acceptedAt:serverTimestamp()})}}
+async function acceptInvites(){
+ if(!user.email)return;
+ const email=user.email.trim().toLowerCase();
+ const q=query(collection(db,"invites"),where("email","==",email),where("status","==","pending"));
+ const s=await getDocs(q);
+ for(const inv of s.docs){
+   const x=inv.data();
+   await updateDoc(doc(db,"projects",x.projectId),{
+     memberIds:arrayUnion(user.uid),
+     ["members."+user.uid]:{email:user.email,name:user.displayName||user.email,role:"member"}
+   });
+   await updateDoc(doc(db,"invites",inv.id),{status:"accepted",acceptedBy:user.uid,acceptedAt:serverTimestamp()});
+ }
+}
 $("newTask").onclick=()=>{if(!projects.length){alert("Crea primero una lista.");return}$("taskProject").value=selectedProject||projects[0].id;fillAssignees();$("modal").style.display="grid"};$("taskProject").onchange=fillAssignees;function fillAssignees(){let p=projects.find(x=>x.id===$("taskProject").value);$("assignees").innerHTML=Object.entries(pMembers(p)).map(([id,m])=>`<label><input type="checkbox" name="assignee" value="${id}" ${id===user.uid?"checked":""}> ${esc(m.name||m.email)}</label>`).join("")}
 $("form").onsubmit=async e=>{e.preventDefault();let f=new FormData(e.target),pid=f.get("project"),p=projects.find(x=>x.id===pid),ids=f.getAll("assignee");if(!isMember(p))return;await addDoc(collection(db,"tasks"),{projectId:pid,createdBy:user.uid,title:f.get("title"),description:f.get("description")||"",assigneeIds:ids,date:f.get("date")||"",priority:f.get("priority"),completed:false,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});closeAll();e.target.reset()};
-onAuthStateChanged(auth,async u=>{user=u;unsubs.forEach(f=>f());unsubs=[];if(!u){$("auth").style.display="grid";$("shell").style.display="none";return}$("auth").style.display="none";$("shell").style.display="grid";$("who").textContent=u.displayName||u.email;try{await acceptInvites()}catch(e){console.warn(e)}subscribe()});
+onAuthStateChanged(auth,async u=>{user=u;unsubs.forEach(f=>f());unsubs=[];if(!u){$("auth").style.display="grid";$("shell").style.display="none";return}$("auth").style.display="none";$("shell").style.display="grid";$("who").textContent=u.displayName||u.email;try{await acceptInvites()}catch(e){console.error(e);$("status").textContent="Error al aceptar invitaciones: "+e.message}subscribe()});
 </script></body></html>
