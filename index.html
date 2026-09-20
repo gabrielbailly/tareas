@@ -1,7 +1,51 @@
 <!doctype html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#102844"><title>TareasPlus</title>
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,Arial;background:#f5f8fc;color:#14233b}button,input,select,textarea{font:inherit}button{border:0;border-radius:8px;background:#1769ed;color:white;padding:10px 15px;font-weight:650;cursor:pointer}.ghost{background:#e9eef5;color:#24364d}.danger{background:#fff0f0;color:#b42318}.app{min-height:100vh;display:grid;grid-template-columns:235px 1fr 275px}.side{background:#102844;color:white;padding:22px 17px;position:relative}.brand{font-size:22px;font-weight:800;margin-bottom:28px}.brand b{background:#2874ef;border-radius:10px;padding:6px 11px;margin-right:8px}.brand small{display:block;margin:6px 0 0 45px;font-size:11px;font-weight:400}.nav a,.project{display:block;padding:10px;border-radius:8px;cursor:pointer;margin:3px 0}.nav .active,.project.active{background:#2465aa}.side h4{font-size:11px;color:#b9c7d7;margin:26px 8px 8px}.newlist{color:#b9d4ff}.user{position:absolute;bottom:20px;left:17px;right:17px;border-top:1px solid #29415d;padding-top:12px;font-size:12px}.user img{width:30px;height:30px;border-radius:50%;vertical-align:middle;margin-right:7px}.logout{background:transparent;padding:4px;color:#cbd7e5}main{padding:30px;min-width:0}header{display:flex;justify-content:space-between;gap:15px;align-items:center}.sub{color:#68768b;margin:5px 0}.toolbar{display:flex;gap:8px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0}.card,.panel,.box{background:white;border:1px solid #e2e8f0;border-radius:12px;box-shadow:0 3px 15px #15325a0a}.card{padding:16px}.card strong{display:block;font-size:24px;color:#1769ed}.card small{color:#778398}.panel{padding:17px}.table{overflow:auto}.tr{min-width:820px;display:grid;grid-template-columns:2fr 1.1fr 1.1fr .9fr .7fr .9fr;gap:8px;align-items:center;border-top:1px solid #edf1f5;padding:12px 7px;font-size:13px}.head{background:#f8fafc;font-weight:700}.pill{padding:5px 9px;border-radius:20px;display:inline-block}.tasktitle{cursor:pointer;font-weight:650}.tasktitle:hover{text-decoration:underline}.mini{padding:5px 8px;font-size:11px;margin-left:5px}.rowactions{white-space:nowrap}.alta{background:#ffe0df;color:#d92d20}.normal{background:#e3efff;color:#1769ed}.baja{background:#dcf8e2;color:#23823c}.right{background:#f8fbff;border-left:1px solid #e3e9f0;padding:92px 17px 20px}.right .box{padding:14px;margin-bottom:14px}.member{padding:7px 0;border-bottom:1px solid #edf1f5;font-size:13px}.member:last-child{border:0}.status{font-size:12px;color:#68768b;margin:10px 0}.error{color:#b42318}.overlay{position:fixed;inset:0;background:#10233b99;display:grid;place-items:center;z-index:20}.modal{background:white;width:min(540px,94vw);max-height:90vh;overflow:auto;padding:24px;border-radius:15px}.modal label{display:grid;gap:5px;margin:12px 0;font-size:13px;font-weight:650}.modal input,.modal select,.modal textarea{padding:10px;border:1px solid #d5dce5;border-radius:7px}.modal textarea{min-height:75px}.actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}.checks{border:1px solid #d5dce5;border-radius:8px;padding:8px;max-height:145px;overflow:auto}.checks label{display:flex;margin:4px;font-weight:400}.auth{min-height:100vh;display:grid;place-items:center}.auth .box{padding:35px;text-align:center;width:min(420px,92vw)}@media(max-width:1050px){.app{grid-template-columns:210px 1fr}.right{display:none}}@media(max-width:700px){.app{display:block}.side{position:static}.user{position:static;margin-top:20px}.nav{display:flex;overflow:auto}.side h4,.projects{display:none}main{padding:16px}.stats{grid-template-columns:1fr 1fr}.toolbar{flex-wrap:wrap}.tr{min-width:720px}}
-</style></head><body>
+</style>
+<style>
+@media (max-width:700px){
+  body{background:#f5f8fc}
+  .app{display:block;min-height:100vh}
+  .side{padding:14px 12px 10px;position:static}
+  .brand{margin-bottom:12px;font-size:20px}
+  .brand small{display:none}
+  .nav{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+  .nav::-webkit-scrollbar{display:none}
+  .nav a{white-space:nowrap;padding:9px 11px;font-size:13px}
+  .side h4,.projects{display:none}
+  .user{position:static;margin-top:10px;padding-top:9px;display:flex;align-items:center;gap:5px}
+  main{padding:14px 12px 90px}
+  header{display:block}
+  header h1{font-size:23px;margin:0 0 4px}
+  .sub{font-size:13px}
+  .toolbar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+  .toolbar button{width:100%;padding:11px 8px}
+  .stats{grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}
+  .card{padding:12px}
+  .card strong{font-size:22px}
+  .panel{padding:10px;border:0;background:transparent;box-shadow:none}
+  .table{overflow:visible}
+  .tr.head{display:none}
+  .tr{min-width:0;display:grid;grid-template-columns:1fr auto;gap:8px 10px;background:white;border:1px solid #e2e8f0;border-radius:12px;padding:13px;margin-bottom:10px;box-shadow:0 3px 12px #15325a0a}
+  .tr>span{min-width:0}
+  .tr>span:nth-child(1){grid-column:1/-1;font-size:15px}
+  .tr>span:nth-child(2){grid-column:1/2;color:#68768b}
+  .tr>span:nth-child(2)::before{content:"📋 "}
+  .tr>span:nth-child(3){grid-column:1/-1;color:#4d5d72}
+  .tr>span:nth-child(3)::before{content:"👤 "}
+  .tr>span:nth-child(4){grid-column:1/2;color:#4d5d72}
+  .tr>span:nth-child(4)::before{content:"📅 "}
+  .tr>span:nth-child(5){grid-column:2/3;grid-row:4}
+  .tr>span:nth-child(6){grid-column:1/-1;display:flex;justify-content:flex-end;border-top:1px solid #edf1f5;padding-top:9px}
+  .mini{padding:8px 10px}
+  .modal{width:calc(100vw - 20px);max-height:92vh;padding:18px;border-radius:14px}
+  .modal h2{font-size:20px;margin-top:0}
+  .modal input,.modal select,.modal textarea{font-size:16px}
+  .actions{position:sticky;bottom:-18px;background:white;padding:10px 0 0}
+  #notifyBtn{right:12px!important;bottom:12px!important;padding:11px 13px!important;font-size:12px!important}
+}
+</style>
+</head><body>
 <div id="auth" class="auth"><div class="box"><h1>TareasPlus</h1><p class="sub">Organiza. Colabora. Cumple.</p><button id="login">Continuar con Google</button><div id="authErr" class="status error"></div></div></div>
 <div id="shell" class="app" style="display:none">
 <aside class="side"><div class="brand"><b>✓</b>TareasPlus<small>Organiza. Colabora. Cumple.</small></div><div class="nav"><a id="navMine" class="active">✓ Mis tareas</a><a id="navAll">☷ Todas</a><a id="navDone">✓ Completadas</a></div><h4>LISTAS / PROYECTOS</h4><div id="projects" class="projects"></div><div id="newList" class="project newlist">＋ Nueva lista</div><div class="user"><span id="who"></span><br><button id="logout" class="logout">Cerrar sesión</button></div></aside>
@@ -96,13 +140,30 @@ async function acceptInvites(){
  }
 }
 $("newTask").onclick=()=>{if(!projects.length){alert("Crea primero una lista.");return}$("taskProject").value=selectedProject||projects[0].id;fillAssignees();$("modal").style.display="grid"};$("taskProject").onchange=fillAssignees;function fillAssignees(){let p=projects.find(x=>x.id===$("taskProject").value);$("assignees").innerHTML=Object.entries(pMembers(p)).map(([id,m])=>`<label><input type="checkbox" name="assignee" value="${id}" ${id===user.uid?"checked":""}> ${esc(m.name||m.email)}</label>`).join("")}
-$("form").onsubmit=async e=>{e.preventDefault();let f=new FormData(e.target),pid=f.get("project"),p=projects.find(x=>x.id===pid),ids=f.getAll("assignee");if(!isMember(p))return;await addDoc(collection(db,"tasks"),{projectId:pid,createdBy:user.uid,title:f.get("title"),description:f.get("description")||"",assigneeIds:ids,date:f.get("date")||"",priority:f.get("priority"),completed:false,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});closeAll();e.target.reset()};
+
+async function notifyAssignedUsers(taskId,assigneeIds){
+  const recipients=(assigneeIds||[]).filter(id=>id&&id!==user.uid);
+  if(!recipients.length||!NOTIFICATION_WORKER_URL)return;
+  try{
+    const token=await user.getIdToken();
+    const res=await fetch(NOTIFICATION_WORKER_URL+"/task-assigned",{
+      method:"POST",
+      headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},
+      body:JSON.stringify({taskId})
+    });
+    if(!res.ok)console.error("Push no enviado:",await res.text());
+  }catch(e){console.error("Error enviando push:",e)}
+}
+
+$("form").onsubmit=async e=>{e.preventDefault();let f=new FormData(e.target),pid=f.get("project"),p=projects.find(x=>x.id===pid),ids=f.getAll("assignee");if(!isMember(p))return;const newTask=await addDoc(collection(db,"tasks"),{projectId:pid,createdBy:user.uid,title:f.get("title"),description:f.get("description")||"",assigneeIds:ids,date:f.get("date")||"",priority:f.get("priority"),completed:false,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});notifyAssignedUsers(newTask.id,ids);closeAll();e.target.reset()};
 function openEdit(id){let t=tasks.find(x=>x.id===id);if(!t)return;let f=$("editForm");f.elements.id.value=t.id;f.elements.title.value=t.title||"";f.elements.description.value=t.description||"";f.elements.date.value=t.date||"";f.elements.priority.value=t.priority||"Normal";$("editModal").style.display="grid"}
 $("editForm").onsubmit=async e=>{e.preventDefault();let f=new FormData(e.target),id=f.get("id");await updateDoc(doc(db,"tasks",id),{title:f.get("title"),description:f.get("description")||"",date:f.get("date")||"",priority:f.get("priority"),updatedAt:serverTimestamp(),updatedBy:user.uid});closeAll()};
 onAuthStateChanged(auth,async u=>{user=u;unsubs.forEach(f=>f());unsubs=[];if(!u){$("auth").style.display="grid";$("shell").style.display="none";return}$("auth").style.display="none";$("shell").style.display="grid";$("who").textContent=u.displayName||u.email;try{await acceptInvites()}catch(e){console.error(e);$("status").textContent="Error al aceptar invitaciones: "+e.message}subscribe()});
 
 // OneSignal Web Push
 const ONESIGNAL_APP_ID="c83e67e2-505f-4970-8e3e-f1f352037ab3";
+// Pega aquí la URL que te dará Cloudflare al publicar notification-worker.js.
+const NOTIFICATION_WORKER_URL="";
 let oneSignalReady=false;
 window.OneSignalDeferred=window.OneSignalDeferred||[];
 window.OneSignalDeferred.push(async function(OneSignal){
