@@ -1,20 +1,17 @@
-# TareasPlus: correo con Gmail + GitHub Actions
+# TareasPlus — invitaciones mediante Compartir
 
-## 1. GitHub Secrets
-Repositorio → Settings → Secrets and variables → Actions → New repository secret.
+Esta versión elimina Gmail, SMTP, Gmail API y GitHub Actions.
 
-Crea `GMAIL_APP_PASSWORD` con la contraseña de aplicación de dev@alcaste-lasfuentes.com.
+Al invitar:
+1. La invitación queda registrada en Firestore.
+2. Se abre el menú nativo Compartir del dispositivo.
+3. Puedes enviarla por WhatsApp, Mail, Mensajes, etc.
+4. Si el navegador no soporta Compartir, el texto se copia al portapapeles.
+5. El invitado entra con el correo indicado y la lista se incorpora automáticamente.
 
-Crea `FIREBASE_SERVICE_ACCOUNT`: Firebase → Configuración del proyecto → Cuentas de servicio → Generar nueva clave privada. Abre el JSON descargado y copia TODO su contenido como valor del secret. No subas ese JSON a GitHub.
+También permite a todos los miembros de una lista editar, completar y eliminar sus tareas.
 
-## 2. Archivos
-Sube index.html, package.json y conserva exactamente las carpetas:
-- scripts/send-invitations.mjs
-- .github/workflows/send-invitations.yml
-
-Publica firestore.rules en Firebase.
-
-## 3. Probar
-GitHub → Actions → Enviar invitaciones TareasPlus → Run workflow.
-
-Después se ejecuta automáticamente cada 5 minutos. GitHub puede retrasar los cron algunos minutos.
+Instalación:
+- Sustituye index.html en GitHub.
+- Publica firestore.rules en Firebase.
+- No necesitas package.json, scripts, GitHub Actions ni secrets de Gmail.

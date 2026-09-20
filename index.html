@@ -43,8 +43,16 @@ function subscribe(){unsubs.forEach(f=>f());unsubs=[];const pq=query(collection(
 function subscribeTasks(){if(unsubs[1]){unsubs[1]();unsubs.splice(1,1)};if(!projects.length){tasks=[];renderAll();return}let ids=projects.map(p=>p.id);const tq=query(collection(db,"tasks"),where("projectId","in",ids.slice(0,30)));unsubs.push(onSnapshot(tq,s=>{tasks=s.docs.map(d=>({id:d.id,...d.data()}));tasks.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));$("status").textContent="✓ Sincronizado";renderAll()},e=>$("status").textContent=e.message))}
 $("navMine").onclick=()=>{view="mine";selectedProject=null;renderAll()};$("navAll").onclick=()=>{view="all";selectedProject=null;renderAll()};$("navDone").onclick=()=>{view="done";selectedProject=null;renderAll()};
 $("newList").onclick=()=>{$("listModal").style.display="grid"};$("listForm").onsubmit=async e=>{e.preventDefault();let f=new FormData(e.target),ref=await addDoc(collection(db,"projects"),{name:f.get("name"),ownerId:user.uid,memberIds:[user.uid],members:{[user.uid]:{email:user.email||"",name:user.displayName||user.email||"Usuario",role:"owner"}},createdAt:serverTimestamp()});selectedProject=ref.id;view="project";closeAll();e.target.reset()};
-$("invite").onclick=()=>{$("inviteModal").style.display="grid"};$("inviteForm").onsubmit=async e=>{e.preventDefault();let p=currentP();if(!p)return;let email=String(new FormData(e.target).get("email")).trim().toLowerCase();await addDoc(collection(db,"invites"),{projectId:p.id,projectName:p.name,email,invitedBy:user.uid,invitedByName:user.displayName||user.email||"Un usuario",status:"pending",emailSent:false,createdAt:serverTimestamp()});
-alert("Invitación registrada. El correo se enviará automáticamente en unos minutos.");closeAll();e.target.reset()};
+$("invite").onclick=()=>{$("inviteModal").style.display="grid"};$("inviteForm").onsubmit=async e=>{e.preventDefault();let p=currentP();if(!p)return;let email=String(new FormData(e.target).get("email")).trim().toLowerCase();await addDoc(collection(db,"invites"),{projectId:p.id,projectName:p.name,email,invitedBy:user.uid,invitedByName:user.displayName||user.email||"Un usuario",status:"pending",createdAt:serverTimestamp()});
+const inviteText=`${user.displayName||user.email||"Un usuario"} te invita a colaborar en la lista "${p.name}" de TareasPlus.\n\nAbre TareasPlus e inicia sesión con ${email}:\nhttps://gabrielbailly.github.io/tareas/`;
+closeAll();e.target.reset();
+if(navigator.share){
+  try{await navigator.share({title:`Invitación a ${p.name} — TareasPlus`,text:inviteText})}
+  catch(err){if(err.name!=="AbortError"){await navigator.clipboard.writeText(inviteText);alert("Invitación copiada al portapapeles.")}}
+}else{
+  await navigator.clipboard.writeText(inviteText);
+  alert("Invitación registrada y copiada al portapapeles.");
+}};
 async function acceptInvites(){
  if(!user.email)return;
  const email=user.email.trim().toLowerCase();

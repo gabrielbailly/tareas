@@ -4,18 +4,21 @@ service cloud.firestore {
     function signedIn() { return request.auth != null; }
     function projectData(pid) { return get(/databases/$(database)/documents/projects/$(pid)).data; }
     function projectMember(pid) { return signedIn() && request.auth.uid in projectData(pid).memberIds; }
+
     match /projects/{projectId} {
       allow create: if signedIn() && request.resource.data.ownerId == request.auth.uid && request.auth.uid in request.resource.data.memberIds;
       allow read: if signedIn() && request.auth.uid in resource.data.memberIds;
       allow update: if signedIn() && (resource.data.ownerId == request.auth.uid || (!(request.auth.uid in resource.data.memberIds) && request.auth.uid in request.resource.data.memberIds && request.resource.data.ownerId == resource.data.ownerId));
       allow delete: if signedIn() && resource.data.ownerId == request.auth.uid;
     }
+
     match /tasks/{taskId} {
       allow create: if projectMember(request.resource.data.projectId) && request.resource.data.createdBy == request.auth.uid;
       allow read: if projectMember(resource.data.projectId);
       allow update: if projectMember(resource.data.projectId) && request.resource.data.projectId == resource.data.projectId;
       allow delete: if projectMember(resource.data.projectId);
     }
+
     match /invites/{inviteId} {
       allow create: if signedIn() && projectMember(request.resource.data.projectId) && request.resource.data.invitedBy == request.auth.uid;
       allow read: if signedIn() && (resource.data.invitedBy == request.auth.uid || resource.data.email == request.auth.token.email);
