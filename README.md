@@ -1,3 +1,3 @@
-# TareasPlus - GitHub Pages
+# TareasPlus
 
-Versión estática lista para publicar directamente desde la raíz de la rama main en GitHub Pages.
+Versión conectada a Firebase Firestore para GitHub Pages.
