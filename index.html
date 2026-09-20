@@ -1,135 +1,44 @@
-<!doctype html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#102844">
-<title>TareasPlus</title>
+<!doctype html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#102844"><title>TareasPlus</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,Arial;background:#f5f8fc;color:#14233b}
-.app{min-height:100vh;display:grid;grid-template-columns:230px 1fr 270px}
-aside{background:#102844;color:white;padding:24px 18px}.brand{display:flex;gap:12px;font-size:22px;margin-bottom:35px}
-.brand>b{background:#2874ef;border-radius:10px;padding:6px 11px}.brand small{display:block;font-size:11px;font-weight:400}.brand span{font-weight:800}
-nav{display:grid;gap:7px;margin-bottom:30px}nav a{display:flex;align-items:center;gap:10px;padding:11px;border-radius:8px}nav a.active{background:#2465aa}
-.app>aside p{font-size:14px}.app>aside h4{font-size:12px;color:#b9c7d7}.bottom{position:absolute;bottom:28px}
-main{padding:32px}header{display:flex;justify-content:space-between;align-items:center}h1{margin:0;font-size:28px}header p{margin:5px 0;color:#68768b}
-button{border:0;border-radius:8px;background:#1769ed;color:#fff;padding:11px 17px;font-weight:650;cursor:pointer}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:25px 0}.card,.panel{background:white;border:1px solid #e2e8f0;border-radius:12px;box-shadow:0 3px 15px #15325a0a}
-.card{padding:17px}.card strong{font-size:25px;display:block;color:#1769ed}.card strong.red,.due{color:#e53935}.card span{font-weight:650}.card small{display:block;color:#778398}
-.panel{padding:18px}.panel h2{font-size:18px}.table{overflow:auto}.tr{min-width:760px;display:grid;grid-template-columns:2.1fr 1.3fr 1fr .8fr .8fr;align-items:center;border-top:1px solid #edf1f5;padding:13px 8px;font-size:14px}
-.head{background:#f8fafc;font-weight:650}.tr input{margin-right:8px}.tr em{font-style:normal;padding:5px 11px;border-radius:20px}.alta{background:#ffe0df;color:#d92d20}.normal{background:#e3efff;color:#1769ed}.baja{background:#dcf8e2;color:#23823c}.pending{background:#fff1c9;color:#956200}
-.right{background:#f8fbff;color:#263750;border-left:1px solid #e3e9f0;padding-top:100px}.right p{background:white;border:1px solid #e4eaf1;padding:13px;border-radius:10px;font-size:13px}.rem{margin-top:20px;background:#fff8e8;border-radius:10px;padding:15px;font-size:13px}
-.overlay{position:fixed;inset:0;background:#10233b88;display:grid;place-items:center}.modal{background:white;width:min(500px,92vw);padding:25px;border-radius:15px;box-shadow:0 25px 80px #0004}.modal label{display:grid;gap:5px;font-size:13px;font-weight:650;margin:13px 0}.modal input,.modal select,.modal textarea{font:inherit;padding:10px;border:1px solid #d5dce5;border-radius:7px}.modal textarea{min-height:75px}.actions{display:flex;justify-content:flex-end;gap:10px}.ghost{background:#e9eef5;color:#24364d}.status{font-size:13px;margin:12px 0;color:#68768b}.error{color:#c62828}.authscreen{min-height:100vh;display:grid;place-items:center;background:#f5f8fc;padding:24px}.authcard{width:min(420px,94vw);background:white;border:1px solid #e2e8f0;border-radius:18px;padding:34px;box-shadow:0 18px 60px #15325a18;text-align:center}.authlogo{display:inline-block;background:#2874ef;color:white;border-radius:12px;padding:9px 14px;font-size:24px;font-weight:800}.authcard h1{margin:16px 0 5px}.authcard p{color:#68768b}.google{margin:24px auto 0;font-size:15px}.userbox{display:flex;align-items:center;gap:9px;margin-top:18px;padding-top:15px;border-top:1px solid #29415d;font-size:13px}.avatar{width:32px;height:32px;border-radius:50%;object-fit:cover;background:#fff}.logout{background:transparent;padding:3px;color:#cbd7e5;font-size:12px}
-@media(max-width:1000px){.app{grid-template-columns:80px 1fr}.app>aside{padding:20px 10px}.brand span,nav a:not(.active),.app>aside h4,.app>aside p,.bottom{display:none}.brand{justify-content:center}.right{display:none}.stats{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:650px){.app{display:block}.app>aside{display:none}main{padding:18px}.stats{grid-template-columns:1fr 1fr}.panel{padding:10px}}
-</style>
-</head>
-<body>
-<div id="authScreen" class="authscreen">
-  <div class="authcard">
-    <div class="authlogo">✓</div>
-    <h1>TareasPlus</h1>
-    <p>Organiza. Colabora. Cumple.</p>
-    <button id="login" class="google">Continuar con Google</button>
-    <div id="authError" class="status error"></div>
-  </div>
-</div>
-<div class="app" id="appShell" style="display:none">
-<aside><div class="brand"><b>✓</b><span>TareasPlus<small>Organiza. Colabora. Cumple.</small></span></div>
-<nav><a class="active">⌂ Inicio</a><a>✓ Mis tareas</a><a>☷ Todas las tareas</a><a>✓ Completadas</a></nav>
-<h4>LISTAS / PROYECTOS</h4><p>🔵 Consejo de Dirección</p><p>🟢 Administración</p><p>🟠 Personal</p><p>🟣 Eventos</p><p>＋ Nueva lista</p>
-<div id="userBox" class="userbox" style="display:none">
-  <img id="avatar" class="avatar" alt="">
-  <div><div id="userName"></div><button id="logout" class="logout">Cerrar sesión</button></div>
-</div>
-<div class="bottom">⚙ Ajustes</div></aside>
-<main><header><div><h1>¡Hola!</h1><p>Aquí tienes un resumen de tus tareas</p></div><button id="new">＋ Nueva tarea</button></header>
-<div id="status" class="status">Conectando con Firebase…</div>
-<section class="stats"><div class="card"><strong id="count">0</strong><span>Mis tareas</span><small>pendientes</small></div><div class="card"><strong class="red" id="overdue">0</strong><span>Tareas vencidas</span><small>pendientes</small></div><div class="card"><strong id="soon">0</strong><span>Próximas (3 días)</span><small>pendientes</small></div><div class="card"><strong id="done">0</strong><span>Completadas</span><small>tareas</small></div></section>
-<section class="panel"><h2>Mis tareas</h2><div class="table" id="table"><div class="tr head"><span>Tarea</span><span>Lista</span><span>Fecha límite</span><span>Prioridad</span><span>Estado</span></div></div></section></main>
-<aside class="right"><h3>Firebase conectado</h3><p>☁️ Las tareas se guardan ahora en Firestore y se sincronizan entre dispositivos.</p><div class="rem">📅 <b>Siguiente fase</b><br>Usuarios, responsables, listas compartidas, archivos y notificaciones.</div></aside>
-</div>
-<div class="overlay" id="overlay" style="display:none"><form class="modal" id="form"><h2>Nueva tarea</h2>
-<label>Título<input name="title" required placeholder="Ej. Preparar reunión"></label>
-<label>Descripción<textarea name="description" placeholder="Añade más detalles..."></textarea></label>
-<label>Lista<select name="list"><option>Consejo de Dirección</option><option>Administración</option><option>Personal</option><option>Eventos</option></select></label>
-<label>Fecha límite<input name="date" type="date"></label>
-<label>Prioridad<select name="priority"><option>Baja</option><option selected>Normal</option><option>Alta</option></select></label>
-<div class="actions"><button type="button" class="ghost" id="cancel">Cancelar</button><button type="submit">Guardar</button></div></form></div>
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,Arial;background:#f5f8fc;color:#14233b}button,input,select,textarea{font:inherit}button{border:0;border-radius:8px;background:#1769ed;color:white;padding:10px 15px;font-weight:650;cursor:pointer}.ghost{background:#e9eef5;color:#24364d}.danger{background:#fff0f0;color:#b42318}.app{min-height:100vh;display:grid;grid-template-columns:235px 1fr 275px}.side{background:#102844;color:white;padding:22px 17px;position:relative}.brand{font-size:22px;font-weight:800;margin-bottom:28px}.brand b{background:#2874ef;border-radius:10px;padding:6px 11px;margin-right:8px}.brand small{display:block;margin:6px 0 0 45px;font-size:11px;font-weight:400}.nav a,.project{display:block;padding:10px;border-radius:8px;cursor:pointer;margin:3px 0}.nav .active,.project.active{background:#2465aa}.side h4{font-size:11px;color:#b9c7d7;margin:26px 8px 8px}.newlist{color:#b9d4ff}.user{position:absolute;bottom:20px;left:17px;right:17px;border-top:1px solid #29415d;padding-top:12px;font-size:12px}.user img{width:30px;height:30px;border-radius:50%;vertical-align:middle;margin-right:7px}.logout{background:transparent;padding:4px;color:#cbd7e5}main{padding:30px;min-width:0}header{display:flex;justify-content:space-between;gap:15px;align-items:center}.sub{color:#68768b;margin:5px 0}.toolbar{display:flex;gap:8px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0}.card,.panel,.box{background:white;border:1px solid #e2e8f0;border-radius:12px;box-shadow:0 3px 15px #15325a0a}.card{padding:16px}.card strong{display:block;font-size:24px;color:#1769ed}.card small{color:#778398}.panel{padding:17px}.table{overflow:auto}.tr{min-width:820px;display:grid;grid-template-columns:2fr 1.2fr 1.2fr 1fr .8fr;gap:8px;align-items:center;border-top:1px solid #edf1f5;padding:12px 7px;font-size:13px}.head{background:#f8fafc;font-weight:700}.pill{padding:5px 9px;border-radius:20px;display:inline-block}.alta{background:#ffe0df;color:#d92d20}.normal{background:#e3efff;color:#1769ed}.baja{background:#dcf8e2;color:#23823c}.right{background:#f8fbff;border-left:1px solid #e3e9f0;padding:92px 17px 20px}.right .box{padding:14px;margin-bottom:14px}.member{padding:7px 0;border-bottom:1px solid #edf1f5;font-size:13px}.member:last-child{border:0}.status{font-size:12px;color:#68768b;margin:10px 0}.error{color:#b42318}.overlay{position:fixed;inset:0;background:#10233b99;display:grid;place-items:center;z-index:20}.modal{background:white;width:min(540px,94vw);max-height:90vh;overflow:auto;padding:24px;border-radius:15px}.modal label{display:grid;gap:5px;margin:12px 0;font-size:13px;font-weight:650}.modal input,.modal select,.modal textarea{padding:10px;border:1px solid #d5dce5;border-radius:7px}.modal textarea{min-height:75px}.actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}.checks{border:1px solid #d5dce5;border-radius:8px;padding:8px;max-height:145px;overflow:auto}.checks label{display:flex;margin:4px;font-weight:400}.auth{min-height:100vh;display:grid;place-items:center}.auth .box{padding:35px;text-align:center;width:min(420px,92vw)}@media(max-width:1050px){.app{grid-template-columns:210px 1fr}.right{display:none}}@media(max-width:700px){.app{display:block}.side{position:static}.user{position:static;margin-top:20px}.nav{display:flex;overflow:auto}.side h4,.projects{display:none}main{padding:16px}.stats{grid-template-columns:1fr 1fr}.toolbar{flex-wrap:wrap}.tr{min-width:720px}}
+</style></head><body>
+<div id="auth" class="auth"><div class="box"><h1>TareasPlus</h1><p class="sub">Organiza. Colabora. Cumple.</p><button id="login">Continuar con Google</button><div id="authErr" class="status error"></div></div></div>
+<div id="shell" class="app" style="display:none">
+<aside class="side"><div class="brand"><b>✓</b>TareasPlus<small>Organiza. Colabora. Cumple.</small></div><div class="nav"><a id="navMine" class="active">✓ Mis tareas</a><a id="navAll">☷ Todas</a><a id="navDone">✓ Completadas</a></div><h4>LISTAS / PROYECTOS</h4><div id="projects" class="projects"></div><div id="newList" class="project newlist">＋ Nueva lista</div><div class="user"><span id="who"></span><br><button id="logout" class="logout">Cerrar sesión</button></div></aside>
+<main><header><div><h1 id="title">Mis tareas</h1><p class="sub" id="subtitle">Tareas que tienes asignadas</p></div><div class="toolbar"><button id="invite">＋ Invitar</button><button id="newTask">＋ Nueva tarea</button></div></header><div id="status" class="status"></div>
+<section class="stats"><div class="card"><strong id="nPending">0</strong>Pendientes</div><div class="card"><strong id="nMine">0</strong>Asignadas a mí</div><div class="card"><strong id="nSoon">0</strong>Próximas 3 días</div><div class="card"><strong id="nDone">0</strong>Completadas</div></section>
+<section class="panel"><div class="table" id="table"><div class="tr head"><span>Tarea</span><span>Lista</span><span>Responsables</span><span>Fecha</span><span>Prioridad</span></div></div></section></main>
+<aside class="right"><div class="box"><h3 id="projectName">Mi espacio</h3><div id="members">Selecciona una lista para ver sus miembros.</div></div><div class="box"><b>Colaboración</b><p class="sub">Invita por correo. La persona debe iniciar sesión con ese mismo correo para acceder.</p></div></aside></div>
+
+<div id="modal" class="overlay" style="display:none"><form id="form" class="modal"><h2>Nueva tarea</h2><label>Título<input name="title" required></label><label>Descripción<textarea name="description"></textarea></label><label>Lista<select name="project" id="taskProject" required></select></label><label>Responsables<div id="assignees" class="checks"></div></label><label>Fecha límite<input type="date" name="date"></label><label>Prioridad<select name="priority"><option>Baja</option><option selected>Normal</option><option>Alta</option></select></label><div class="actions"><button type="button" class="ghost close">Cancelar</button><button>Guardar</button></div></form></div>
+<div id="listModal" class="overlay" style="display:none"><form id="listForm" class="modal"><h2>Nueva lista</h2><label>Nombre<input name="name" required placeholder="Ej. Consejo de Dirección"></label><div class="actions"><button type="button" class="ghost close">Cancelar</button><button>Crear</button></div></form></div>
+<div id="inviteModal" class="overlay" style="display:none"><form id="inviteForm" class="modal"><h2>Invitar a la lista</h2><p class="sub">La invitación quedará asociada al correo indicado.</p><label>Correo electrónico<input name="email" type="email" required></label><div class="actions"><button type="button" class="ghost close">Cancelar</button><button>Invitar</button></div></form></div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, updateDoc, doc, query, where } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
-
-const firebaseConfig={
- apiKey:"AIzaSyDca0zhf5ECMHG3tIuKqpcTnO1vGHY0uh4",
- authDomain:"tareas-6e2c1.firebaseapp.com",
- projectId:"tareas-6e2c1",
- storageBucket:"tareas-6e2c1.firebasestorage.app",
- messagingSenderId:"958876171362",
- appId:"1:958876171362:web:886628c7adaf159008a53b"
-};
-const app=initializeApp(firebaseConfig);
-const db=getFirestore(app);
-const auth=getAuth(app);
-const provider=new GoogleAuthProvider();
-const tasksRef=collection(db,"tasks");
-let unsubscribeTasks=null;
-let currentUser=null;
-let tasks=[];
-const status=document.getElementById("status");
-const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-
-function stats(){
- const pending=tasks.filter(t=>!t.completed), done=tasks.filter(t=>t.completed);
- const today=new Date(); today.setHours(0,0,0,0); const three=new Date(today); three.setDate(three.getDate()+3);
- document.getElementById("count").textContent=pending.length;
- document.getElementById("done").textContent=done.length;
- document.getElementById("overdue").textContent=pending.filter(t=>t.date && new Date(t.date+"T00:00:00")<today).length;
- document.getElementById("soon").textContent=pending.filter(t=>{if(!t.date)return false;const d=new Date(t.date+"T00:00:00");return d>=today&&d<=three}).length;
-}
-function render(){
- const table=document.getElementById("table"); table.querySelectorAll(".tr:not(.head)").forEach(x=>x.remove());
- tasks.forEach(t=>{const r=document.createElement("div");r.className="tr";
- r.innerHTML=`<span><input class="complete" data-id="${t.id}" type="checkbox" ${t.completed?"checked":""}> ${esc(t.title)}</span><span>${esc(t.list)}</span><span>${esc(t.date||"Sin fecha")}</span><span><em class="${esc((t.priority||"Normal").toLowerCase())}">${esc(t.priority||"Normal")}</em></span><span><em class="pending">${t.completed?"Completada":"Pendiente"}</em></span>`;
- table.appendChild(r)});
- document.querySelectorAll(".complete").forEach(x=>x.onchange=async()=>updateDoc(doc(db,"tasks",x.dataset.id),{completed:x.checked,updatedAt:serverTimestamp()}));
- stats();
-}
-function subscribeTasks(user){
- if(unsubscribeTasks) unsubscribeTasks();
- const q=query(tasksRef,where("ownerId","==",user.uid));
- unsubscribeTasks=onSnapshot(q,snap=>{
-   tasks=snap.docs.map(d=>({id:d.id,...d.data()}));
-   tasks.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
-   render(); status.textContent="✓ Sincronizado con Firebase"; status.classList.remove("error");
- },err=>{console.error(err);status.textContent="No se puede acceder a Firestore: "+err.message;status.classList.add("error")});
-}
-document.getElementById("login").onclick=async()=>{try{document.getElementById("authError").textContent="";await signInWithPopup(auth,provider)}catch(err){document.getElementById("authError").textContent=err.message}};
-document.getElementById("logout").onclick=()=>signOut(auth);
-onAuthStateChanged(auth,user=>{
- currentUser=user;
- const authScreen=document.getElementById("authScreen"), shell=document.getElementById("appShell");
- if(user){
-   authScreen.style.display="none"; shell.style.display="grid";
-   document.getElementById("userBox").style.display="flex";
-   document.getElementById("userName").textContent=user.displayName||user.email||"Usuario";
-   const av=document.getElementById("avatar"); av.src=user.photoURL||""; av.style.display=user.photoURL?"block":"none";
-   subscribeTasks(user);
- }else{
-   if(unsubscribeTasks){unsubscribeTasks();unsubscribeTasks=null}
-   tasks=[]; render(); shell.style.display="none"; authScreen.style.display="grid";
- }
-});
-
-const ov=document.getElementById("overlay");
-document.getElementById("new").onclick=()=>ov.style.display="grid";
-document.getElementById("cancel").onclick=()=>ov.style.display="none";
-document.getElementById("form").onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target);try{
- if(!currentUser) throw new Error("Debes iniciar sesión.");
- await addDoc(tasksRef,{ownerId:currentUser.uid,ownerEmail:currentUser.email||"",title:f.get("title"),description:f.get("description")||"",list:f.get("list"),date:f.get("date")||"",priority:f.get("priority"),completed:false,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});
- ov.style.display="none";e.target.reset();
-}catch(err){alert("No se pudo guardar: "+err.message)}};
-</script>
-</body></html>
+import{initializeApp}from"https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+import{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+import{getFirestore,collection,addDoc,onSnapshot,serverTimestamp,updateDoc,doc,query,where,getDocs,writeBatch}from"https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+const cfg={apiKey:"AIzaSyDca0zhf5ECMHG3tIuKqpcTnO1vGHY0uh4",authDomain:"tareas-6e2c1.firebaseapp.com",projectId:"tareas-6e2c1",storageBucket:"tareas-6e2c1.firebasestorage.app",messagingSenderId:"958876171362",appId:"1:958876171362:web:886628c7adaf159008a53b"};
+const app=initializeApp(cfg),auth=getAuth(app),db=getFirestore(app),provider=new GoogleAuthProvider();
+let user=null,projects=[],tasks=[],selectedProject=null,view="mine",unsubs=[];
+const $=id=>document.getElementById(id), esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function closeAll(){["modal","listModal","inviteModal"].forEach(x=>$(x).style.display="none")}document.querySelectorAll(".close").forEach(x=>x.onclick=closeAll);
+$("login").onclick=()=>signInWithPopup(auth,provider).catch(e=>$("authErr").textContent=e.message);$("logout").onclick=()=>signOut(auth);
+function pMembers(p){return p?.members||{}} function isMember(p){return !!pMembers(p)[user.uid]}
+function renderProjects(){let el=$("projects");el.innerHTML="";projects.forEach(p=>{let d=document.createElement("div");d.className="project"+(selectedProject===p.id?" active":"");d.textContent="● "+p.name;d.onclick=()=>{selectedProject=p.id;view="project";renderAll()};el.appendChild(d)});$("taskProject").innerHTML=projects.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join("");}
+function currentP(){return projects.find(p=>p.id===selectedProject)}
+function renderMembers(){let p=currentP();$("projectName").textContent=p?p.name:"Mi espacio";$("members").innerHTML=p?Object.values(pMembers(p)).map(m=>`<div class="member">${esc(m.name||m.email)}<br><small>${esc(m.email)}</small></div>`).join(""):"Selecciona una lista para ver sus miembros."}
+function visibleTasks(){let a=tasks;if(view==="mine")a=a.filter(t=>(t.assigneeIds||[]).includes(user.uid)&&!t.completed);if(view==="all")a=a.filter(t=>!t.completed);if(view==="done")a=a.filter(t=>t.completed);if(view==="project")a=a.filter(t=>t.projectId===selectedProject&&!t.completed);return a}
+function renderTasks(){let tb=$("table");tb.querySelectorAll(".tr:not(.head)").forEach(x=>x.remove());visibleTasks().forEach(t=>{let p=projects.find(x=>x.id===t.projectId), names=(t.assigneeIds||[]).map(id=>pMembers(p)[id]?.name||pMembers(p)[id]?.email||"").filter(Boolean).join(", ");let r=document.createElement("div");r.className="tr";r.innerHTML=`<span><input type="checkbox" data-id="${t.id}" ${t.completed?"checked":""}> ${esc(t.title)}</span><span>${esc(p?.name||"")}</span><span>${esc(names||"Sin asignar")}</span><span>${esc(t.date||"Sin fecha")}</span><span><i class="pill ${esc((t.priority||"Normal").toLowerCase())}">${esc(t.priority||"Normal")}</i></span>`;tb.appendChild(r)});tb.querySelectorAll('input[type="checkbox"]').forEach(c=>c.onchange=()=>updateDoc(doc(db,"tasks",c.dataset.id),{completed:c.checked,updatedAt:serverTimestamp()}));let pending=tasks.filter(t=>!t.completed),today=new Date();today.setHours(0,0,0,0);let d3=new Date(today);d3.setDate(d3.getDate()+3);$("nPending").textContent=pending.length;$("nMine").textContent=pending.filter(t=>(t.assigneeIds||[]).includes(user.uid)).length;$("nDone").textContent=tasks.filter(t=>t.completed).length;$("nSoon").textContent=pending.filter(t=>t.date&&new Date(t.date+"T00:00:00")>=today&&new Date(t.date+"T00:00:00")<=d3).length}
+function renderHead(){let p=currentP(),map={mine:["Mis tareas","Tareas que tienes asignadas"],all:["Todas las tareas","Tareas de tus listas compartidas"],done:["Completadas","Historial de tareas completadas"],project:[p?.name||"Lista","Tareas pendientes de esta lista"]};[$("title").textContent,$("subtitle").textContent]=map[view];$("invite").style.display=(p&&view==="project")?"inline-block":"none"}
+function renderAll(){renderProjects();renderMembers();renderTasks();renderHead()}
+function subscribe(){unsubs.forEach(f=>f());unsubs=[];const pq=query(collection(db,"projects"),where("memberIds","array-contains",user.uid));unsubs.push(onSnapshot(pq,s=>{projects=s.docs.map(d=>({id:d.id,...d.data()}));if(selectedProject&&!projects.some(p=>p.id===selectedProject))selectedProject=null;renderAll();subscribeTasks()},e=>$("status").textContent=e.message))}
+function subscribeTasks(){if(unsubs[1]){unsubs[1]();unsubs.splice(1,1)};if(!projects.length){tasks=[];renderAll();return}let ids=projects.map(p=>p.id);const tq=query(collection(db,"tasks"),where("projectId","in",ids.slice(0,30)));unsubs.push(onSnapshot(tq,s=>{tasks=s.docs.map(d=>({id:d.id,...d.data()}));tasks.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));$("status").textContent="✓ Sincronizado";renderAll()},e=>$("status").textContent=e.message))}
+$("navMine").onclick=()=>{view="mine";selectedProject=null;renderAll()};$("navAll").onclick=()=>{view="all";selectedProject=null;renderAll()};$("navDone").onclick=()=>{view="done";selectedProject=null;renderAll()};
+$("newList").onclick=()=>{$("listModal").style.display="grid"};$("listForm").onsubmit=async e=>{e.preventDefault();let f=new FormData(e.target),ref=await addDoc(collection(db,"projects"),{name:f.get("name"),ownerId:user.uid,memberIds:[user.uid],members:{[user.uid]:{email:user.email||"",name:user.displayName||user.email||"Usuario",role:"owner"}},createdAt:serverTimestamp()});selectedProject=ref.id;view="project";closeAll();e.target.reset()};
+$("invite").onclick=()=>{$("inviteModal").style.display="grid"};$("inviteForm").onsubmit=async e=>{e.preventDefault();let p=currentP();if(!p)return;let email=String(new FormData(e.target).get("email")).trim().toLowerCase();await addDoc(collection(db,"invites"),{projectId:p.id,projectName:p.name,email,invitedBy:user.uid,status:"pending",createdAt:serverTimestamp()});alert("Invitación registrada. Cuando esa persona inicie sesión con "+email+", se añadirá automáticamente a la lista.");closeAll();e.target.reset()};
+async function acceptInvites(){if(!user.email)return;let q=query(collection(db,"invites"),where("email","==",user.email.toLowerCase()),where("status","==","pending")),s=await getDocs(q);for(const inv of s.docs){let x=inv.data(),pd=await getDocs(query(collection(db,"projects"),where("__name__","==",x.projectId)));if(pd.empty)continue;let p=pd.docs[0],data=p.data(),members=data.members||{},ids=data.memberIds||[];members[user.uid]={email:user.email,name:user.displayName||user.email,role:"member"};if(!ids.includes(user.uid))ids.push(user.uid);await updateDoc(doc(db,"projects",p.id),{members,memberIds:ids});await updateDoc(doc(db,"invites",inv.id),{status:"accepted",acceptedBy:user.uid,acceptedAt:serverTimestamp()})}}
+$("newTask").onclick=()=>{if(!projects.length){alert("Crea primero una lista.");return}$("taskProject").value=selectedProject||projects[0].id;fillAssignees();$("modal").style.display="grid"};$("taskProject").onchange=fillAssignees;function fillAssignees(){let p=projects.find(x=>x.id===$("taskProject").value);$("assignees").innerHTML=Object.entries(pMembers(p)).map(([id,m])=>`<label><input type="checkbox" name="assignee" value="${id}" ${id===user.uid?"checked":""}> ${esc(m.name||m.email)}</label>`).join("")}
+$("form").onsubmit=async e=>{e.preventDefault();let f=new FormData(e.target),pid=f.get("project"),p=projects.find(x=>x.id===pid),ids=f.getAll("assignee");if(!isMember(p))return;await addDoc(collection(db,"tasks"),{projectId:pid,createdBy:user.uid,title:f.get("title"),description:f.get("description")||"",assigneeIds:ids,date:f.get("date")||"",priority:f.get("priority"),completed:false,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});closeAll();e.target.reset()};
+onAuthStateChanged(auth,async u=>{user=u;unsubs.forEach(f=>f());unsubs=[];if(!u){$("auth").style.display="grid";$("shell").style.display="none";return}$("auth").style.display="none";$("shell").style.display="grid";$("who").textContent=u.displayName||u.email;try{await acceptInvites()}catch(e){console.warn(e)}subscribe()});
+</script></body></html>
