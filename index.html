@@ -18,6 +18,7 @@
 <input type="hidden" name="id"><label>Título<input name="title" required></label><label>Descripción<textarea name="description"></textarea></label>
 <label>Fecha límite<input type="date" name="date"></label><label>Prioridad<select name="priority"><option>Baja</option><option>Normal</option><option>Alta</option></select></label>
 <div class="actions"><button type="button" class="ghost closeEdit">Cancelar</button><button>Guardar cambios</button></div></form></div>
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
 import{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
@@ -99,4 +100,50 @@ $("form").onsubmit=async e=>{e.preventDefault();let f=new FormData(e.target),pid
 function openEdit(id){let t=tasks.find(x=>x.id===id);if(!t)return;let f=$("editForm");f.elements.id.value=t.id;f.elements.title.value=t.title||"";f.elements.description.value=t.description||"";f.elements.date.value=t.date||"";f.elements.priority.value=t.priority||"Normal";$("editModal").style.display="grid"}
 $("editForm").onsubmit=async e=>{e.preventDefault();let f=new FormData(e.target),id=f.get("id");await updateDoc(doc(db,"tasks",id),{title:f.get("title"),description:f.get("description")||"",date:f.get("date")||"",priority:f.get("priority"),updatedAt:serverTimestamp(),updatedBy:user.uid});closeAll()};
 onAuthStateChanged(auth,async u=>{user=u;unsubs.forEach(f=>f());unsubs=[];if(!u){$("auth").style.display="grid";$("shell").style.display="none";return}$("auth").style.display="none";$("shell").style.display="grid";$("who").textContent=u.displayName||u.email;try{await acceptInvites()}catch(e){console.error(e);$("status").textContent="Error al aceptar invitaciones: "+e.message}subscribe()});
-</script></body></html>
+
+// OneSignal Web Push
+const ONESIGNAL_APP_ID="c83e67e2-505f-4970-8e3e-f1f352037ab3";
+let oneSignalReady=false;
+window.OneSignalDeferred=window.OneSignalDeferred||[];
+window.OneSignalDeferred.push(async function(OneSignal){
+  try{
+    await OneSignal.init({
+      appId:ONESIGNAL_APP_ID,
+      serviceWorkerPath:"OneSignalSDKWorker.js",
+      serviceWorkerParam:{scope:"/tareas/"},
+      notifyButton:{enable:false}
+    });
+    oneSignalReady=true;
+    updateNotifyButton();
+    OneSignal.Notifications.addEventListener("permissionChange",updateNotifyButton);
+    OneSignal.User.PushSubscription.addEventListener("change",updateNotifyButton);
+  }catch(e){console.error("OneSignal:",e)}
+});
+function linkOneSignal(u){
+  if(!u)return;
+  window.OneSignalDeferred.push(async function(OneSignal){
+    try{await OneSignal.login(u.uid);updateNotifyButton()}catch(e){console.error(e)}
+  });
+}
+function updateNotifyButton(){
+  const b=document.getElementById("notifyBtn");if(!b)return;
+  window.OneSignalDeferred.push(async function(OneSignal){
+    const active=OneSignal.Notifications.permission&&OneSignal.User.PushSubscription.optedIn;
+    b.textContent=active?"🔔 Notificaciones activadas":"🔔 Activar notificaciones";
+  });
+}
+document.addEventListener("click",e=>{
+  if(e.target?.id!=="notifyBtn")return;
+  window.OneSignalDeferred.push(async function(OneSignal){
+    try{
+      if(user)await OneSignal.login(user.uid);
+      if(!OneSignal.Notifications.permission)await OneSignal.Notifications.requestPermission();
+      if(!OneSignal.User.PushSubscription.optedIn)await OneSignal.User.PushSubscription.optIn();
+      updateNotifyButton();
+      if(OneSignal.Notifications.permission)alert("Notificaciones activadas en este dispositivo.");
+    }catch(err){console.error(err);alert("No se han podido activar las notificaciones.")}
+  });
+});
+
+</script><button id="notifyBtn" type="button" style="position:fixed;right:18px;bottom:18px;z-index:40;border:0;border-radius:999px;padding:12px 16px;background:#1769ed;color:white;font-weight:700;box-shadow:0 8px 25px #0002">🔔 Activar notificaciones</button>
+</body></html>

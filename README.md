@@ -1,13 +1,17 @@
-# TareasPlus — Mail y Compartir
+# TareasPlus + OneSignal
 
-Después de registrar una invitación aparecen tres opciones:
+App ID: c83e67e2-505f-4970-8e3e-f1f352037ab3
 
-- Enviar por Mail: abre el cliente de correo con destinatario, asunto y cuerpo ya rellenados.
-- Compartir: abre el menú nativo para WhatsApp, Mensajes, Mail, etc.
-- Copiar invitación: copia el texto al portapapeles.
+Sube a la raíz del repositorio:
+- index.html
+- OneSignalSDKWorker.js
 
-No utiliza Gmail API, SMTP, GitHub Actions ni contraseñas.
+Prueba:
+1. Abre TareasPlus e inicia sesión.
+2. Pulsa 🔔 Activar notificaciones.
+3. Acepta el permiso.
+4. Comprueba en OneSignal que aparece el usuario/suscripción.
+5. Envía una notificación de prueba desde OneSignal.
 
-Actualización:
-1. Sustituye index.html en GitHub.
-2. Las reglas de Firestore se incluyen por comodidad; si ya publicaste las de la versión anterior no requieren cambios para esta función.
+El UID de Firebase se registra como External ID en OneSignal.
+En iPhone/iPad, usa la PWA añadida a la pantalla de inicio.
