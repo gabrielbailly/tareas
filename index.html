@@ -46,13 +46,40 @@ $("newList").onclick=()=>{$("listModal").style.display="grid"};$("listForm").ons
 $("invite").onclick=()=>{$("inviteModal").style.display="grid"};$("inviteForm").onsubmit=async e=>{e.preventDefault();let p=currentP();if(!p)return;let email=String(new FormData(e.target).get("email")).trim().toLowerCase();await addDoc(collection(db,"invites"),{projectId:p.id,projectName:p.name,email,invitedBy:user.uid,invitedByName:user.displayName||user.email||"Un usuario",status:"pending",createdAt:serverTimestamp()});
 const inviteText=`${user.displayName||user.email||"Un usuario"} te invita a colaborar en la lista "${p.name}" de TareasPlus.\n\nAbre TareasPlus e inicia sesión con ${email}:\nhttps://gabrielbailly.github.io/tareas/`;
 closeAll();e.target.reset();
-if(navigator.share){
-  try{await navigator.share({title:`Invitación a ${p.name} — TareasPlus`,text:inviteText})}
-  catch(err){if(err.name!=="AbortError"){await navigator.clipboard.writeText(inviteText);alert("Invitación copiada al portapapeles.")}}
-}else{
+const mailSubject=`Invitación a «${p.name}» — TareasPlus`;
+const mailBody=inviteText;
+const mailUrl=`mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+
+const choice=document.createElement("div");
+choice.className="overlay show";
+choice.innerHTML=`<div class="modal" style="max-width:460px">
+  <button class="x" aria-label="Cerrar">×</button>
+  <h2>Invitación registrada</h2>
+  <p style="color:var(--muted);margin-bottom:20px">¿Cómo quieres enviar la invitación a <strong>${esc(email)}</strong>?</p>
+  <div style="display:grid;gap:10px">
+    <button class="primary" id="sendInviteMail">✉️ Enviar por Mail</button>
+    <button class="secondary" id="shareInviteNative">↗️ Compartir</button>
+    <button class="secondary" id="copyInviteText">📋 Copiar invitación</button>
+  </div>
+</div>`;
+document.body.appendChild(choice);
+const closeChoice=()=>choice.remove();
+choice.querySelector(".x").onclick=closeChoice;
+choice.onclick=e=>{if(e.target===choice)closeChoice()};
+choice.querySelector("#sendInviteMail").onclick=()=>{window.location.href=mailUrl;setTimeout(closeChoice,250)};
+choice.querySelector("#copyInviteText").onclick=async()=>{
   await navigator.clipboard.writeText(inviteText);
-  alert("Invitación registrada y copiada al portapapeles.");
-}};
+  closeChoice(); alert("Invitación copiada al portapapeles.");
+};
+choice.querySelector("#shareInviteNative").onclick=async()=>{
+  if(navigator.share){
+    try{await navigator.share({title:mailSubject,text:inviteText});closeChoice()}
+    catch(err){if(err.name!=="AbortError"){await navigator.clipboard.writeText(inviteText);closeChoice();alert("Invitación copiada al portapapeles.")}}
+  }else{
+    await navigator.clipboard.writeText(inviteText);closeChoice();alert("Tu navegador no dispone del menú Compartir. La invitación se ha copiado.");
+  }
+};
+};
 async function acceptInvites(){
  if(!user.email)return;
  const email=user.email.trim().toLowerCase();
