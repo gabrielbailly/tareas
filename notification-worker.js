@@ -42,7 +42,9 @@ export default {
   if(!tr.ok)return new Response("Task not accessible",{status:403,headers});
   const task=await tr.json(), f=task.fields||{};
   const creator=field(f.createdBy);
-  const assignees=stringArray(f.assigneeIds).filter(id=>id&&id!==creator);
+  const currentAssignees=stringArray(f.assigneeIds);
+  const requested=Array.isArray(body.notifyUserIds)?body.notifyUserIds.filter(x=>typeof x==="string"):currentAssignees;
+  const assignees=requested.filter(id=>id&&id!==creator&&currentAssignees.includes(id));
   if(!assignees.length)return Response.json({sent:false,reason:"no-other-assignees"},{headers});
 
   // Verify the Firebase ID token with Firebase Auth REST.
@@ -60,8 +62,9 @@ export default {
   }
   const authData=await vr.json();
   const callerUid=authData.users?.[0]?.localId;
-  if(!callerUid||callerUid!==creator)
-    return Response.json({ok:false,stage:"authorization",message:"Only task creator may notify"},{status:403,headers});
+  if(!callerUid) return Response.json({ok:false,stage:"authorization",message:"Invalid Firebase user"},{status:403,headers});
+  // Firestore already allowed this signed-in user to read the task, so the caller is an authorized project member.
+  // Notification recipients are constrained to users currently assigned to the task.
 
   let projectName="TareasPlus";
   const pid=field(f.projectId);
