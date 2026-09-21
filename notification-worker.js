@@ -1,5 +1,6 @@
 const APP_ID="c83e67e2-505f-4970-8e3e-f1f352037ab3";
 const FIREBASE_PROJECT="tareas-6e2c1";
+const FIREBASE_API_KEY="AIzaSyDca0zhf5ECMHG3tIuKqpcTnO1vGHY0uh4";
 const ALLOWED_ORIGIN="https://gabrielbailly.github.io";
 
 function cors(origin){
@@ -44,13 +45,23 @@ export default {
   const assignees=stringArray(f.assigneeIds).filter(id=>id&&id!==creator);
   if(!assignees.length)return Response.json({sent:false,reason:"no-other-assignees"},{headers});
 
-  // Only the creator can trigger the assignment notification.
-  // Verify caller UID from Firebase's tokeninfo endpoint.
-  const vr=await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(idToken)}`);
-  if(!vr.ok)return new Response("Invalid token",{status:401,headers});
-  const claims=await vr.json();
-  if(claims.sub!==creator||claims.aud!==FIREBASE_PROJECT)
-    return new Response("Only task creator may notify",{status:403,headers});
+  // Verify the Firebase ID token with Firebase Auth REST.
+  // The previous version used Google's generic tokeninfo endpoint, which is not
+  // the correct verifier for Firebase Secure Token ID tokens and could reject
+  // otherwise valid signed-in users.
+  const vr=await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${FIREBASE_API_KEY}`,{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({idToken})
+  });
+  if(!vr.ok){
+    const detail=await vr.text();
+    return Response.json({ok:false,stage:"firebase-auth",detail},{status:401,headers});
+  }
+  const authData=await vr.json();
+  const callerUid=authData.users?.[0]?.localId;
+  if(!callerUid||callerUid!==creator)
+    return Response.json({ok:false,stage:"authorization",message:"Only task creator may notify"},{status:403,headers});
 
   let projectName="TareasPlus";
   const pid=field(f.projectId);
@@ -65,6 +76,9 @@ export default {
   const contents=due
     ? `${title} · ${projectName} · vence ${due}`
     : `${title} · ${projectName}`;
+
+  if(!env.ONESIGNAL_REST_API_KEY)
+    return Response.json({ok:false,stage:"config",message:"Missing ONESIGNAL_REST_API_KEY"},{status:500,headers});
 
   const push=await fetch("https://api.onesignal.com/notifications",{
     method:"POST",
@@ -82,7 +96,8 @@ export default {
       data:{type:"task_assigned",taskId:body.taskId,projectId:pid,priority}
     })
   });
-  const result=await push.text();
-  return new Response(result,{status:push.status,headers:{...headers,"Content-Type":"application/json"}});
+  const resultText=await push.text();
+  let result; try{result=JSON.parse(resultText)}catch{result={raw:resultText}}
+  return Response.json({ok:push.ok,stage:"onesignal",recipients:assignees,result},{status:push.status,headers});
  }
 };

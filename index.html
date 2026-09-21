@@ -65,7 +65,15 @@ header{display:block!important}header h1{font-size:28px!important;line-height:1.
 #notifyBtn{position:static!important;display:block!important;margin:18px auto 0!important;width:auto!important;padding:9px 12px!important;font-size:13px!important;box-shadow:none!important;background:#e9f2ff!important;color:#1769ed!important}
 }
 @media(max-width:380px){.toolbar{grid-template-columns:1fr!important}.stats{gap:7px!important}header h1{font-size:25px!important}}
-</style></head><body><div class="mobileTop"><button id="mobileMenuBtn" type="button" aria-label="Abrir menú">☰</button><b><span>✓</span> TareasPlus</b><i>🔔</i></div><div id="sideBackdrop"></div>
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<meta name="theme-color" content="#102f50">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="TareasPlus">
+</head><body><div class="mobileTop"><button id="mobileMenuBtn" type="button" aria-label="Abrir menú">☰</button><b><span>✓</span> TareasPlus</b><i>🔔</i></div><div id="sideBackdrop"></div>
 <div id="auth" class="auth"><div class="box"><h1>TareasPlus</h1><p class="sub">Organiza. Colabora. Cumple.</p><button id="login">Continuar con Google</button><div id="authErr" class="status error"></div></div></div>
 <div id="shell" class="app" style="display:none">
 <aside class="side"><div class="brand"><b>✓</b>TareasPlus<small>Organiza. Colabora. Cumple.</small></div><div class="nav"><a id="navMine" class="active">✓ Mis tareas</a><a id="navAll">☷ Todas</a><a id="navDone">✓ Completadas</a></div><h4>LISTAS / PROYECTOS</h4><div id="projects" class="projects"></div><div id="newList" class="project newlist">＋ Nueva lista</div><div class="user"><span id="who"></span><br><button id="logout" class="logout">Cerrar sesión</button></div></aside>
@@ -175,10 +183,10 @@ async function notifyAssignedUsers(taskId,assigneeIds){
   }catch(e){console.error("Error enviando push:",e)}
 }
 
-$("form").onsubmit=async e=>{e.preventDefault();let f=new FormData(e.target),pid=f.get("project"),p=projects.find(x=>x.id===pid),ids=f.getAll("assignee");if(!isMember(p))return;const newTask=await addDoc(collection(db,"tasks"),{projectId:pid,createdBy:user.uid,title:f.get("title"),description:f.get("description")||"",assigneeIds:ids,date:f.get("date")||"",priority:f.get("priority"),completed:false,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});notifyAssignedUsers(newTask.id,ids);closeAll();e.target.reset()};
+$("form").onsubmit=async e=>{e.preventDefault();let f=new FormData(e.target),pid=f.get("project"),p=projects.find(x=>x.id===pid),ids=f.getAll("assignee");if(!isMember(p))return;const newTask=await addDoc(collection(db,"tasks"),{projectId:pid,createdBy:user.uid,title:f.get("title"),description:f.get("description")||"",assigneeIds:ids,date:f.get("date")||"",priority:f.get("priority"),completed:false,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});await notifyAssignedUsers(newTask.id,ids);closeAll();e.target.reset()};
 function openEdit(id){let t=tasks.find(x=>x.id===id);if(!t)return;let f=$("editForm");f.elements.id.value=t.id;f.elements.title.value=t.title||"";f.elements.description.value=t.description||"";f.elements.date.value=t.date||"";f.elements.priority.value=t.priority||"Normal";$("editModal").style.display="grid"}
 $("editForm").onsubmit=async e=>{e.preventDefault();let f=new FormData(e.target),id=f.get("id");await updateDoc(doc(db,"tasks",id),{title:f.get("title"),description:f.get("description")||"",date:f.get("date")||"",priority:f.get("priority"),updatedAt:serverTimestamp(),updatedBy:user.uid});closeAll()};
-onAuthStateChanged(auth,async u=>{user=u;unsubs.forEach(f=>f());unsubs=[];if(!u){$("auth").style.display="grid";$("shell").style.display="none";return}$("auth").style.display="none";$("shell").style.display="grid";$("who").textContent=u.displayName||u.email;try{await acceptInvites()}catch(e){console.error(e);$("status").textContent="Error al aceptar invitaciones: "+e.message}subscribe()});
+onAuthStateChanged(auth,async u=>{user=u;unsubs.forEach(f=>f());unsubs=[];if(!u){$("auth").style.display="grid";$("shell").style.display="none";return}$("auth").style.display="none";$("shell").style.display="grid";$("who").textContent=u.displayName||u.email;linkOneSignal(u);try{await acceptInvites()}catch(e){console.error(e);$("status").textContent="Error al aceptar invitaciones: "+e.message}subscribe()});
 
 // OneSignal Web Push
 const ONESIGNAL_APP_ID="c83e67e2-505f-4970-8e3e-f1f352037ab3";
@@ -190,7 +198,7 @@ window.OneSignalDeferred.push(async function(OneSignal){
   try{
     await OneSignal.init({
       appId:ONESIGNAL_APP_ID,
-      serviceWorkerPath:"OneSignalSDKWorker.js",
+      serviceWorkerPath:"/tareas/OneSignalSDKWorker.js",
       serviceWorkerParam:{scope:"/tareas/"},
       notifyButton:{enable:false}
     });
@@ -209,8 +217,10 @@ function linkOneSignal(u){
 function updateNotifyButton(){
   const b=document.getElementById("notifyBtn");if(!b)return;
   window.OneSignalDeferred.push(async function(OneSignal){
-    const active=OneSignal.Notifications.permission&&OneSignal.User.PushSubscription.optedIn;
+    const subscriptionId=OneSignal.User.PushSubscription.id;
+    const active=OneSignal.Notifications.permission&&OneSignal.User.PushSubscription.optedIn&&!!subscriptionId;
     b.textContent=active?"🔔 Notificaciones activadas":"🔔 Activar notificaciones";
+    b.title=active?"Suscripción OneSignal: "+subscriptionId:"Este dispositivo aún no tiene una suscripción push válida";
   });
 }
 document.addEventListener("click",e=>{
@@ -221,7 +231,12 @@ document.addEventListener("click",e=>{
       if(!OneSignal.Notifications.permission)await OneSignal.Notifications.requestPermission();
       if(!OneSignal.User.PushSubscription.optedIn)await OneSignal.User.PushSubscription.optIn();
       updateNotifyButton();
-      if(OneSignal.Notifications.permission)alert("Notificaciones activadas en este dispositivo.");
+      const sid=OneSignal.User.PushSubscription.id;
+      if(OneSignal.Notifications.permission&&OneSignal.User.PushSubscription.optedIn&&sid){
+        alert("Notificaciones activadas correctamente.\nSuscripción OneSignal: "+sid);
+      }else{
+        alert("El navegador ha dado permiso, pero OneSignal todavía no ha creado una suscripción push válida. Revisa la configuración Web Push de OneSignal y vuelve a intentarlo.");
+      }
     }catch(err){console.error(err);alert("No se han podido activar las notificaciones.")}
   });
 });
