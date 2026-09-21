@@ -45,7 +45,27 @@
   #notifyBtn{right:12px!important;bottom:12px!important;padding:11px 13px!important;font-size:12px!important}
 }
 </style>
-</head><body>
+<style>
+.mobileTop,#sideBackdrop{display:none}
+@media(max-width:700px){
+html,body,.app{width:100%!important;max-width:100%!important;overflow-x:hidden}
+body{margin:0!important}.app{display:block!important;min-width:0!important}
+.mobileTop{display:flex;position:sticky;top:0;z-index:60;align-items:center;justify-content:space-between;background:#102f50;color:#fff;padding:calc(10px + env(safe-area-inset-top)) 14px 10px}
+.mobileTop button{border:0;background:none;color:#fff;font-size:28px;padding:4px 8px}.mobileTop b{font-size:20px}.mobileTop b span{background:#2878ed;border-radius:8px;padding:5px 9px;margin-right:5px}.mobileTop i{font-style:normal}
+.side{display:block!important;position:fixed!important;z-index:80!important;inset:0 auto 0 0!important;width:min(84vw,330px)!important;height:100dvh!important;padding:calc(18px + env(safe-area-inset-top)) 18px!important;box-sizing:border-box!important;overflow-y:auto!important;transform:translateX(-105%);transition:.22s;box-shadow:8px 0 28px #0003}
+body.mobileMenuOpen .side{transform:translateX(0)}
+#sideBackdrop{display:block;position:fixed;inset:0;z-index:70;background:#071a2d88;opacity:0;pointer-events:none;transition:.22s}body.mobileMenuOpen #sideBackdrop{opacity:1;pointer-events:auto}
+.side .brand{display:flex!important;font-size:23px!important;margin-bottom:20px!important}.side .brand small{display:none!important}.side .nav{display:grid!important;gap:6px!important;overflow:visible!important}.side .nav a{font-size:16px!important;padding:12px!important}.side h4,.side .projects{display:block!important}.side .user{display:grid!important;grid-template-columns:1fr auto!important;margin-top:24px!important}
+main{width:100%!important;min-width:0!important;padding:18px 14px calc(80px + env(safe-area-inset-bottom))!important;box-sizing:border-box!important}
+header{display:block!important}header h1{font-size:28px!important;line-height:1.08!important;margin:0 0 6px!important}.sub{font-size:15px!important}
+.toolbar{display:grid!important;grid-template-columns:1fr 1fr!important;gap:9px!important;margin-top:12px!important}.toolbar button{width:100%!important;min-width:0!important;min-height:48px!important;padding:9px!important;font-size:15px!important}
+.stats{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important;width:100%!important}.card{min-width:0!important;padding:14px!important}.card strong{font-size:26px!important}
+.panel{width:100%!important;min-width:0!important;padding:0!important;background:transparent!important;box-shadow:none!important}.table{overflow:visible!important}.tr{width:100%!important;min-width:0!important;box-sizing:border-box!important}
+.modal{width:calc(100vw - 24px)!important;max-width:none!important;max-height:calc(100dvh - 28px)!important;overflow-y:auto!important;box-sizing:border-box!important}.modal input,.modal select,.modal textarea{font-size:16px!important;box-sizing:border-box!important}
+#notifyBtn{position:static!important;display:block!important;margin:18px auto 0!important;width:auto!important;padding:9px 12px!important;font-size:13px!important;box-shadow:none!important;background:#e9f2ff!important;color:#1769ed!important}
+}
+@media(max-width:380px){.toolbar{grid-template-columns:1fr!important}.stats{gap:7px!important}header h1{font-size:25px!important}}
+</style></head><body><div class="mobileTop"><button id="mobileMenuBtn" type="button" aria-label="Abrir menú">☰</button><b><span>✓</span> TareasPlus</b><i>🔔</i></div><div id="sideBackdrop"></div>
 <div id="auth" class="auth"><div class="box"><h1>TareasPlus</h1><p class="sub">Organiza. Colabora. Cumple.</p><button id="login">Continuar con Google</button><div id="authErr" class="status error"></div></div></div>
 <div id="shell" class="app" style="display:none">
 <aside class="side"><div class="brand"><b>✓</b>TareasPlus<small>Organiza. Colabora. Cumple.</small></div><div class="nav"><a id="navMine" class="active">✓ Mis tareas</a><a id="navAll">☷ Todas</a><a id="navDone">✓ Completadas</a></div><h4>LISTAS / PROYECTOS</h4><div id="projects" class="projects"></div><div id="newList" class="project newlist">＋ Nueva lista</div><div class="user"><span id="who"></span><br><button id="logout" class="logout">Cerrar sesión</button></div></aside>
@@ -206,5 +226,5 @@ document.addEventListener("click",e=>{
   });
 });
 
-</script><button id="notifyBtn" type="button" style="position:fixed;right:18px;bottom:18px;z-index:40;border:0;border-radius:999px;padding:12px 16px;background:#1769ed;color:white;font-weight:700;box-shadow:0 8px 25px #0002">🔔 Activar notificaciones</button>
+const mm=document.getElementById("mobileMenuBtn"),sb=document.getElementById("sideBackdrop");function mobileMenu(v){document.body.classList.toggle("mobileMenuOpen",v)}mm?.addEventListener("click",()=>mobileMenu(!document.body.classList.contains("mobileMenuOpen")));sb?.addEventListener("click",()=>mobileMenu(false));document.querySelector(".side")?.addEventListener("click",e=>{if(innerWidth<=700&&(e.target.closest("a")||e.target.closest("button")))mobileMenu(false)});addEventListener("resize",()=>{if(innerWidth>700)mobileMenu(false)});</script><button id="notifyBtn" type="button" style="position:fixed;right:18px;bottom:18px;z-index:40;border:0;border-radius:999px;padding:12px 16px;background:#1769ed;color:white;font-weight:700;box-shadow:0 8px 25px #0002">🔔 Activar notificaciones</button>
 </body></html>
