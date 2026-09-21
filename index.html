@@ -183,7 +183,7 @@ onAuthStateChanged(auth,async u=>{user=u;unsubs.forEach(f=>f());unsubs=[];if(!u)
 // OneSignal Web Push
 const ONESIGNAL_APP_ID="c83e67e2-505f-4970-8e3e-f1f352037ab3";
 // Pega aquí la URL que te dará Cloudflare al publicar notification-worker.js.
-const NOTIFICATION_WORKER_URL="";
+const NOTIFICATION_WORKER_URL="https://tareas.gbailly.workers.dev";
 let oneSignalReady=false;
 window.OneSignalDeferred=window.OneSignalDeferred||[];
 window.OneSignalDeferred.push(async function(OneSignal){
