@@ -1,0 +1,5 @@
+// Anade este bloque DENTRO de: match /databases/{database}/documents { ... }
+// Mantén el resto de tus reglas actuales sin cambios.
+match /userPreferences/{userId} {
+  allow read, create, update, delete: if request.auth != null && request.auth.uid == userId;
+}

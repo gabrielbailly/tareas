@@ -1,7 +1,10 @@
-# TareasPlus – versión con checklist
+TareasPlus - orden de listas sincronizado
 
-Añade checklist/subtareas dentro de cada tarea. Los elementos pueden crearse y editarse desde los formularios y marcarse directamente desde la tarjeta. Se muestra progreso (completados/total y porcentaje). Completar todos los elementos no completa automáticamente la tarea principal.
+El orden del menu se guarda ahora en Firestore en:
+userPreferences/{uid}.projectOrder
 
-Mantiene responsive, PWA, OneSignal y notificaciones de asignación.
+Así el mismo usuario conserva el orden al entrar desde iPhone, Android, Mac u otro navegador.
 
-Sube a GitHub los archivos web de esta carpeta. El notification-worker.js solo necesita actualizarse en Cloudflare si quieres mantener exactamente la copia incluida; la lógica de checklist no requiere cambios del Worker.
+IMPORTANTE: antes de probar, anade a tus reglas de Firestore el bloque incluido en firestore-rules-snippet.txt dentro de match /databases/{database}/documents { ... } y publica las reglas.
+
+Después sustituye index.html en GitHub.
