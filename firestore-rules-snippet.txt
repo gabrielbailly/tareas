@@ -1,5 +1,31 @@
-// Anade este bloque DENTRO de: match /databases/{database}/documents { ... }
-// Mantén el resto de tus reglas actuales sin cambios.
+// Añade estos bloques DENTRO de: match /databases/{database}/documents { ... }
+// Mantén el resto de tus reglas actuales.
+
 match /userPreferences/{userId} {
   allow read, create, update, delete: if request.auth != null && request.auth.uid == userId;
+}
+
+// Comentarios de tareas.
+// Requiere que tus documentos projects tengan memberIds y ownerId,
+// como en la versión actual de TareasPlus.
+match /tasks/{taskId}/comments/{commentId} {
+  function taskData() {
+    return get(/databases/$(database)/documents/tasks/$(taskId)).data;
+  }
+  function projectData() {
+    return get(/databases/$(database)/documents/projects/$(taskData().projectId)).data;
+  }
+  function isProjectMember() {
+    return request.auth != null && request.auth.uid in projectData().memberIds;
+  }
+  allow read: if isProjectMember();
+  allow create: if isProjectMember()
+                && request.resource.data.authorId == request.auth.uid
+                && request.resource.data.projectId == taskData().projectId;
+  allow update: if isProjectMember()
+                && resource.data.authorId == request.auth.uid
+                && request.resource.data.authorId == resource.data.authorId;
+  allow delete: if isProjectMember()
+                && (resource.data.authorId == request.auth.uid
+                    || projectData().ownerId == request.auth.uid);
 }

@@ -25,7 +25,7 @@ export default {
   const headers=cors(origin);
   if(request.method==="OPTIONS")return new Response(null,{status:204,headers});
   const url=new URL(request.url);
-  if(url.pathname!=="/task-assigned"||request.method!=="POST")
+  if(!["/task-assigned","/comment-added"].includes(url.pathname)||request.method!=="POST")
     return new Response("Not found",{status:404,headers});
 
   const auth=request.headers.get("Authorization");
@@ -34,6 +34,44 @@ export default {
   let body;
   try{body=await request.json()}catch{return new Response("Bad request",{status:400,headers})}
   if(!body.taskId)return new Response("Missing taskId",{status:400,headers});
+
+  if(url.pathname==="/comment-added"){
+    if(!body.commentId)return new Response("Missing commentId",{status:400,headers});
+    const commentUrl=`https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT}/databases/(default)/documents/tasks/${encodeURIComponent(body.taskId)}/comments/${encodeURIComponent(body.commentId)}`;
+    const cr=await fetch(commentUrl,{headers:{Authorization:`Bearer ${idToken}`}});
+    if(!cr.ok)return new Response("Comment not accessible",{status:403,headers});
+    const comment=await cr.json(),cf=comment.fields||{};
+    const authorId=field(cf.authorId),authorName=field(cf.authorName)||"Alguien",commentText=field(cf.text)||"";
+
+    const vr=await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${FIREBASE_API_KEY}`,{
+      method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({idToken})
+    });
+    if(!vr.ok)return Response.json({ok:false,stage:"firebase-auth"},{status:401,headers});
+    const authData=await vr.json(),callerUid=authData.users?.[0]?.localId;
+    if(!callerUid||callerUid!==authorId)return Response.json({ok:false,stage:"authorization"},{status:403,headers});
+
+    const taskUrl=`https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT}/databases/(default)/documents/tasks/${encodeURIComponent(body.taskId)}`;
+    const tr=await fetch(taskUrl,{headers:{Authorization:`Bearer ${idToken}`}});
+    if(!tr.ok)return new Response("Task not accessible",{status:403,headers});
+    const task=await tr.json(),tf=task.fields||{},assignees=stringArray(tf.assigneeIds).filter(id=>id&&id!==authorId);
+    if(!assignees.length)return Response.json({sent:false,reason:"no-other-assignees"},{headers});
+    if(!env.ONESIGNAL_REST_API_KEY)return Response.json({ok:false,stage:"config",message:"Missing ONESIGNAL_REST_API_KEY"},{status:500,headers});
+    const title=field(tf.title)||"Tarea";
+    const preview=commentText.length>100?commentText.slice(0,97)+"…":commentText;
+    const push=await fetch("https://api.onesignal.com/notifications",{
+      method:"POST",
+      headers:{"Content-Type":"application/json","Authorization":`Key ${env.ONESIGNAL_REST_API_KEY}`},
+      body:JSON.stringify({
+        app_id:APP_ID,target_channel:"push",include_aliases:{external_id:assignees},
+        headings:{es:`${authorName} ha comentado`,en:`${authorName} commented`},
+        contents:{es:`${title}: ${preview}`,en:`${title}: ${preview}`},
+        url:"https://gabrielbailly.github.io/tareas/",
+        data:{type:"comment_added",taskId:body.taskId,commentId:body.commentId}
+      })
+    });
+    const resultText=await push.text();let result;try{result=JSON.parse(resultText)}catch{result={raw:resultText}}
+    return Response.json({ok:push.ok,stage:"onesignal",recipients:assignees,result},{status:push.status,headers});
+  }
 
   // Read through Firestore REST using the caller's Firebase ID token.
   // Firestore security rules therefore decide whether this signed-in user may read the task.

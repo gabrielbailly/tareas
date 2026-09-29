@@ -82,6 +82,22 @@ header{display:block!important}header h1{font-size:28px!important;line-height:1.
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="TareasPlus">
+
+<style>
+.commentBtn{border:0;background:#eef5ff;color:#1769ed;border-radius:999px;padding:6px 10px;font-weight:700;font-size:12px;cursor:pointer;margin-top:7px;width:max-content}
+.commentsModal{width:min(620px,calc(100vw - 24px))}
+.commentsList{display:flex;flex-direction:column;gap:10px;max-height:48vh;overflow:auto;margin:10px 0 14px;padding-right:3px}
+.commentItem{background:#f6f8fb;border:1px solid #e6ebf2;border-radius:12px;padding:10px 12px}
+.commentMeta{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:#667085;margin-bottom:5px}
+.commentText{white-space:pre-wrap;overflow-wrap:anywhere}
+.commentActions{display:flex;gap:6px;justify-content:flex-end;margin-top:7px}
+.commentActions button{border:0;background:transparent;color:#1769ed;font-size:12px;cursor:pointer;padding:3px 5px}
+.commentActions button.dangerText{color:#c62828}
+.commentComposer{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}
+.commentComposer textarea{min-height:70px;resize:vertical}
+.commentEmpty{color:#667085;text-align:center;padding:18px 6px}
+@media(max-width:700px){.commentsModal{width:calc(100vw - 20px)!important}.commentsList{max-height:52vh}.commentComposer{grid-template-columns:1fr}.commentComposer button{width:100%}}
+</style>
 </head><body><div class="mobileTop"><button id="mobileMenuBtn" type="button" aria-label="Abrir menú">☰</button><b><span>✓</span> TareasPlus</b><i>🔔</i></div><div id="sideBackdrop"></div>
 <div id="auth" class="auth"><div class="box"><h1>TareasPlus</h1><p class="sub">Organiza. Colabora. Cumple.</p><button id="login">Continuar con Google</button><div id="authErr" class="status error"></div></div></div>
 <div id="shell" class="app" style="display:none">
@@ -101,16 +117,29 @@ header{display:block!important}header h1{font-size:28px!important;line-height:1.
 <label>Lista<select name="project" id="editTaskProject" required></select></label><label>Responsables<div id="editAssignees" class="checks chips"></div></label>
 <label>Fecha límite<input type="date" name="date"></label><label>Prioridad<select name="priority"><option>Baja</option><option>Normal</option><option>Alta</option></select></label><label>Checklist / subtareas<div class="checklistEditor"><div id="editChecklist" class="checklistRows"></div><button type="button" class="addcheck" id="addEditCheck">＋ Añadir elemento</button></div></label>
 <div class="actions"><button type="button" class="ghost closeEdit">Cancelar</button><button>Guardar cambios</button></div></form></div>
+
+<div id="commentsModal" class="overlay" style="display:none">
+  <div class="modal commentsModal">
+    <h2>💬 Comentarios</h2>
+    <div id="commentsTaskTitle" class="sub"></div>
+    <div id="commentsList" class="commentsList"></div>
+    <form id="commentForm" class="commentComposer">
+      <textarea name="text" required maxlength="2000" placeholder="Escribe un comentario…"></textarea>
+      <button type="submit">Enviar</button>
+    </form>
+    <div class="actions"><button type="button" class="ghost closeComments">Cerrar</button></div>
+  </div>
+</div>
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
 import{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
-import{getFirestore,collection,addDoc,onSnapshot,serverTimestamp,updateDoc,setDoc,doc,query,where,getDocs,arrayUnion,arrayRemove,deleteField,deleteDoc}from"https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+import{getFirestore,collection,addDoc,onSnapshot,serverTimestamp,updateDoc,setDoc,doc,query,where,getDocs,arrayUnion,arrayRemove,deleteField,deleteDoc,increment}from"https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 const cfg={apiKey:"AIzaSyDca0zhf5ECMHG3tIuKqpcTnO1vGHY0uh4",authDomain:"tareas-6e2c1.firebaseapp.com",projectId:"tareas-6e2c1",storageBucket:"tareas-6e2c1.firebasestorage.app",messagingSenderId:"958876171362",appId:"1:958876171362:web:886628c7adaf159008a53b"};
 const app=initializeApp(cfg),auth=getAuth(app),db=getFirestore(app),provider=new GoogleAuthProvider();
-let user=null,projects=[],tasks=[],selectedProject=null,view="mine",unsubs=[],taskUnsub=null,syncedProjectOrder=[];
+let user=null,projects=[],tasks=[],selectedProject=null,view="mine",unsubs=[],taskUnsub=null,syncedProjectOrder=[],commentsUnsub=null,commentsTaskId=null;
 const $=id=>document.getElementById(id), esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-function closeAll(){["modal","listModal","inviteModal","editModal","editListModal"].forEach(x=>$(x).style.display="none")}document.querySelectorAll(".close").forEach(x=>x.onclick=closeAll);document.querySelectorAll(".closeEdit").forEach(x=>x.onclick=closeAll);document.querySelectorAll(".closeListEdit").forEach(x=>x.onclick=closeAll);
+function closeAll(){["modal","listModal","inviteModal","editModal","editListModal","commentsModal"].forEach(x=>$(x).style.display="none");if(commentsUnsub){commentsUnsub();commentsUnsub=null}commentsTaskId=null}document.querySelectorAll(".close").forEach(x=>x.onclick=closeAll);document.querySelectorAll(".closeEdit").forEach(x=>x.onclick=closeAll);document.querySelectorAll(".closeListEdit").forEach(x=>x.onclick=closeAll);document.querySelectorAll(".closeComments").forEach(x=>x.onclick=closeAll);
 $("login").onclick=()=>signInWithPopup(auth,provider).catch(e=>$("authErr").textContent=e.message);$("logout").onclick=()=>signOut(auth);
 function pMembers(p){return p?.members||{}} function isMember(p){return !!pMembers(p)[user.uid]}
 const LIST_COLORS=["#2f80ed","#34c759","#ff9500","#ff3b30","#af52de","#5ac8fa","#ff2d55","#8e8e93"];
@@ -139,9 +168,10 @@ function addChecklistRow(containerId,item={}){let box=$(containerId),r=document.
 function readChecklist(containerId){return [...$(containerId).querySelectorAll(".checktext")].map(x=>({id:x.dataset.id||crypto.randomUUID(),text:x.value.trim(),completed:x.dataset.completed==="1"})).filter(x=>x.text)}
 function loadChecklist(containerId,items=[]){$(containerId).innerHTML="";(items||[]).forEach(item=>{addChecklistRow(containerId,item);let x=$(containerId).lastElementChild.querySelector(".checktext");x.dataset.id=item.id||crypto.randomUUID();x.dataset.completed=item.completed?"1":"0"})}
 $("addNewCheck").onclick=()=>addChecklistRow("newChecklist");$("addEditCheck").onclick=()=>addChecklistRow("editChecklist");
-function renderTasks(){let tb=$("table");tb.querySelectorAll(".tr:not(.head)").forEach(x=>x.remove());visibleTasks().forEach(t=>{let p=projects.find(x=>x.id===t.projectId), names=(t.assigneeIds||[]).map(id=>pMembers(p)[id]?.name||pMembers(p)[id]?.email||"").filter(Boolean).join(", ");let r=document.createElement("div");r.className="tr";r.innerHTML=`<span class="taskmain"><input type="checkbox" data-id="${t.id}" ${t.completed?"checked":""}><span class="tasktext"><span class="tasktitle" data-edit="${t.id}">${esc(t.title)}</span>${t.description?`<span class="taskdesc">${esc(t.description)}</span>`:""}${checklistHTML(t)}</span></span><span>${esc(p?.name||"")}</span><span>${esc(names||"Sin asignar")}</span><span>${esc(t.date||"Sin fecha")}</span><span><i class="pill ${esc((t.priority||"Normal").toLowerCase())}">${esc(t.priority||"Normal")}</i></span><span class="rowactions"><button class="mini ghost" data-edit="${t.id}">Editar</button><button class="mini danger" data-del="${t.id}">Eliminar</button></span>`;tb.appendChild(r)});
+function renderTasks(){let tb=$("table");tb.querySelectorAll(".tr:not(.head)").forEach(x=>x.remove());visibleTasks().forEach(t=>{let p=projects.find(x=>x.id===t.projectId), names=(t.assigneeIds||[]).map(id=>pMembers(p)[id]?.name||pMembers(p)[id]?.email||"").filter(Boolean).join(", ");let r=document.createElement("div");r.className="tr";r.innerHTML=`<span class="taskmain"><input type="checkbox" data-id="${t.id}" ${t.completed?"checked":""}><span class="tasktext"><span class="tasktitle" data-edit="${t.id}">${esc(t.title)}</span>${t.description?`<span class="taskdesc">${esc(t.description)}</span>`:""}${checklistHTML(t)}<button class="commentBtn" type="button" data-comments="${t.id}">💬 ${Number(t.commentCount||0)} comentario${Number(t.commentCount||0)===1?"":"s"}</button></span></span><span>${esc(p?.name||"")}</span><span>${esc(names||"Sin asignar")}</span><span>${esc(t.date||"Sin fecha")}</span><span><i class="pill ${esc((t.priority||"Normal").toLowerCase())}">${esc(t.priority||"Normal")}</i></span><span class="rowactions"><button class="mini ghost" data-edit="${t.id}">Editar</button><button class="mini danger" data-del="${t.id}">Eliminar</button></span>`;tb.appendChild(r)});
 tb.querySelectorAll('input[type="checkbox"][data-id]').forEach(c=>c.onchange=()=>updateDoc(doc(db,"tasks",c.dataset.id),{completed:c.checked,updatedAt:serverTimestamp()}));
 tb.querySelectorAll('[data-check-task]').forEach(c=>c.onchange=async()=>{let t=tasks.find(x=>x.id===c.dataset.checkTask);if(!t)return;let a=(t.checklist||[]).map(x=>({...x})),i=Number(c.dataset.checkIndex);if(a[i]){a[i].completed=c.checked;await updateDoc(doc(db,"tasks",t.id),{checklist:a,updatedAt:serverTimestamp(),updatedBy:user.uid})}});
+tb.querySelectorAll("[data-comments]").forEach(b=>b.onclick=e=>{e.stopPropagation();openComments(b.dataset.comments)});
 tb.querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>openEdit(b.dataset.edit));
 tb.querySelectorAll("[data-del]").forEach(b=>b.onclick=async()=>{let t=tasks.find(x=>x.id===b.dataset.del);if(t&&confirm(`¿Eliminar "${t.title}"? Esta acción no se puede deshacer.`))await deleteDoc(doc(db,"tasks",t.id))});let pending=tasks.filter(t=>!t.completed),today=new Date();today.setHours(0,0,0,0);let d3=new Date(today);d3.setDate(d3.getDate()+3);$("nPending").textContent=pending.length;$("nMine").textContent=pending.filter(t=>(t.assigneeIds||[]).includes(user.uid)).length;$("nDone").textContent=tasks.filter(t=>t.completed).length;$("nSoon").textContent=pending.filter(t=>t.date&&new Date(t.date+"T00:00:00")>=today&&new Date(t.date+"T00:00:00")<=d3).length}
 function renderHead(){let p=currentP(),map={mine:["Mis tareas","Tareas que tienes asignadas"],all:["Todas las tareas","Tareas de tus listas compartidas"],done:["Completadas","Historial de tareas completadas"],soon:["Próximas 3 días","Tareas con vencimiento próximo"],project:[p?.name||"Lista","Tareas pendientes de esta lista"]};[$("title").textContent,$("subtitle").textContent]=map[view];$("invite").style.display=(p&&view==="project")?"inline-block":"none"}
@@ -204,6 +234,62 @@ async function acceptInvites(){
    await updateDoc(doc(db,"invites",inv.id),{status:"accepted",acceptedBy:user.uid,acceptedAt:serverTimestamp()});
  }
 }
+
+function fmtCommentDate(ts){
+  try{let d=ts?.toDate?ts.toDate():null;return d?new Intl.DateTimeFormat("es-ES",{dateStyle:"short",timeStyle:"short"}).format(d):"Ahora"}catch{return ""}
+}
+function commentProjectOwner(task){
+  let p=projects.find(x=>x.id===task?.projectId);return p?.ownerId||Object.entries(pMembers(p)).find(([,m])=>m.role==="owner")?.[0]||"";
+}
+function openComments(taskId){
+  const t=tasks.find(x=>x.id===taskId);if(!t)return;
+  commentsTaskId=taskId;$("commentsTaskTitle").textContent=t.title||"Tarea";$("commentsModal").style.display="grid";
+  if(commentsUnsub)commentsUnsub();
+  const cq=collection(db,"tasks",taskId,"comments");
+  commentsUnsub=onSnapshot(cq,s=>{
+    let arr=s.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(a.createdAt?.seconds||0)-(b.createdAt?.seconds||0));
+    const owner=commentProjectOwner(t), box=$("commentsList");
+    if(!arr.length){box.innerHTML='<div class="commentEmpty">Todavía no hay comentarios.</div>';return}
+    box.innerHTML=arr.map(c=>{
+      const canEdit=c.authorId===user.uid,canDelete=canEdit||owner===user.uid;
+      return `<div class="commentItem" data-comment="${c.id}"><div class="commentMeta"><b>${esc(c.authorName||c.authorEmail||"Usuario")}</b><span>${esc(fmtCommentDate(c.createdAt))}${c.updatedAt?" · editado":""}</span></div><div class="commentText">${esc(c.text)}</div>${canEdit||canDelete?`<div class="commentActions">${canEdit?`<button type="button" data-comment-edit="${c.id}">Editar</button>`:""}${canDelete?`<button type="button" class="dangerText" data-comment-del="${c.id}">Eliminar</button>`:""}</div>`:""}</div>`
+    }).join("");
+    box.querySelectorAll("[data-comment-edit]").forEach(b=>b.onclick=async()=>{
+      let c=arr.find(x=>x.id===b.dataset.commentEdit);if(!c)return;let text=prompt("Editar comentario:",c.text||"");if(text===null)return;text=text.trim();if(!text)return;
+      await updateDoc(doc(db,"tasks",taskId,"comments",c.id),{text,updatedAt:serverTimestamp()});
+    });
+    box.querySelectorAll("[data-comment-del]").forEach(b=>b.onclick=async()=>{
+      if(!confirm("¿Eliminar este comentario?"))return;
+      await deleteDoc(doc(db,"tasks",taskId,"comments",b.dataset.commentDel));
+      await updateDoc(doc(db,"tasks",taskId),{commentCount:increment(-1),updatedAt:serverTimestamp()});
+    });
+    requestAnimationFrame(()=>box.scrollTop=box.scrollHeight);
+  },e=>$("commentsList").innerHTML=`<div class="commentEmpty">No se pudieron cargar los comentarios: ${esc(e.message)}</div>`);
+}
+$("commentForm").onsubmit=async e=>{
+  e.preventDefault();if(!commentsTaskId)return;
+  const text=e.target.elements.text.value.trim();if(!text)return;
+  const t=tasks.find(x=>x.id===commentsTaskId);if(!t)return;
+  const ref=await addDoc(collection(db,"tasks",commentsTaskId,"comments"),{
+    text,authorId:user.uid,authorName:user.displayName||user.email||"Usuario",authorEmail:user.email||"",
+    projectId:t.projectId,createdAt:serverTimestamp()
+  });
+  await updateDoc(doc(db,"tasks",commentsTaskId),{commentCount:increment(1),updatedAt:serverTimestamp()});
+  e.target.reset();
+  await notifyCommentUsers(commentsTaskId,ref.id);
+};
+async function notifyCommentUsers(taskId,commentId){
+  if(!NOTIFICATION_WORKER_URL)return;
+  try{
+    const token=await user.getIdToken();
+    const res=await fetch(NOTIFICATION_WORKER_URL+"/comment-added",{
+      method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},
+      body:JSON.stringify({taskId,commentId})
+    });
+    if(!res.ok)console.error("Push de comentario no enviado:",await res.text());
+  }catch(e){console.error("Error enviando push de comentario:",e)}
+}
+
 $("newTask").onclick=()=>{if(!projects.length){alert("Crea primero una lista.");return}$("taskProject").value=selectedProject||projects[0].id;fillAssignees();loadChecklist("newChecklist",[]);$("modal").style.display="grid"};$("taskProject").onchange=fillAssignees;function fillAssignees(){let p=projects.find(x=>x.id===$("taskProject").value);$("assignees").innerHTML=Object.entries(pMembers(p)).map(([id,m])=>`<label><input type="checkbox" name="assignee" value="${id}" ${id===user.uid?"checked":""}><span>${esc(m.name||m.email)}</span></label>`).join("")}
 
 async function notifyAssignedUsers(taskId,assigneeIds){

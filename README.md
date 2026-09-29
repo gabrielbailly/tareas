@@ -1,13 +1,19 @@
-TareasPlus - orden de listas sincronizado
+# TareasPlus — comentarios
 
-El orden del menu se guarda ahora en Firestore en:
-userPreferences/{uid}.projectOrder
+Novedades:
+- Comentarios dentro de cada tarea.
+- Autor, fecha/hora y texto.
+- Edición de los comentarios propios.
+- Eliminación por el autor; el propietario de la lista puede eliminar cualquier comentario.
+- Contador de comentarios visible en la tarjeta.
+- Sincronización en tiempo real con Firestore.
+- Notificación push a los demás responsables de la tarea cuando se añade un comentario.
 
-Así el mismo usuario conserva el orden al entrar desde iPhone, Android, Mac u otro navegador.
+## Actualización
+1. GitHub Pages: sustituye `index.html`.
+2. Firestore: añade las reglas de `firestore-rules-snippet.txt` dentro del bloque de documentos y publica.
+3. Cloudflare Worker `tareas`: sustituye el código por `notification-worker.js` y pulsa Deploy.
+4. No cambies el secreto `ONESIGNAL_REST_API_KEY`.
 
-IMPORTANTE: antes de probar, anade a tus reglas de Firestore el bloque incluido en firestore-rules-snippet.txt dentro de match /databases/{database}/documents { ... } y publica las reglas.
-
-Después sustituye index.html en GitHub.
-
-## Gestion de miembros
-En Editar lista, el propietario puede ver los miembros y eliminar cualquier miembro salvo al propietario. La eliminacion actualiza memberIds y members en Firestore, por lo que el acceso desaparece inmediatamente segun las reglas existentes de membresia.
+Los comentarios se guardan en:
+`tasks/{taskId}/comments/{commentId}`.
