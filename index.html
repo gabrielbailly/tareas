@@ -49,7 +49,7 @@
   .modal h2{font-size:20px;margin-top:0}
   .modal input,.modal select,.modal textarea{font-size:16px}
   .actions{position:sticky;bottom:-18px;background:white;padding:10px 0 0}
-  #notifyBtn{right:12px!important;bottom:12px!important;padding:11px 13px!important;font-size:12px!important}
+  
 }
 </style>
 <style>
@@ -69,7 +69,7 @@ header{display:block!important}header h1{font-size:28px!important;line-height:1.
 .stats{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important;width:100%!important}.card{min-width:0!important;padding:14px!important}.card strong{font-size:26px!important}
 .panel{width:100%!important;min-width:0!important;padding:0!important;background:transparent!important;box-shadow:none!important}.table{overflow:visible!important}.tr{width:100%!important;min-width:0!important;box-sizing:border-box!important}
 .modal{width:calc(100vw - 24px)!important;max-width:none!important;max-height:calc(100dvh - 28px)!important;overflow-y:auto!important;box-sizing:border-box!important}.modal input,.modal select,.modal textarea{font-size:16px!important;box-sizing:border-box!important}
-#notifyBtn{position:static!important;display:block!important;margin:18px auto 0!important;width:auto!important;padding:9px 12px!important;font-size:13px!important;box-shadow:none!important;background:#e9f2ff!important;color:#1769ed!important}
+
 }
 @media(max-width:380px){.toolbar{grid-template-columns:1fr!important}.stats{gap:7px!important}header h1{font-size:25px!important}}
 
@@ -104,10 +104,15 @@ header{display:block!important}header h1{font-size:28px!important;line-height:1.
 .newTaskFab:hover{transform:scale(1.05);box-shadow:0 10px 28px #0004}.newTaskFab:active{transform:scale(.96)}
 @media(max-width:700px){.newTaskFab{right:18px;bottom:18px;width:58px;height:58px;font-size:38px;line-height:54px}.app main{padding-bottom:92px!important}}
 </style>
+
+<style>
+.userMenuWrap{position:relative}.userTrigger{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;background:transparent;color:#fff;padding:8px 6px;border-radius:9px;text-align:left}.userTrigger:hover{background:#ffffff12}.userTriggerName{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:650}.userChevron{font-size:11px;color:#b9c7d7}.userDropdown{display:none;position:absolute;left:0;bottom:calc(100% + 8px);min-width:220px;width:100%;background:#fff;color:#14233b;border:1px solid #dfe6ef;border-radius:12px;box-shadow:0 10px 32px #0003;padding:6px;z-index:150}.userDropdown.open{display:block}.userDropdown button{width:100%;display:flex;align-items:center;gap:9px;text-align:left;background:transparent;color:#24364d;padding:10px;border-radius:8px;font-size:13px}.userDropdown button:hover{background:#f1f5fa}.userDropdown .logoutMenu{color:#b42318}.userDropdown .notifyActive{color:#23823c}.userDropdown .notifyActive:before{content:"";width:7px;height:7px;border-radius:50%;background:#34c759;display:inline-block}.userDropdown .notifyInactive:before{content:"";width:7px;height:7px;border-radius:50%;background:#94a3b8;display:inline-block}
+@media(max-width:700px){.userMenuWrap{width:100%}.userDropdown{position:static;margin-top:6px;box-shadow:none;border-color:#29415d}.side .user{display:block!important}.userTrigger{font-size:14px}}
+</style>
 </head><body><div class="mobileTop"><button id="mobileMenuBtn" type="button" aria-label="Abrir menú">☰</button><b><span>✓</span> TareasPlus</b><i>🔔</i></div><div id="sideBackdrop"></div>
 <div id="auth" class="auth"><div class="box"><h1>TareasPlus</h1><p class="sub">Organiza. Colabora. Cumple.</p><button id="login">Continuar con Google</button><div id="authErr" class="status error"></div></div></div>
 <div id="shell" class="app" style="display:none">
-<aside class="side"><div class="brand"><b>✓</b>TareasPlus<small>Organiza. Colabora. Cumple.</small></div><div class="nav"><a id="navMine" class="active">✓ Mis tareas</a><a id="navAll">☷ Todas</a><a id="navDone">✓ Completadas</a></div><h4>LISTAS / PROYECTOS</h4><div id="projects" class="projects"></div><div id="newList" class="project newlist">＋ Nueva lista</div><div class="user"><span id="who"></span><br><button id="logout" class="logout">Cerrar sesión</button></div></aside>
+<aside class="side"><div class="brand"><b>✓</b>TareasPlus<small>Organiza. Colabora. Cumple.</small></div><div class="nav"><a id="navMine" class="active">✓ Mis tareas</a><a id="navAll">☷ Todas</a><a id="navDone">✓ Completadas</a></div><h4>LISTAS / PROYECTOS</h4><div id="projects" class="projects"></div><div id="newList" class="project newlist">＋ Nueva lista</div><div class="user"><div class="userMenuWrap"><button id="userMenuBtn" class="userTrigger" type="button" aria-expanded="false"><span id="who" class="userTriggerName"></span><span class="userChevron">▲</span></button><div id="userDropdown" class="userDropdown"><button id="notifyBtn" type="button" class="notifyInactive">🔔 <span id="notifyLabel">Activar notificaciones</span></button><button id="logout" type="button" class="logoutMenu">↪ <span>Cerrar sesión</span></button></div></div></div></aside>
 <main><header><div><h1 id="title">Mis tareas</h1><p class="sub" id="subtitle">Tareas que tienes asignadas</p></div><div class="toolbar"><button id="invite">＋ Invitar</button></div></header><div id="status" class="status"></div>
 <section class="stats"><div class="card" id="cardPending"><strong id="nPending">0</strong>Pendientes</div><div class="card" id="cardMine"><strong id="nMine">0</strong>Asignadas a mí</div><div class="card" id="cardSoon"><strong id="nSoon">0</strong>Próximas 3 días</div><div class="card" id="cardDone"><strong id="nDone">0</strong>Completadas</div></section>
 <section class="panel"><div class="table" id="table"><div class="tr head"><span>Tarea</span><span>Lista</span><span>Responsables</span><span>Fecha</span><span>Prioridad</span><span>Acciones</span></div></div></section></main>
@@ -346,12 +351,13 @@ function linkOneSignal(u){
   });
 }
 function updateNotifyButton(){
-  const b=document.getElementById("notifyBtn");if(!b)return;
+  const b=document.getElementById("notifyBtn"),label=document.getElementById("notifyLabel");if(!b||!label)return;
   window.OneSignalDeferred.push(async function(OneSignal){
     const subscriptionId=OneSignal.User.PushSubscription.id;
     const active=OneSignal.Notifications.permission&&OneSignal.User.PushSubscription.optedIn&&!!subscriptionId;
-    b.textContent=active?"🔔 Notificaciones activadas":"🔔 Activar notificaciones";
-    b.title=active?"Suscripción OneSignal: "+subscriptionId:"Este dispositivo aún no tiene una suscripción push válida";
+    label.textContent=active?"Notificaciones activas":"Activar notificaciones";
+    b.classList.toggle("notifyActive",active);b.classList.toggle("notifyInactive",!active);
+    b.title=active?"Suscripción OneSignal activa":"Activar las notificaciones en este dispositivo";
   });
 }
 document.addEventListener("click",e=>{
@@ -372,5 +378,9 @@ document.addEventListener("click",e=>{
   });
 });
 
-const mm=document.getElementById("mobileMenuBtn"),sb=document.getElementById("sideBackdrop");function mobileMenu(v){document.body.classList.toggle("mobileMenuOpen",v)}mm?.addEventListener("click",()=>mobileMenu(!document.body.classList.contains("mobileMenuOpen")));sb?.addEventListener("click",()=>mobileMenu(false));document.querySelector(".side")?.addEventListener("click",e=>{if(innerWidth<=700&&(e.target.closest("a")||e.target.closest("button")))mobileMenu(false)});addEventListener("resize",()=>{if(innerWidth>700)mobileMenu(false)});</script><button id="notifyBtn" type="button" style="position:fixed;right:18px;bottom:18px;z-index:40;border:0;border-radius:999px;padding:12px 16px;background:#1769ed;color:white;font-weight:700;box-shadow:0 8px 25px #0002">🔔 Activar notificaciones</button>
+const userMenuBtn=document.getElementById("userMenuBtn"),userDropdown=document.getElementById("userDropdown");
+function setUserMenu(open){if(!userDropdown||!userMenuBtn)return;userDropdown.classList.toggle("open",open);userMenuBtn.setAttribute("aria-expanded",open?"true":"false")}
+userMenuBtn?.addEventListener("click",e=>{e.stopPropagation();setUserMenu(!userDropdown.classList.contains("open"))});
+document.addEventListener("click",e=>{if(userDropdown?.classList.contains("open")&&!e.target.closest(".userMenuWrap"))setUserMenu(false)});
+const mm=document.getElementById("mobileMenuBtn"),sb=document.getElementById("sideBackdrop");function mobileMenu(v){document.body.classList.toggle("mobileMenuOpen",v)}mm?.addEventListener("click",()=>mobileMenu(!document.body.classList.contains("mobileMenuOpen")));sb?.addEventListener("click",()=>mobileMenu(false));document.querySelector(".side")?.addEventListener("click",e=>{if(innerWidth<=700&&(e.target.closest("a")||e.target.closest("button")))mobileMenu(false)});addEventListener("resize",()=>{if(innerWidth>700)mobileMenu(false)});</script>
 <button id="newTask" class="newTaskFab" type="button" aria-label="Nueva tarea" title="Nueva tarea">+</button></body></html>
