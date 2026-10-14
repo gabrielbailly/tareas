@@ -143,7 +143,7 @@ body:has(#modal[style*="display: grid"]) .newTaskFab,body:has(#editModal[style*=
 </head><body><div class="mobileTop"><button id="mobileMenuBtn" type="button" aria-label="Abrir menú">☰</button><b><span>✓</span> TareasPlus</b><i>🔔</i></div><div id="sideBackdrop"></div>
 <div id="auth" class="auth"><div class="box"><h1>TareasPlus</h1><p class="sub">Organiza. Colabora. Cumple.</p><button id="login">Continuar con Google</button><div id="authErr" class="status error"></div></div></div>
 <div id="shell" class="app" style="display:none">
-<aside class="side"><div class="brand"><b>✓</b>TareasPlus<small>Organiza. Colabora. Cumple.</small></div><div class="nav"><a id="navMine" class="active">✓ Mis tareas</a><a id="navAll">☷ Todas</a><a id="navDone">✓ Completadas</a></div><h4>MIS LISTAS</h4><div id="projects" class="projects"></div><div id="newList" class="project newlist">＋ Nueva lista</div><div class="user"><div class="userMenuWrap"><button id="userMenuBtn" class="userTrigger" type="button" aria-expanded="false"><span id="who" class="userTriggerName"></span><span class="userChevron">▲</span></button><div id="userDropdown" class="userDropdown"><button id="notifyBtn" type="button" class="notifyInactive">🔔 <span id="notifyLabel">Activar notificaciones</span></button><button id="logout" type="button" class="logoutMenu">↪ <span>Cerrar sesión</span></button></div></div></div></aside>
+<aside class="side"><div class="brand"><b>✓</b>TareasPlus<small>Organiza. Colabora. Cumple.</small></div><div class="nav"><a id="navMine" class="active">✓ Mis tareas</a><a id="navAll">☷ Todas</a><a id="navDone">✓ Completadas</a></div><h4>MIS LISTAS</h4><div id="projects" class="projects"></div><div id="newList" class="project newlist">＋ Nueva lista</div><div class="user"><div class="userMenuWrap"><button id="userMenuBtn" class="userTrigger" type="button" aria-expanded="false"><span id="who" class="userTriggerName"></span><span class="userChevron">▲</span></button><div id="userDropdown" class="userDropdown"><button id="notifyBtn" type="button" class="notifyInactive">🔔 <span id="notifyLabel">Activar notificaciones</span></button><button id="voiceShortcutsBtn" type="button">🎙 <span>Instalar atajos de voz</span></button><button id="logout" type="button" class="logoutMenu">↪ <span>Cerrar sesión</span></button></div></div></div></aside>
 <main><header><div><h1 id="title">Mis tareas</h1><p class="sub" id="subtitle">Tareas que tienes asignadas</p></div><div class="toolbar"><button id="importCouncilTasks" class="ghost" type="button">⇩ Importar tareas de Consejo</button><button id="importCsv" class="ghost" style="display:none">⇩ Importar CSV</button><button id="invite">＋ Invitar</button></div></header><div id="status" class="status"></div>
 <div class="taskSearchWrap" id="taskSearchWrap"><span class="taskSearchIcon">⌕</span><input id="taskSearch" class="taskSearch" type="search" placeholder="Buscar tareas completadas y pendientes…" autocomplete="off" aria-label="Buscar tareas"><button id="taskSearchClear" class="taskSearchClear" type="button" aria-label="Borrar búsqueda">×</button></div><div id="searchInfo" class="searchInfo"></div>
 <section class="stats"><div class="card" id="cardPending"><strong id="nPending">0</strong>Pendientes</div><div class="card" id="cardMine"><strong id="nMine">0</strong>Asignadas a mí</div><div class="card" id="cardSoon"><strong id="nSoon">0</strong>🚩 Hoy</div><div class="card" id="cardDone"><strong id="nDone">0</strong>Completadas</div></section>
@@ -158,6 +158,8 @@ body:has(#modal[style*="display: grid"]) .newTaskFab,body:has(#editModal[style*=
 <div id="instantiateTemplateModal" class="overlay" style="display:none"><form id="instantiateTemplateForm" class="modal"><h2>Crear lista desde plantilla</h2><p class="sub">Se copiarán todas las tareas de <b id="templateSourceName"></b>, conservando su agrupación por meses.</p><input type="hidden" name="templateId"><label>Nombre de la nueva lista<input name="name" required></label><label>Año<input name="year" type="number" min="2020" max="2100" required></label><div id="instantiateStatus" class="status"></div><div class="actions"><button type="button" class="ghost closeTemplateInstantiate">Cancelar</button><button id="instantiateSubmit">Crear lista</button></div></form></div>
 <div id="inviteModal" class="overlay" style="display:none"><form id="inviteForm" class="modal"><h2>Invitar a la lista</h2><p class="sub">La invitación quedará asociada al correo indicado.</p><label>Correo electrónico<input name="email" type="email" required></label><div class="actions"><button type="button" class="ghost close">Cancelar</button><button>Invitar</button></div></form></div>
 
+
+<div id="voiceShortcutsModal" class="overlay" style="display:none"><div class="modal"><h2>Atajos de voz</h2><p class="sub" id="voiceDeviceHelp">Instala accesos rápidos para crear tareas por voz.</p><div id="iosShortcutPanel"><h3>iPhone / iPad</h3><p class="sub">Instala los atajos compartidos de Apple Atajos. Después podrás usarlos con Siri.</p><div style="display:grid;gap:8px"><button type="button" class="ghost shortcutInstall" data-shortcut="quick">🎙 Tarea rápida</button><button type="button" class="ghost shortcutInstall" data-shortcut="today">🚩 Tarea para hoy</button><button type="button" class="ghost shortcutInstall" data-shortcut="new">＋ Nueva tarea</button></div><div id="shortcutLinkStatus" class="status"></div></div><div id="androidShortcutPanel" style="margin-top:18px"><h3>Android</h3><p class="sub">Accesos de voz integrados en TareasPlus. Puedes usarlos desde Chrome o desde la app instalada en la pantalla de inicio.</p><div style="display:grid;gap:8px"><button type="button" class="ghost androidVoiceAction" data-mode="quick">🎙 Tarea rápida</button><button type="button" class="ghost androidVoiceAction" data-mode="today">🚩 Tarea para hoy</button><button type="button" class="ghost androidVoiceAction" data-mode="new">＋ Nueva tarea</button></div><p class="sub" style="margin-top:10px">Para tener TareasPlus como app: en Chrome abre ⋮ → <b>Añadir a pantalla de inicio</b> o <b>Instalar aplicación</b>.</p><div id="androidVoiceStatus" class="status"></div></div><div class="actions"><button type="button" class="ghost" id="closeVoiceShortcuts">Cerrar</button></div></div></div>
 <div id="editModal" class="overlay" style="display:none"><form id="editForm" class="modal"><h2>Editar tarea</h2>
 <input type="hidden" name="id"><label>Título<input name="title" required></label><label>Descripción<textarea name="description"></textarea></label>
 <label>Lista<select name="project" id="editTaskProject" required></select></label><label>Responsables<div id="editAssignees" class="checks chips"></div></label>
@@ -537,6 +539,70 @@ document.addEventListener("click",e=>{
     }catch(err){console.error(err);alert("No se han podido activar las notificaciones.")}
   });
 });
+
+
+// Enlaces compartidos de Apple Atajos. Pega aquí las URL de iCloud cuando las compartas desde el iPhone.
+const VOICE_SHORTCUT_LINKS={quick:"https://www.icloud.com/shortcuts/7ffb85fa54744e4eb6c284d71b30af1c",today:"https://www.icloud.com/shortcuts/ab2de3ed03994d4c86383d36cdfe77ba",new:"https://www.icloud.com/shortcuts/7452baef85ca4155aae3b5500dc29b29"};
+const voiceShortcutsModal=document.getElementById("voiceShortcutsModal");
+const voiceShortcutsBtn=document.getElementById("voiceShortcutsBtn");
+const closeVoiceShortcuts=document.getElementById("closeVoiceShortcuts");
+function openVoiceShortcuts(){
+  setUserMenu(false);
+  voiceShortcutsModal.style.display="flex";
+  const ua=navigator.userAgent||"";
+  const apple=/iPhone|iPad|iPod|Macintosh/.test(ua);
+  const android=/Android/i.test(ua);
+  document.getElementById("voiceDeviceHelp").textContent=android?"En Android puedes instalar TareasPlus como app. Los atajos de Siri son exclusivos de Apple.":apple?"Pulsa un atajo para instalarlo en Apple Atajos y usarlo después con Siri.":"Elige el sistema en el que quieres configurar los accesos de voz.";
+}
+voiceShortcutsBtn?.addEventListener("click",openVoiceShortcuts);
+closeVoiceShortcuts?.addEventListener("click",()=>voiceShortcutsModal.style.display="none");
+voiceShortcutsModal?.addEventListener("click",e=>{if(e.target===voiceShortcutsModal)voiceShortcutsModal.style.display="none"});
+document.querySelectorAll(".shortcutInstall").forEach(b=>b.addEventListener("click",()=>{
+  const url=VOICE_SHORTCUT_LINKS[b.dataset.shortcut];
+  const st=document.getElementById("shortcutLinkStatus");
+  if(!url){st.className="status error";st.textContent="Falta añadir el enlace compartido de este atajo. Compártelo desde la app Atajos del iPhone y pega su URL de iCloud en VOICE_SHORTCUT_LINKS dentro de index.html.";return}
+  location.href=url;
+}));
+
+// Accesos de voz para Android. Usa Web Speech cuando Chrome lo ofrece y abre el formulario normal de TareasPlus.
+function androidDictateTitle(){
+  return new Promise((resolve,reject)=>{
+    const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+    if(!SR){
+      const typed=prompt("Dime el título de la tarea");
+      if(typed&&typed.trim()) resolve(typed.trim()); else reject(new Error("No se ha indicado un título."));
+      return;
+    }
+    const r=new SR();
+    r.lang="es-ES";r.interimResults=false;r.maxAlternatives=1;
+    r.onresult=e=>resolve((e.results?.[0]?.[0]?.transcript||"").trim());
+    r.onerror=e=>reject(new Error(e.error==="not-allowed"?"Activa el permiso de micrófono para TareasPlus.":"No se pudo reconocer la voz."));
+    r.onnomatch=()=>reject(new Error("No he entendido el título."));
+    r.start();
+  });
+}
+function prepareAndroidTask(title,mode){
+  if(!projects.length){alert("Crea primero una lista.");return}
+  const fallback=selectedProject||orderedProjects().find(p=>p.type!=="template")?.id||projects[0].id;
+  const preferred=projects.some(p=>p.id===defaultProjectId&&p.type!=="template")?defaultProjectId:fallback;
+  $("taskProject").value=preferred;
+  $("newTaskToday").checked=mode==="today";
+  fillAssignees();syncTaskTiming("new",1);loadChecklist("newChecklist",[]);
+  const f=$("form");f.elements.title.value=title||"";
+  $("modal").style.display="grid";$("taskProject").dispatchEvent(new Event("refresh-color"));
+  setTimeout(()=>{(mode==="new"?$("taskProject"):f.elements.title)?.focus?.()},80);
+}
+document.querySelectorAll(".androidVoiceAction").forEach(b=>b.addEventListener("click",async()=>{
+  const st=document.getElementById("androidVoiceStatus");
+  try{
+    st.className="status";st.textContent="Escuchando…";
+    const title=await androidDictateTitle();
+    if(!title)throw new Error("No se ha indicado un título.");
+    voiceShortcutsModal.style.display="none";
+    prepareAndroidTask(title,b.dataset.mode);
+    st.textContent="";
+  }catch(err){st.className="status error";st.textContent=err.message||"No se pudo iniciar el dictado."}
+}));
 
 const userMenuBtn=document.getElementById("userMenuBtn"),userDropdown=document.getElementById("userDropdown");
 function setUserMenu(open){if(!userDropdown||!userMenuBtn)return;userDropdown.classList.toggle("open",open);userMenuBtn.setAttribute("aria-expanded",open?"true":"false")}
