@@ -544,7 +544,7 @@ document.addEventListener("click",e=>{
 
 // Enlaces de los NUEVOS atajos con vinculación automática.
 // Déjalos vacíos hasta publicar las nuevas versiones en iCloud; así nadie instala por error los atajos antiguos ligados a una sola cuenta.
-const VOICE_SHORTCUT_LINKS={quick:"",today:"",new:""};
+const VOICE_SHORTCUT_LINKS={quick:"https://www.icloud.com/shortcuts/ea68e2ed133840fa981bf2e8be4c5647",today:"https://www.icloud.com/shortcuts/c053a6abe4a841a190095353c5bb1e6d",new:"https://www.icloud.com/shortcuts/04e42c699d244151963bdc95d14e0922"};
 const VOICE_WORKER_URL="https://tareas-voice.gbailly.workers.dev";
 
 async function approvePendingVoiceLink(u){
@@ -657,6 +657,30 @@ document.querySelectorAll(".androidVoiceAction").forEach(b=>b.addEventListener("
     st.textContent="";
   }catch(err){st.className="status error";st.textContent=err.message||"No se pudo iniciar el dictado."}
 }));
+
+// Accesos directos de la PWA en Android (pulsacion larga sobre el icono).
+// El manifest abre la app con ?androidVoice=quick|today|new.
+let pendingAndroidVoiceMode=(new URLSearchParams(location.search).get("androidVoice")||"").trim();
+async function runPendingAndroidVoice(){
+  if(!pendingAndroidVoiceMode||!user||!projects.length)return;
+  const mode=["quick","today","new"].includes(pendingAndroidVoiceMode)?pendingAndroidVoiceMode:"";
+  pendingAndroidVoiceMode="";
+  if(!mode)return;
+  const clean=new URL(location.href);clean.searchParams.delete("androidVoice");history.replaceState({},"",clean);
+  try{
+    const title=await androidDictateTitle();
+    if(!title)throw new Error("No se ha indicado un titulo.");
+    prepareAndroidTask(title,mode);
+  }catch(err){
+    console.error("Acceso de voz Android",err);
+    alert(err.message||"No se pudo iniciar el dictado.");
+  }
+}
+const androidVoiceTimer=setInterval(()=>{
+  if(!pendingAndroidVoiceMode){clearInterval(androidVoiceTimer);return}
+  runPendingAndroidVoice();
+},700);
+setTimeout(runPendingAndroidVoice,400);
 
 const userMenuBtn=document.getElementById("userMenuBtn"),userDropdown=document.getElementById("userDropdown");
 function setUserMenu(open){if(!userDropdown||!userMenuBtn)return;userDropdown.classList.toggle("open",open);userMenuBtn.setAttribute("aria-expanded",open?"true":"false")}

@@ -2,23 +2,14 @@
   "name": "TareasPlus",
   "short_name": "TareasPlus",
   "description": "Gestor colaborativo de tareas",
-  "start_url": "/tareas/",
-  "scope": "/tareas/",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#f5f8fc",
-  "theme_color": "#102f50",
-  "icons": [
-    {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
+  "background_color": "#ffffff",
+  "theme_color": "#1769ed",
+  "shortcuts": [
+    {"name":"Tarea rápida","short_name":"Tarea rápida","description":"Crear una tarea por voz","url":"./?androidVoice=quick"},
+    {"name":"Tarea para hoy","short_name":"Para hoy","description":"Crear una tarea para hoy por voz","url":"./?androidVoice=today"},
+    {"name":"Nueva tarea","short_name":"Nueva tarea","description":"Crear una tarea por voz eligiendo lista y opciones","url":"./?androidVoice=new"}
   ]
 }
