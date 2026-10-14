@@ -159,7 +159,8 @@ body:has(#modal[style*="display: grid"]) .newTaskFab,body:has(#editModal[style*=
 <div id="inviteModal" class="overlay" style="display:none"><form id="inviteForm" class="modal"><h2>Invitar a la lista</h2><p class="sub">La invitación quedará asociada al correo indicado.</p><label>Correo electrónico<input name="email" type="email" required></label><div class="actions"><button type="button" class="ghost close">Cancelar</button><button>Invitar</button></div></form></div>
 
 
-<div id="voiceShortcutsModal" class="overlay" style="display:none"><div class="modal"><h2>Atajos de voz</h2><p class="sub" id="voiceDeviceHelp">Instala accesos rápidos para crear tareas por voz.</p><div id="iosShortcutPanel"><h3>iPhone / iPad</h3><p class="sub">Instala los atajos compartidos de Apple Atajos. Después podrás usarlos con Siri.</p><div style="display:grid;gap:8px"><button type="button" class="ghost shortcutInstall" data-shortcut="quick">🎙 Tarea rápida</button><button type="button" class="ghost shortcutInstall" data-shortcut="today">🚩 Tarea para hoy</button><button type="button" class="ghost shortcutInstall" data-shortcut="new">＋ Nueva tarea</button></div><div id="shortcutLinkStatus" class="status"></div></div><div id="androidShortcutPanel" style="margin-top:18px"><h3>Android</h3><p class="sub">Accesos de voz integrados en TareasPlus. Puedes usarlos desde Chrome o desde la app instalada en la pantalla de inicio.</p><div style="display:grid;gap:8px"><button type="button" class="ghost androidVoiceAction" data-mode="quick">🎙 Tarea rápida</button><button type="button" class="ghost androidVoiceAction" data-mode="today">🚩 Tarea para hoy</button><button type="button" class="ghost androidVoiceAction" data-mode="new">＋ Nueva tarea</button></div><p class="sub" style="margin-top:10px">Para tener TareasPlus como app: en Chrome abre ⋮ → <b>Añadir a pantalla de inicio</b> o <b>Instalar aplicación</b>.</p><div id="androidVoiceStatus" class="status"></div></div><div class="actions"><button type="button" class="ghost" id="closeVoiceShortcuts">Cerrar</button></div></div></div>
+<div id="voiceLinkModal" class="overlay" style="display:none;z-index:9999"><div class="modal" style="max-width:440px"><h2>🎙 Vincular atajos de voz</h2><p class="sub">Este atajo quiere vincularse con tu cuenta de TareasPlus.</p><div id="voiceLinkAccount" style="margin:14px 0;padding:12px;border-radius:12px;background:rgba(127,127,127,.10)"></div><div id="voiceLinkStatus" class="status"></div><div class="actions"><button type="button" class="ghost" id="cancelVoiceLink">Cancelar</button><button type="button" id="approveVoiceLink">Vincular con mi cuenta</button></div></div></div>
+<div id="voiceShortcutsModal" class="overlay" style="display:none"><div class="modal"><h2>Atajos de voz</h2><p class="sub" id="voiceDeviceHelp">Instala accesos rápidos para crear tareas por voz.</p><div id="iosShortcutPanel"><h3>iPhone / iPad</h3><p class="sub">Los nuevos atajos se vinculan solos con la cuenta de TareasPlus la primera vez que se ejecutan. No tendrás que copiar claves ni identificar tu usuario.</p><div style="display:grid;gap:8px"><button type="button" class="ghost shortcutInstall" data-shortcut="quick">🎙 Tarea rápida</button><button type="button" class="ghost shortcutInstall" data-shortcut="today">🚩 Tarea para hoy</button><button type="button" class="ghost shortcutInstall" data-shortcut="new">＋ Nueva tarea</button></div><div id="shortcutLinkStatus" class="status"></div></div><div id="androidShortcutPanel" style="margin-top:18px"><h3>Android</h3><p class="sub">Accesos de voz integrados en TareasPlus. Puedes usarlos desde Chrome o desde la app instalada en la pantalla de inicio.</p><div style="display:grid;gap:8px"><button type="button" class="ghost androidVoiceAction" data-mode="quick">🎙 Tarea rápida</button><button type="button" class="ghost androidVoiceAction" data-mode="today">🚩 Tarea para hoy</button><button type="button" class="ghost androidVoiceAction" data-mode="new">＋ Nueva tarea</button></div><p class="sub" style="margin-top:10px">Para tener TareasPlus como app: en Chrome abre ⋮ → <b>Añadir a pantalla de inicio</b> o <b>Instalar aplicación</b>.</p><div id="androidVoiceStatus" class="status"></div></div><div class="actions"><button type="button" class="ghost" id="closeVoiceShortcuts">Cerrar</button></div></div></div>
 <div id="editModal" class="overlay" style="display:none"><form id="editForm" class="modal"><h2>Editar tarea</h2>
 <input type="hidden" name="id"><label>Título<input name="title" required></label><label>Descripción<textarea name="description"></textarea></label>
 <label>Lista<select name="project" id="editTaskProject" required></select></label><label>Responsables<div id="editAssignees" class="checks chips"></div></label>
@@ -484,7 +485,7 @@ document.addEventListener("pointerup",async e=>{if(!touchTaskDragId||e.pointerId
 document.addEventListener("pointercancel",e=>{if(e.pointerId!==touchTaskPointerId)return;touchTaskDragId=null;touchTaskPointerId=null;taskDragPointerId=null;taskDragStarted=false;activeTaskDragId=null;document.querySelectorAll(".taskDropTarget,.monthDropTarget,#projects .dragover,.taskCompact.dragging").forEach(x=>x.classList.remove("taskDropTarget","monthDropTarget","dragover","dragging"))});
 $("importCouncilTasks").onclick=()=>{if(!projects.length)return alert("Necesitas tener al menos una lista de destino en TareasPlus.");let select=$("councilImportProject"),ordered=orderedProjects();select.innerHTML=ordered.map(p=>`<option value="${esc(p.id)}">${esc(p.name)}</option>`).join("");let current=currentP();select.value=current?.id||ordered[0].id;$("councilImportStatus").textContent="Consejo de Dirección solo enviará las tareas pendientes asignadas a tu cuenta.";$("councilImportSubmit").disabled=false;$("councilImportSubmit").type="submit";$("councilImportSubmit").onclick=null;$("councilImportSubmit").textContent="Importar tareas";$("councilImportModal").style.display="grid"};
 $("councilImportForm").onsubmit=async e=>{e.preventDefault();if(!user)return;let submit=$("councilImportSubmit"),status=$("councilImportStatus"),project=projects.find(p=>p.id===$("councilImportProject").value);if(!project)return;submit.disabled=true;status.textContent="Conectando de forma segura con Consejo…";try{let token=await user.getIdToken(),response=await fetch("https://consejo.gecoas.es/api/integrations/tareas/pending",{headers:{Authorization:`Bearer ${token}`},cache:"no-store"}),payload=await response.json().catch(()=>({}));if(!response.ok)throw new Error(payload.error||`Consejo respondió ${response.status}`);if(String(payload.user?.email||"").toLowerCase()!==String(user.email||"").toLowerCase())throw new Error("La cuenta autenticada en Consejo no coincide con TareasPlus.");let pending=Array.isArray(payload.tasks)?payload.tasks:[],existing=new Set(tasks.map(t=>t.sourceCouncil?.id).filter(Boolean)),fresh=pending.filter(t=>t.id&&!existing.has(t.id));if(!fresh.length){status.textContent=pending.length?"Todas tus tareas pendientes de Consejo ya estaban importadas.":"No tienes tareas pendientes asignadas en Consejo.";submit.disabled=false;submit.type="button";submit.textContent="Hecho";submit.onclick=closeAll;return}let imported=0;for(const task of fresh){await addDoc(collection(db,"tasks"),{projectId:project.id,createdBy:user.uid,title:task.task||"Tarea de Consejo",description:task.description||"",assigneeIds:[user.uid],date:task.dueDate||"",priority:"Normal",checklist:[],completed:false,sourceCouncil:{id:task.id,taskId:task.taskId,dashboardId:task.dashboard?.id||"",dashboardName:task.dashboard?.name||"Consejo",issueId:task.issue?.id||"",issueTitle:task.issue?.title||"",status:task.status||"nuevo",url:task.url||""},createdAt:serverTimestamp(),updatedAt:serverTimestamp()});imported++;status.textContent=`Importando ${imported} de ${fresh.length}…`}status.textContent=`✓ ${imported} tarea${imported===1?"":"s"} importada${imported===1?"":"s"} a «${project.name}».`;submit.disabled=false;submit.type="button";submit.textContent="Hecho";submit.onclick=closeAll}catch(error){console.error("Error al importar tareas de Consejo",error);status.textContent=error.message||"No se pudieron importar las tareas.";submit.disabled=false}};
-onAuthStateChanged(auth,async u=>{user=u;unsubs.forEach(f=>f());unsubs=[];if(!u){$("auth").style.display="grid";$("shell").style.display="none";return}$("auth").style.display="none";$("shell").style.display="grid";$("who").textContent=u.displayName||u.email;linkOneSignal(u);try{await acceptInvites()}catch(e){console.error(e);$("status").textContent="Error al aceptar invitaciones: "+e.message}subscribe()});
+onAuthStateChanged(auth,async u=>{user=u;unsubs.forEach(f=>f());unsubs=[];if(!u){$("auth").style.display="grid";$("shell").style.display="none";return}$("auth").style.display="none";$("shell").style.display="grid";$("who").textContent=u.displayName||u.email;linkOneSignal(u);try{await acceptInvites()}catch(e){console.error(e);$("status").textContent="Error al aceptar invitaciones: "+e.message}subscribe();try{await approvePendingVoiceLink(u)}catch(e){console.error("Vinculación de atajo",e)}});
 
 // OneSignal Web Push
 const ONESIGNAL_APP_ID="c83e67e2-505f-4970-8e3e-f1f352037ab3";
@@ -541,8 +542,61 @@ document.addEventListener("click",e=>{
 });
 
 
-// Enlaces compartidos de Apple Atajos. Pega aquí las URL de iCloud cuando las compartas desde el iPhone.
-const VOICE_SHORTCUT_LINKS={quick:"https://www.icloud.com/shortcuts/7ffb85fa54744e4eb6c284d71b30af1c",today:"https://www.icloud.com/shortcuts/ab2de3ed03994d4c86383d36cdfe77ba",new:"https://www.icloud.com/shortcuts/7452baef85ca4155aae3b5500dc29b29"};
+// Enlaces de los NUEVOS atajos con vinculación automática.
+// Déjalos vacíos hasta publicar las nuevas versiones en iCloud; así nadie instala por error los atajos antiguos ligados a una sola cuenta.
+const VOICE_SHORTCUT_LINKS={quick:"",today:"",new:""};
+const VOICE_WORKER_URL="https://tareas-voice.gbailly.workers.dev";
+
+async function approvePendingVoiceLink(u){
+  const params=new URLSearchParams(location.search);
+  const code=(params.get("voiceLink")||"").trim().toUpperCase();
+  if(!code)return;
+
+  const modal=$("voiceLinkModal");
+  const account=$("voiceLinkAccount");
+  const status=$("voiceLinkStatus");
+  const approve=$("approveVoiceLink");
+  const cancel=$("cancelVoiceLink");
+  const cleanUrl=new URL(location.href);
+  cleanUrl.searchParams.delete("voiceLink");
+
+  account.innerHTML=`<b>${esc(u.displayName||"Usuario")}</b><br><span class="sub">${esc(u.email||"")}</span>`;
+  status.textContent=`Código de vinculación: ${code}`;
+  modal.style.display="flex";
+
+  cancel.onclick=()=>{
+    modal.style.display="none";
+    history.replaceState({},"",cleanUrl);
+    $("status").textContent="Vinculación cancelada.";
+  };
+
+  approve.onclick=async()=>{
+    approve.disabled=true;
+    cancel.disabled=true;
+    status.textContent="Vinculando con tu cuenta…";
+    try{
+      const idToken=await u.getIdToken(true);
+      const r=await fetch(VOICE_WORKER_URL+"/link/approve",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({code,idToken})
+      });
+      const d=await r.json().catch(()=>({}));
+      if(!r.ok||!d.ok)throw new Error(d.error||`Error ${r.status}`);
+      status.textContent="✓ Vinculado correctamente. Ya puedes volver a Atajos.";
+      $("status").textContent="✓ Atajos de voz vinculados con tu cuenta.";
+      history.replaceState({},"",cleanUrl);
+      approve.textContent="Vinculado ✓";
+      setTimeout(()=>{modal.style.display="none"},1800);
+    }catch(e){
+      console.error("Vinculación de atajo",e);
+      status.textContent="No se pudo vincular: "+(e.message||e);
+      approve.disabled=false;
+      cancel.disabled=false;
+    }
+  };
+}
+
 const voiceShortcutsModal=document.getElementById("voiceShortcutsModal");
 const voiceShortcutsBtn=document.getElementById("voiceShortcutsBtn");
 const closeVoiceShortcuts=document.getElementById("closeVoiceShortcuts");
@@ -560,7 +614,7 @@ voiceShortcutsModal?.addEventListener("click",e=>{if(e.target===voiceShortcutsMo
 document.querySelectorAll(".shortcutInstall").forEach(b=>b.addEventListener("click",()=>{
   const url=VOICE_SHORTCUT_LINKS[b.dataset.shortcut];
   const st=document.getElementById("shortcutLinkStatus");
-  if(!url){st.className="status error";st.textContent="Falta añadir el enlace compartido de este atajo. Compártelo desde la app Atajos del iPhone y pega su URL de iCloud en VOICE_SHORTCUT_LINKS dentro de index.html.";return}
+  if(!url){st.className="status error";st.textContent="Este atajo todavía no está publicado en su nueva versión con vinculación automática.";return}
   location.href=url;
 }));
 
