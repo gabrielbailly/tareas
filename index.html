@@ -89,6 +89,13 @@ header{display:block!important}header h1{font-size:28px!important;line-height:1.
 .editListMembers{display:grid;gap:8px;margin-top:7px}.editmember{display:flex;align-items:center;gap:10px;padding:10px 11px;border:1px solid #e2e8f0;border-radius:11px;background:#f8fafc}.editmemberinfo{display:flex;flex-direction:column;min-width:0;flex:1}.editmemberinfo b,.editmemberinfo small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.editmemberinfo small{color:#64748b;margin-top:2px}.ownerbadge{font-size:12px;font-weight:700;color:#64748b;background:#e2e8f0;padding:5px 8px;border-radius:999px}.removeMember{border:0;background:#fee2e2;color:#b91c1c;font-weight:700;border-radius:8px;padding:7px 9px;cursor:pointer}.removeMember:hover{background:#fecaca}@media(max-width:700px){.editmember{align-items:flex-start}.removeMember{flex:0 0 auto}}
 .templateBadge{font-size:10px;font-weight:800;background:#fff3cd;color:#8a6500;border-radius:999px;padding:3px 7px;margin-left:4px}.monthGroup{grid-column:1/-1!important;background:#edf4ff!important;color:#163b6d!important;border:0!important;border-radius:10px!important;padding:10px 12px!important;margin:14px 0 4px!important;font-weight:800!important;text-transform:uppercase!important;letter-spacing:.04em}.monthSelectWrap{display:none}.templateHelp{background:#fff8df;border:1px solid #f1dda0;border-radius:10px;padding:10px 12px;color:#6f5712;font-size:12px;margin:8px 0}.templateSource{font-size:12px;color:#68768b;margin-top:3px}
 
+/* Etiquetas de Big Numbers: compactas y siempre en una sola linea */
+.stats .card{white-space:nowrap;text-align:center;font-size:13px}
+@media(max-width:700px){
+  .stats .card{font-size:10px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:clip!important;padding-left:1px!important;padding-right:1px!important}
+}
+@media(max-width:380px){.stats .card{font-size:9px!important}}
+
 /* Ajuste final: 5 Big Numbers siempre en una sola fila en móvil */
 @media(max-width:700px){
   .stats{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:5px!important;width:100%!important}
