@@ -88,6 +88,19 @@ header{display:block!important}header h1{font-size:28px!important;line-height:1.
 
 .editListMembers{display:grid;gap:8px;margin-top:7px}.editmember{display:flex;align-items:center;gap:10px;padding:10px 11px;border:1px solid #e2e8f0;border-radius:11px;background:#f8fafc}.editmemberinfo{display:flex;flex-direction:column;min-width:0;flex:1}.editmemberinfo b,.editmemberinfo small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.editmemberinfo small{color:#64748b;margin-top:2px}.ownerbadge{font-size:12px;font-weight:700;color:#64748b;background:#e2e8f0;padding:5px 8px;border-radius:999px}.removeMember{border:0;background:#fee2e2;color:#b91c1c;font-weight:700;border-radius:8px;padding:7px 9px;cursor:pointer}.removeMember:hover{background:#fecaca}@media(max-width:700px){.editmember{align-items:flex-start}.removeMember{flex:0 0 auto}}
 .templateBadge{font-size:10px;font-weight:800;background:#fff3cd;color:#8a6500;border-radius:999px;padding:3px 7px;margin-left:4px}.monthGroup{grid-column:1/-1!important;background:#edf4ff!important;color:#163b6d!important;border:0!important;border-radius:10px!important;padding:10px 12px!important;margin:14px 0 4px!important;font-weight:800!important;text-transform:uppercase!important;letter-spacing:.04em}.monthSelectWrap{display:none}.templateHelp{background:#fff8df;border:1px solid #f1dda0;border-radius:10px;padding:10px 12px;color:#6f5712;font-size:12px;margin:8px 0}.templateSource{font-size:12px;color:#68768b;margin-top:3px}
+
+/* Ajuste final: 5 Big Numbers siempre en una sola fila en móvil */
+@media(max-width:700px){
+  .stats{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:5px!important;width:100%!important}
+  .stats .card,.stats .card:nth-child(4),.stats .card:nth-child(5){grid-column:auto!important;min-width:0!important;padding:9px 2px!important;text-align:center!important}
+  .stats .card strong{font-size:20px!important;line-height:1!important}
+  .stats .card small{font-size:8px!important}
+}
+@media(max-width:380px){
+  .stats{gap:3px!important}
+  .stats .card{padding:8px 1px!important;font-size:10px!important}
+  .stats .card strong{font-size:18px!important}
+}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -192,7 +205,7 @@ const $=id=>document.getElementById(id), esc=s=>String(s??"").replace(/[&<>"']/g
 function closeAll(){["modal","listModal","inviteModal","editModal","editListModal","commentsModal","importModal","councilImportModal","instantiateTemplateModal"].forEach(x=>$(x).style.display="none");if(commentsUnsub){commentsUnsub();commentsUnsub=null}commentsTaskId=null}document.querySelectorAll(".close").forEach(x=>x.onclick=closeAll);document.querySelectorAll(".closeEdit").forEach(x=>x.onclick=closeAll);document.querySelectorAll(".closeListEdit").forEach(x=>x.onclick=closeAll);document.querySelectorAll(".closeComments").forEach(x=>x.onclick=closeAll);document.querySelectorAll(".closeImport,.closeCouncilImport,.closeTemplateInstantiate").forEach(x=>x.onclick=closeAll);
 $("login").onclick=()=>signInWithPopup(auth,provider).catch(e=>$("authErr").textContent=e.message);$("logout").onclick=()=>signOut(auth);
 function pMembers(p){return p?.members||{}} function isMember(p){return !!pMembers(p)[user.uid]} function shortUserName(v){let s=String(v||"").trim();if(!s)return "";if(s.includes("@"))return s.split("@")[0];return s.split(/\s+/)[0]}
-const LIST_COLORS=["#2f80ed","#34c759","#ff9500","#ff3b30","#af52de","#5ac8fa","#ff2d55","#8e8e93","#0a84ff","#30d158","#ffd60a","#ff453a","#bf5af2","#64d2ff","#ff375f","#795548"];
+const LIST_COLORS=["#2563eb","#16a34a","#f59e0b","#dc2626","#7c3aed","#0891b2","#db2777","#64748b","#1e3a8a","#65a30d","#a16207","#7f1d1d","#581c87","#0f766e","#c2410c","#111827"];
 const MONTHS=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
 function monthOptions(selected=1){return MONTHS.map((m,i)=>`<option value="${i+1}" ${(i+1)==selected?"selected":""}>${m}</option>`).join("")}
 function isAnnualProject(p){return p?.type==="template"||!!p?.sourceTemplateId}
