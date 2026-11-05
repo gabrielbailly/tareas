@@ -1,0 +1,720 @@
+<!doctype html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#102844"><title>TareasPlus</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,Arial;background:#f5f8fc;color:#14233b}button,input,select,textarea{font:inherit}button{border:0;border-radius:8px;background:#1769ed;color:white;padding:10px 15px;font-weight:650;cursor:pointer}.ghost{background:#e9eef5;color:#24364d}.danger{background:#fff0f0;color:#b42318}.app{min-height:100vh;display:grid;grid-template-columns:235px 1fr 275px}.side{background:#102844;color:white;padding:22px 17px;position:relative}.brand{font-size:22px;font-weight:800;margin-bottom:28px}.brand b{background:#2874ef;border-radius:10px;padding:6px 11px;margin-right:8px}.brand small{display:block;margin:6px 0 0 45px;font-size:11px;font-weight:400}.nav a,.project{display:block;padding:10px;border-radius:8px;cursor:pointer;margin:3px 0}.nav .active,.project.active{background:#2465aa}.side h4{font-size:11px;color:#b9c7d7;margin:26px 8px 8px}.newlist{color:#b9d4ff}.user{position:absolute;bottom:20px;left:17px;right:17px;border-top:1px solid #29415d;padding-top:12px;font-size:12px}.user img{width:30px;height:30px;border-radius:50%;vertical-align:middle;margin-right:7px}.logout{background:transparent;padding:4px;color:#cbd7e5}main{padding:30px;min-width:0}header{display:flex;justify-content:space-between;gap:15px;align-items:center}.sub{color:#68768b;margin:5px 0}.toolbar{display:flex;gap:8px}.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:22px 0}.card,.panel,.box{background:white;border:1px solid #e2e8f0;border-radius:12px;box-shadow:0 3px 15px #15325a0a}.card{padding:16px}.card strong{display:block;font-size:24px;color:#1769ed}.card small{color:#778398}.panel{padding:17px}.table{overflow:auto}.tr{min-width:820px;display:grid;grid-template-columns:2fr 1.1fr 1.1fr .9fr .7fr;gap:8px;align-items:center;border-top:1px solid #edf1f5;padding:12px 7px;font-size:13px}.head{background:#f8fafc;font-weight:700}.pill{padding:5px 9px;border-radius:20px;display:inline-block}.tasktitle{cursor:pointer;font-weight:650}.tasktitle:hover{text-decoration:underline}.mini{padding:5px 8px;font-size:11px;margin-left:5px}.taskCompactActions .mini{height:28px;min-height:28px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;line-height:1}.copyBtn{background:#e3efff;color:#123b6d}.rowactions{white-space:nowrap}.alta{background:#ffe0df;color:#d92d20}.normal{background:#e3efff;color:#1769ed}.baja{background:#dcf8e2;color:#23823c}.priorityText{font-weight:700;background:none!important;padding:0!important;border-radius:0!important}.priorityText.alta{color:#d92d20}.priorityText.normal{color:#e67e00}.priorityText.baja{color:#111827}.priorityChoices{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}.priorityChoices label{margin:0;display:inline-block}.priorityChoices input{position:absolute;opacity:0;pointer-events:none}.priorityChoices span{display:inline-flex;align-items:center;justify-content:center;border:1px solid #cbd5e1;border-radius:999px;padding:7px 13px;background:#fff;color:#334155;cursor:pointer;font-weight:650;transition:.12s ease}.priorityChoices input:checked+span{border-width:2px;padding:6px 12px}.priorityChoices .priorityLow input:checked+span{border-color:#111827;color:#111827;background:#f3f4f6}.priorityChoices .priorityNormal input:checked+span{border-color:#e67e00;color:#b85f00;background:#fff4e5}.priorityChoices .priorityHigh input:checked+span{border-color:#d92d20;color:#b42318;background:#fff0f0}.right{background:#f8fbff;border-left:1px solid #e3e9f0;padding:92px 17px 20px}.right .box{padding:14px;margin-bottom:14px}.member{padding:7px 0;border-bottom:1px solid #edf1f5;font-size:13px}.member:last-child{border:0}.status{font-size:12px;color:#68768b;margin:10px 0}.error{color:#b42318}.overlay{position:fixed;inset:0;background:#10233b99;display:grid;place-items:center;z-index:20}.modal{background:white;width:min(540px,94vw);max-height:90vh;overflow:auto;padding:24px;border-radius:15px}.modal label{display:grid;gap:5px;margin:12px 0;font-size:13px;font-weight:650}.modal input,.modal select,.modal textarea{padding:10px;border:1px solid #d5dce5;border-radius:7px}.modal textarea{min-height:75px}.actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}.checks{border:1px solid #d5dce5;border-radius:8px;padding:8px;max-height:145px;overflow:auto}.checks label{display:flex;margin:4px;font-weight:400}.auth{min-height:100vh;display:grid;place-items:center}.auth .box{padding:35px;text-align:center;width:min(420px,92vw)}@media(max-width:1050px){.app{grid-template-columns:210px 1fr}.right{display:none}}@media(max-width:700px){.app{display:block}.side{position:static}.user{position:static;margin-top:20px}.nav{display:flex;overflow:auto}.side h4,.projects{display:none}main{padding:16px}.stats{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}.stats .card{padding:10px 4px;text-align:center;min-width:0}.stats .card strong{font-size:20px}.stats .card small{font-size:9px;line-height:1.1;display:block;overflow-wrap:anywhere}.toolbar{flex-wrap:wrap}.tr{min-width:720px}}
+
+.stats .card{cursor:pointer;transition:transform .12s ease,box-shadow .12s ease}.stats .card:hover{transform:translateY(-1px);box-shadow:0 5px 18px #15325a18}.taskmain{display:flex;gap:7px;align-items:flex-start}.tasktext{min-width:0}.taskdesc{display:block;color:#66758a;font-size:12px;line-height:1.35;margin-top:5px;white-space:normal}.checks.chips{display:flex;flex-wrap:wrap;gap:8px;border:0;padding:2px;max-height:none}.checks.chips label{margin:0}.checks.chips input{position:absolute;opacity:0;pointer-events:none}.checks.chips span{display:inline-block;border:1px solid #cbd5e1;border-radius:999px;padding:7px 11px;background:#fff;color:#334155;cursor:pointer}.checks.chips input:checked+span{background:#1769ed;color:#fff;border-color:#1769ed}
+@media(max-width:700px){.taskdesc{font-size:13px;margin:7px 0 2px}.stats .card{cursor:pointer}}
+
+.checklistEditor{border:1px solid #d5dce5;border-radius:9px;padding:9px;background:#f8fafc}.checklistRows{display:grid;gap:7px}.checkrow{display:grid;grid-template-columns:1fr auto;gap:7px}.checkrow textarea.checktext{min-width:0;width:100%;background:white;resize:none;overflow:hidden;line-height:1.35;min-height:40px;box-sizing:border-box;white-space:pre-wrap;overflow-wrap:anywhere}.checkremove{padding:7px 10px;background:#fff0f0;color:#b42318}.addcheck{margin-top:8px;background:#e9eef5;color:#24364d;width:100%}.taskcheck{margin-top:8px;padding-top:7px;border-top:1px dashed #dce3eb}.checksummary{font-size:11px;color:#607086;margin-bottom:5px}.checkprogress{height:5px;background:#e7edf4;border-radius:99px;overflow:hidden;margin-bottom:6px}.checkprogress b{display:block;height:100%;background:#1769ed;border-radius:99px}.checkitems{display:grid;gap:4px}.checkitem{display:flex;align-items:flex-start;gap:6px;font-size:12px;color:#44546a;cursor:pointer}.checkitem.done span{text-decoration:line-through;color:#8995a5}.checkitem input{margin-top:2px}.checkmore{font-size:11px;color:#6b7890;margin-left:22px}
+
+.selectedListTitle{display:inline-flex;align-items:center;gap:10px}.selectedListTitleDot{width:12px;height:12px;border-radius:50%;display:inline-block;flex:0 0 12px}.project{display:flex!important;align-items:center;gap:9px;position:relative;user-select:none}.project .listdot{width:10px;height:10px;border-radius:50%;flex:0 0 10px}.project .listname{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.project .listmenu{background:transparent;color:#c9d7e7;padding:2px 5px;font-size:18px;line-height:1}.project.dragging{opacity:.45}.project.dragover{outline:2px solid #70a7ff;outline-offset:-2px}.colorgrid{display:grid;grid-template-columns:repeat(8,30px);gap:10px;margin-top:7px;max-width:310px}.colorchoice{width:30px;height:30px;border-radius:50%;border:3px solid transparent;cursor:pointer}.colorchoice.selected{border-color:#102844;box-shadow:0 0 0 2px white inset}.listActions{position:fixed;z-index:120;background:white;color:#14233b;border:1px solid #dfe6ef;border-radius:10px;box-shadow:0 8px 30px #10233b33;padding:6px;min-width:170px}.listActions button{display:block;width:100%;text-align:left;background:transparent;color:#24364d;padding:9px 10px}.listActions button:hover{background:#f1f5fa}.listActions .del{color:#b42318}.dragHint{font-size:11px;color:#8fa2b8;margin:5px 8px 0}.projectSectionTitle{font-size:11px;color:#b9c7d7;margin:18px 8px 7px;font-weight:700;letter-spacing:.04em}.projectSectionTitle:first-child{margin-top:0}
+
+/* Subtareas reordenables: gesto exclusivo en el asa, sin arrastre nativo de Safari */
+.checkrow{grid-template-columns:26px minmax(0,1fr) auto;align-items:start;position:relative}
+.checkgrip{background:transparent;color:#60738d;padding:8px 2px;border-radius:5px;font-size:22px;line-height:1;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.checkgrip:active{cursor:grabbing}.checkrow.checkdragging{opacity:.48;background:#e3eeff;border-radius:8px}.checkrow.checkdrop{outline:2px solid #1769ed;outline-offset:2px;border-radius:7px}
+/* Selector de listas con puntos de color visibles también en Safari iOS */
+.coloredSelect{position:relative;width:100%}.coloredSelect>select{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important;overflow:hidden!important;padding:0!important}
+.coloredSelectTrigger{display:flex;align-items:center;gap:9px;width:100%;background:#fff;color:#14233b;border:1px solid #d5dce5;padding:10px;text-align:left;border-radius:7px;font-weight:400}
+.coloredSelectTrigger .coloredText{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.coloredDot{display:inline-block;width:11px;height:11px;flex:0 0 11px;border-radius:50%;background:#8392a6}
+.coloredSelectMenu{position:absolute;z-index:60;top:calc(100% + 3px);left:0;right:0;background:#fff;border:1px solid #cbd5e1;border-radius:9px;box-shadow:0 9px 24px #132a4940;max-height:240px;overflow-y:auto;padding:4px}
+.coloredSelectMenu button{display:flex;align-items:center;gap:9px;width:100%;padding:11px 9px;background:white;color:#17263a;font-weight:400;text-align:left}
+.coloredSelectMenu button:hover,.coloredSelectMenu button[aria-selected="true"]{background:#edf4ff}
+.repeatCustom{display:none;grid-template-columns:90px 1fr;gap:8px;margin-top:7px}.repeatCustom.show{display:grid}.repeatBadge{font-size:11px;color:#52647a;margin-top:5px}
+</style>
+<style>
+@media (max-width:700px){
+  body{background:#f5f8fc}
+  .app{display:block;min-height:100vh}
+  .side{padding:14px 12px 10px;position:static}
+  .brand{margin-bottom:12px;font-size:20px}
+  .brand small{display:none}
+  .nav{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+  .nav::-webkit-scrollbar{display:none}
+  .nav a{white-space:nowrap;padding:9px 11px;font-size:13px}
+  .side h4,.projects{display:none}
+  .user{position:static;margin-top:10px;padding-top:9px;display:flex;align-items:center;gap:5px}
+  main{padding:14px 12px 90px}
+  header{display:block}
+  header h1{font-size:23px;margin:0 0 4px}
+  .sub{font-size:13px}
+  .toolbar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+  .toolbar button{width:100%;padding:11px 8px}
+  .stats{gap:8px;margin:14px 0}
+  .card{padding:12px}
+  .card strong{font-size:22px}
+  .panel{padding:10px;border:0;background:transparent;box-shadow:none}
+  .table{overflow:visible}
+  .tr.head{display:none}
+  .tr{min-width:0;display:grid;grid-template-columns:1fr auto;gap:8px 10px;background:white;border:1px solid #e2e8f0;border-radius:12px;padding:13px;margin-bottom:10px;box-shadow:0 3px 12px #15325a0a}
+  .tr>span{min-width:0}
+  .tr>span:nth-child(1){grid-column:1/-1;font-size:15px}
+  .tr>span:nth-child(2){grid-column:1/2;color:#68768b}
+  .tr>span:nth-child(2)::before{content:"📋 "}
+  .tr>span:nth-child(3){grid-column:1/-1;color:#4d5d72}
+  .tr>span:nth-child(3)::before{content:"👤 "}
+  .tr>span:nth-child(4){grid-column:1/2;color:#4d5d72}
+  .tr>span:nth-child(4)::before{content:"📅 "}
+  .tr>span:nth-child(5){grid-column:2/3;grid-row:4}
+  .tr>span:nth-child(6){grid-column:1/-1;display:flex;justify-content:flex-end;border-top:1px solid #edf1f5;padding-top:9px}
+  .mini{padding:8px 10px}
+  .modal{width:calc(100vw - 20px);max-height:92vh;padding:18px;border-radius:14px}
+  .modal h2{font-size:20px;margin-top:0}
+  .modal input,.modal select,.modal textarea{font-size:16px}
+  .actions{position:sticky;bottom:-18px;background:white;padding:10px 0 0}
+  
+}
+</style>
+<style>
+.mobileTop,#sideBackdrop{display:none}
+@media(max-width:700px){
+html,body,.app{width:100%!important;max-width:100%!important;overflow-x:hidden}
+body{margin:0!important}.app{display:block!important;min-width:0!important}
+.mobileTop{display:flex;position:sticky;top:0;z-index:60;align-items:center;justify-content:space-between;background:#102f50;color:#fff;padding:calc(10px + env(safe-area-inset-top)) 14px 10px}
+.mobileTop button{border:0;background:none;color:#fff;font-size:28px;padding:4px 8px}.mobileTop b{font-size:20px}.mobileTop b span{background:#2878ed;border-radius:8px;padding:5px 9px;margin-right:5px}.mobileTop i{font-style:normal}
+.side{display:block!important;position:fixed!important;z-index:80!important;inset:0 auto 0 0!important;width:min(84vw,330px)!important;height:100dvh!important;padding:calc(18px + env(safe-area-inset-top)) 18px!important;box-sizing:border-box!important;overflow-y:auto!important;transform:translateX(-105%);transition:.22s;box-shadow:8px 0 28px #0003}
+body.mobileMenuOpen .side{transform:translateX(0)}
+#sideBackdrop{display:block;position:fixed;inset:0;z-index:70;background:#071a2d88;opacity:0;pointer-events:none;transition:.22s}body.mobileMenuOpen #sideBackdrop{opacity:1;pointer-events:auto}
+.side .brand{display:flex!important;font-size:23px!important;margin-bottom:20px!important}.side .brand small{display:none!important}.side .nav{display:grid!important;gap:6px!important;overflow:visible!important}.side .nav a{font-size:16px!important;padding:12px!important}.side h4,.side .projects{display:block!important}.side .user{display:grid!important;grid-template-columns:1fr auto!important;margin-top:24px!important}
+main{width:100%!important;min-width:0!important;padding:18px 14px calc(80px + env(safe-area-inset-bottom))!important;box-sizing:border-box!important}
+header{display:block!important}header h1{font-size:28px!important;line-height:1.08!important;margin:0 0 6px!important}.sub{font-size:15px!important}
+.toolbar{display:grid!important;grid-template-columns:1fr 1fr!important;gap:9px!important;margin-top:12px!important}.toolbar button{width:100%!important;min-width:0!important;min-height:48px!important;padding:9px!important;font-size:15px!important}
+.stats{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:9px!important;width:100%!important}.stats .card{grid-column:span 2}.stats .card:nth-child(4){grid-column:2 / span 2}.stats .card:nth-child(5){grid-column:4 / span 2}.card{min-width:0!important;padding:14px!important}.card strong{font-size:26px!important}
+.panel{width:100%!important;min-width:0!important;padding:0!important;background:transparent!important;box-shadow:none!important}.table{overflow:visible!important}.tr{width:100%!important;min-width:0!important;box-sizing:border-box!important}
+.modal{width:calc(100vw - 24px)!important;max-width:none!important;max-height:calc(100dvh - 28px)!important;overflow-y:auto!important;box-sizing:border-box!important}.modal input,.modal select,.modal textarea{font-size:16px!important;box-sizing:border-box!important}
+
+}
+@media(max-width:380px){.toolbar{grid-template-columns:1fr!important}.stats{gap:7px!important}header h1{font-size:25px!important}}
+
+.editListMembers{display:grid;gap:8px;margin-top:7px}.editmember{display:flex;align-items:center;gap:10px;padding:10px 11px;border:1px solid #e2e8f0;border-radius:11px;background:#f8fafc}.editmemberinfo{display:flex;flex-direction:column;min-width:0;flex:1}.editmemberinfo b,.editmemberinfo small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.editmemberinfo small{color:#64748b;margin-top:2px}.ownerbadge{font-size:12px;font-weight:700;color:#64748b;background:#e2e8f0;padding:5px 8px;border-radius:999px}.removeMember{border:0;background:#fee2e2;color:#b91c1c;font-weight:700;border-radius:8px;padding:7px 9px;cursor:pointer}.removeMember:hover{background:#fecaca}@media(max-width:700px){.editmember{align-items:flex-start}.removeMember{flex:0 0 auto}}
+.templateBadge{font-size:10px;font-weight:800;background:#fff3cd;color:#8a6500;border-radius:999px;padding:3px 7px;margin-left:4px}.monthGroup{grid-column:1/-1!important;background:#edf4ff!important;color:#163b6d!important;border:0!important;border-radius:10px!important;padding:10px 12px!important;margin:14px 0 4px!important;font-weight:800!important;text-transform:uppercase!important;letter-spacing:.04em}.monthSelectWrap{display:none}.templateHelp{background:#fff8df;border:1px solid #f1dda0;border-radius:10px;padding:10px 12px;color:#6f5712;font-size:12px;margin:8px 0}.templateSource{font-size:12px;color:#68768b;margin-top:3px}
+
+/* Etiquetas de Big Numbers: compactas y siempre en una sola linea */
+.stats .card{white-space:nowrap;text-align:center;font-size:13px}
+@media(max-width:700px){
+  .stats .card{font-size:10px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:clip!important;padding-left:1px!important;padding-right:1px!important}
+}
+@media(max-width:380px){.stats .card{font-size:9px!important}}
+
+/* Ajuste final: 5 Big Numbers siempre en una sola fila en móvil */
+@media(max-width:700px){
+  .stats{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:5px!important;width:100%!important}
+  .stats .card,.stats .card:nth-child(4),.stats .card:nth-child(5){grid-column:auto!important;min-width:0!important;padding:9px 2px!important;text-align:center!important}
+  .stats .card strong{font-size:20px!important;line-height:1!important}
+  .stats .card small{font-size:8px!important}
+}
+@media(max-width:380px){
+  .stats{gap:3px!important}
+  .stats .card{padding:8px 1px!important;font-size:10px!important}
+  .stats .card strong{font-size:18px!important}
+}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<meta name="theme-color" content="#102f50">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="TareasPlus">
+
+<style>
+.commentBtn{border:0;background:#eef5ff;color:#1769ed;border-radius:999px;padding:6px 10px;font-weight:700;font-size:12px;cursor:pointer;margin-top:7px;width:max-content}
+.commentsModal{width:min(620px,calc(100vw - 24px))}
+.commentsList{display:flex;flex-direction:column;gap:10px;max-height:48vh;overflow:auto;margin:10px 0 14px;padding-right:3px}
+.commentItem{background:#f6f8fb;border:1px solid #e6ebf2;border-radius:12px;padding:10px 12px}
+.commentMeta{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:#667085;margin-bottom:5px}
+.commentText{white-space:pre-wrap;overflow-wrap:anywhere}
+.commentActions{display:flex;gap:6px;justify-content:flex-end;margin-top:7px}
+.commentActions button{border:0;background:transparent;color:#1769ed;font-size:12px;cursor:pointer;padding:3px 5px}
+.commentActions button.dangerText{color:#c62828}
+.commentComposer{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}
+.commentComposer textarea{min-height:70px;resize:vertical}
+.commentEmpty{color:#667085;text-align:center;padding:18px 6px}
+@media(max-width:700px){.commentsModal{width:calc(100vw - 20px)!important}.commentsList{max-height:52vh}.commentComposer{grid-template-columns:1fr}.commentComposer button{width:100%}}
+</style>
+
+<style>
+.newTaskFab{position:fixed;right:24px;bottom:24px;z-index:45;width:58px;height:58px;border:0;border-radius:50%;padding:0;background:#1769ed;color:#fff;font-size:38px;font-weight:300;line-height:54px;text-align:center;cursor:pointer;box-shadow:0 8px 24px #0003;transition:transform .15s ease,box-shadow .15s ease}
+.newTaskFab:hover{transform:scale(1.05);box-shadow:0 10px 28px #0004}.newTaskFab:active{transform:scale(.96)}
+.todayFormOption{display:grid;gap:4px}.todayFormOption>span{display:flex;align-items:center;gap:6px;font-weight:600}.todayFormOption input{width:auto;margin:0}.todayFormOption small{font-weight:400;color:#667085}
+body:has(#modal[style*="display: grid"]) .newTaskFab,body:has(#editModal[style*="display: grid"]) .newTaskFab{display:none}
+@media(max-width:700px){.newTaskFab{right:18px;bottom:18px;width:58px;height:58px;font-size:38px;line-height:54px}.app main{padding-bottom:92px!important}}
+</style>
+
+<style>
+.userMenuWrap{position:relative}.userTrigger{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;background:transparent;color:#fff;padding:8px 6px;border-radius:9px;text-align:left}.userTrigger:hover{background:#ffffff12}.userTriggerName{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:650}.userChevron{font-size:11px;color:#b9c7d7}.userDropdown{display:none;position:absolute;left:0;bottom:calc(100% + 8px);min-width:220px;width:100%;background:#fff;color:#14233b;border:1px solid #dfe6ef;border-radius:12px;box-shadow:0 10px 32px #0003;padding:6px;z-index:150}.userDropdown.open{display:block}.userDropdown button{width:100%;display:flex;align-items:center;gap:9px;text-align:left;background:transparent;color:#24364d;padding:10px;border-radius:8px;font-size:13px}.userDropdown button:hover{background:#f1f5fa}.userDropdown .logoutMenu{color:#b42318}.userDropdown .notifyActive{color:#23823c}.userDropdown .notifyActive:before{content:"";width:7px;height:7px;border-radius:50%;background:#34c759;display:inline-block}.userDropdown .notifyInactive:before{content:"";width:7px;height:7px;border-radius:50%;background:#94a3b8;display:inline-block}
+@media(max-width:700px){.userMenuWrap{width:100%}.userDropdown{position:static;margin-top:6px;box-shadow:none;border-color:#29415d}.side .user{display:block!important}.userTrigger{font-size:14px}}
+</style>
+
+<style>
+/* Vista compacta de tareas */
+.dragHandle{-webkit-user-drag:none;user-drag:none;display:inline-flex;align-items:center;justify-content:center;width:22px;min-width:22px;height:24px;margin-right:4px;color:#7b8798;font-size:18px;line-height:1;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}.dragHandle:active{cursor:grabbing;color:#1769ed}.taskCompactMeta{display:flex;align-items:center;gap:8px;flex-wrap:nowrap;min-width:0;color:#68768b;font-size:11px;margin-top:4px;white-space:nowrap;overflow:hidden}.taskCompactMeta span{overflow:hidden;text-overflow:ellipsis}.taskCompactActions{display:flex;align-items:center;gap:6px;margin-top:5px}.todayFlag{background:transparent!important;color:#94a3b8!important;padding:0 3px!important;font-size:17px!important;line-height:1!important;filter:grayscale(1);opacity:.42}.todayFlag.active{color:#e11d48!important;filter:none;opacity:1}.taskCompactActions .commentBtn{margin:0;padding:4px 8px;font-size:11px}.taskCompactActions .danger{padding:4px 8px;font-size:11px}.table .tr.taskCompact{min-width:0!important;display:block!important;padding:7px 9px!important}.taskCompact .taskmain{width:100%}.taskCompact .tasktext{width:100%}.taskCompact .taskdesc{margin-top:2px;font-size:11px;line-height:1.2}.taskCompact.dragging{opacity:.62!important;transform:scale(.995);box-shadow:0 6px 18px rgba(0,0,0,.10)!important}.taskCompact.taskDropTarget{outline:2px dashed #1769ed!important;background:#eef5ff!important}.taskCompact .taskcheck{margin-top:4px;padding-top:4px}.monthGroup{margin:8px 0 3px!important;padding:7px 10px!important}.monthGroup.monthDropTarget{outline:2px dashed #1769ed;background:#dceaff!important}.toolbar{flex-wrap:nowrap}.toolbar button{white-space:nowrap;padding:9px 11px;font-size:12px}
+@media(max-width:700px){.toolbar{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:5px!important}.toolbar button{min-height:40px!important;padding:6px 4px!important;font-size:10px!important;line-height:1.15!important}.table .tr.taskCompact{margin-bottom:6px!important;padding:8px!important}.taskCompactMeta{font-size:10px;gap:6px}.taskCompactActions{margin-top:4px}.taskCompact .taskdesc{font-size:11px}.monthGroup{margin-top:7px!important}}
+</style>
+
+<style>
+.toolbar button{min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere;word-break:normal;text-align:center;line-height:1.15}
+@media(max-width:700px){.toolbar button{font-size:10px!important;padding:6px 3px!important}}
+</style>
+<style>
+.taskSearchWrap{margin:12px 0 14px;position:relative}.taskSearch{width:100%;box-sizing:border-box;border:1px solid #d8e0ea;border-radius:12px;background:#fff;padding:11px 42px 11px 38px;font:inherit;color:#14233b;outline:none;box-shadow:0 1px 2px #00000008}.taskSearch:focus{border-color:#1769ed;box-shadow:0 0 0 3px #1769ed18}.taskSearchIcon{position:absolute;left:13px;top:50%;transform:translateY(-50%);pointer-events:none;color:#7b8798}.taskSearchClear{display:none;position:absolute;right:9px;top:50%;transform:translateY(-50%);border:0;background:transparent;color:#667085;font-size:20px;line-height:1;padding:5px 8px;cursor:pointer}.taskSearchWrap.hasValue .taskSearchClear{display:block}.searchInfo{font-size:12px;color:#667085;margin:-7px 0 10px}.searchInfo:empty{display:none}
+@media(max-width:700px){.taskSearchWrap{margin:9px 0 11px}.taskSearch{font-size:16px;padding-top:10px;padding-bottom:10px}}
+</style>
+</head><body><div class="mobileTop"><button id="mobileMenuBtn" type="button" aria-label="Abrir menú">☰</button><b><span>✓</span> TareasPlus</b><i>🔔</i></div><div id="sideBackdrop"></div>
+<div id="auth" class="auth"><div class="box"><h1>TareasPlus</h1><p class="sub">Organiza. Colabora. Cumple.</p><button id="login">Continuar con Google</button><div id="authErr" class="status error"></div></div></div>
+<div id="shell" class="app" style="display:none">
+<aside class="side"><div class="brand"><b>✓</b>TareasPlus<small>Organiza. Colabora. Cumple.</small></div><div class="nav"><a id="navMine" class="active">✓ Mis tareas</a><a id="navAll">☷ Todas</a><a id="navDone">✓ Completadas</a></div><h4>MIS LISTAS</h4><div id="projects" class="projects"></div><div id="newList" class="project newlist">＋ Nueva lista</div><div class="user"><div class="userMenuWrap"><button id="userMenuBtn" class="userTrigger" type="button" aria-expanded="false"><span id="who" class="userTriggerName"></span><span class="userChevron">▲</span></button><div id="userDropdown" class="userDropdown"><button id="notifyBtn" type="button" class="notifyInactive">🔔 <span id="notifyLabel">Activar notificaciones</span></button><button id="voiceShortcutsBtn" type="button">🎙 <span>Instalar atajos de voz</span></button><button id="logout" type="button" class="logoutMenu">↪ <span>Cerrar sesión</span></button></div></div></div></aside>
+<main><header><div><h1 id="title">Mis tareas</h1><p class="sub" id="subtitle">Tareas que tienes asignadas</p></div><div class="toolbar"><button id="importCouncilTasks" class="ghost" type="button">⇩ Importar tareas de Consejo</button><button id="importCsv" class="ghost" style="display:none">⇩ Importar CSV</button><button id="invite">＋ Invitar</button></div></header><div id="status" class="status"></div>
+<div class="taskSearchWrap" id="taskSearchWrap"><span class="taskSearchIcon">⌕</span><input id="taskSearch" class="taskSearch" type="search" placeholder="Buscar tareas completadas y pendientes…" autocomplete="off" aria-label="Buscar tareas"><button id="taskSearchClear" class="taskSearchClear" type="button" aria-label="Borrar búsqueda">×</button></div><div id="searchInfo" class="searchInfo"></div>
+<section class="stats"><div class="card" id="cardPending"><strong id="nPending">0</strong>Pendientes</div><div class="card" id="cardMine"><strong id="nMine">0</strong>Asignadas a mí</div><div class="card" id="cardSoon"><strong id="nSoon">0</strong>🚩 Hoy</div><div class="card" id="cardHigh"><strong id="nHigh">0</strong>Prioridad alta</div><div class="card" id="cardDone"><strong id="nDone">0</strong>Completadas</div></section>
+<section class="panel"><div class="table" id="table"><div class="tr head"><span>Tarea</span><span>Lista</span><span>Responsables</span><span>Fecha</span><span>Prioridad</span></div></div></section></main>
+<aside class="right"><div class="box"><h3 id="projectName">Mi espacio</h3><div id="members">Selecciona una lista para ver sus miembros.</div></div><div class="box"><b>Colaboración</b><p class="sub">Invita por correo. La persona debe iniciar sesión con ese mismo correo para acceder.</p></div></aside></div>
+
+<div id="modal" class="overlay" style="display:none"><form id="form" class="modal"><h2>Nueva tarea</h2><label>Título<input name="title" required></label><label>Descripción<textarea name="description"></textarea></label><label>Lista<select name="project" id="taskProject" required></select></label><label>Responsables<div id="assignees" class="checks chips"></div></label><label class="monthSelectWrap" id="newMonthWrap">Mes<select name="month" id="newTaskMonth"></select></label><label id="newDateWrap">Fecha límite<input type="date" name="date"></label><label>Prioridad<div class="priorityChoices"><label class="priorityLow"><input type="radio" name="priority" value="Baja"><span>Baja</span></label><label class="priorityNormal"><input type="radio" name="priority" value="Normal" checked><span>Normal</span></label><label class="priorityHigh"><input type="radio" name="priority" value="Alta"><span>Alta</span></label></div></label><label>Repetir<select name="repeatPreset" id="newRepeatPreset"><option value="none">No repetir</option><option value="day:1">Cada día</option><option value="week:1">Cada semana</option><option value="week:2">Cada 2 semanas</option><option value="month:1">Cada mes</option><option value="year:1">Cada año</option><option value="custom">Personalizado…</option></select><span class="repeatCustom" id="newRepeatCustom"><input type="number" name="repeatEvery" min="1" max="999" value="1"><select name="repeatUnit"><option value="day">días</option><option value="week">semanas</option><option value="month">meses</option><option value="year">años</option></select></span></label><label class="todayFormOption"><span><input type="checkbox" name="todaySelected" id="newTaskToday"> 🚩 Hoy</span><small>La tarea aparecerá al comienzo y también en la vista Hoy.</small></label><label>Checklist / subtareas<div class="checklistEditor"><div id="newChecklist" class="checklistRows"></div><button type="button" class="addcheck" id="addNewCheck">＋ Añadir elemento</button></div></label><div class="actions"><button type="button" class="ghost close">Cancelar</button><button>Guardar</button></div></form></div>
+<div id="listModal" class="overlay" style="display:none"><form id="listForm" class="modal"><h2>Nueva lista</h2><label>Nombre<input name="name" required placeholder="Ej. Consejo de Dirección"></label><label>Tipo de lista<select name="type"><option value="normal">Lista normal</option><option value="template">📋 Plantilla anual</option></select></label><div class="templateHelp">Una plantilla anual guarda sus tareas por meses y puede reutilizarse cada año para crear una nueva lista completa.</div><label>Color<div id="newListColors" class="colorgrid"></div><input type="hidden" name="color" value="#2f80ed"></label><div class="actions"><button type="button" class="ghost close">Cancelar</button><button>Crear</button></div></form></div>
+<div id="editListModal" class="overlay" style="display:none"><form id="editListForm" class="modal"><h2>Editar lista</h2><input type="hidden" name="id"><label>Nombre<input name="name" required></label><label>Color<div id="editListColors" class="colorgrid"></div><input type="hidden" name="color"></label><label>Miembros de la lista<div id="editListMembers" class="editListMembers"></div></label><div class="actions"><button type="button" class="ghost closeListEdit">Cancelar</button><button>Guardar cambios</button></div></form></div>
+<div id="importModal" class="overlay" style="display:none"><form id="importForm" class="modal"><h2>Importar tareas desde CSV</h2><p class="sub">Las tareas se añadirán a <b id="importProjectName"></b>.</p><label>Archivo CSV<input id="importFile" name="file" type="file" accept=".csv,text/csv" required></label><div id="csvMapping" style="display:none"><p class="sub" style="font-size:12px">Relaciona cada campo de TareasPlus con la columna correspondiente del CSV. <b>Título</b> es obligatorio.</p><div id="csvMappingFields"></div><div id="csvPreview" class="status"></div></div><button id="downloadCsvTemplate" type="button" class="ghost" style="width:100%">Descargar plantilla CSV</button><div id="importStatus" class="status"></div><div class="actions"><button type="button" class="ghost closeImport">Cancelar</button><button id="importSubmit">Importar tareas</button></div></form></div>
+<div id="councilImportModal" class="overlay" style="display:none"><form id="councilImportForm" class="modal"><h2>Importar tareas desde Consejo de Dirección</h2><p class="sub">Se importarán desde la app Consejo de Dirección tus tareas pendientes, incluidas las independientes y las vinculadas a asuntos.</p><label>Lista de destino<select name="project" id="councilImportProject" required></select></label><div id="councilImportStatus" class="status" aria-live="polite"></div><div class="actions"><button type="button" class="ghost closeCouncilImport">Cancelar</button><button id="councilImportSubmit">Importar tareas</button></div></form></div>
+<div id="instantiateTemplateModal" class="overlay" style="display:none"><form id="instantiateTemplateForm" class="modal"><h2>Crear lista desde plantilla</h2><p class="sub">Se copiarán todas las tareas de <b id="templateSourceName"></b>, conservando su agrupación por meses.</p><input type="hidden" name="templateId"><label>Nombre de la nueva lista<input name="name" required></label><label>Año<input name="year" type="number" min="2020" max="2100" required></label><div id="instantiateStatus" class="status"></div><div class="actions"><button type="button" class="ghost closeTemplateInstantiate">Cancelar</button><button id="instantiateSubmit">Crear lista</button></div></form></div>
+<div id="inviteModal" class="overlay" style="display:none"><form id="inviteForm" class="modal"><h2>Invitar a la lista</h2><p class="sub">La invitación quedará asociada al correo indicado.</p><label>Correo electrónico<input name="email" type="email" required></label><div class="actions"><button type="button" class="ghost close">Cancelar</button><button>Invitar</button></div></form></div>
+
+
+<div id="voiceLinkModal" class="overlay" style="display:none;z-index:9999"><div class="modal" style="max-width:440px"><h2>🎙 Vincular atajos de voz</h2><p class="sub">Este atajo quiere vincularse con tu cuenta de TareasPlus.</p><div id="voiceLinkAccount" style="margin:14px 0;padding:12px;border-radius:12px;background:rgba(127,127,127,.10)"></div><div id="voiceLinkStatus" class="status"></div><div class="actions"><button type="button" class="ghost" id="cancelVoiceLink">Cancelar</button><button type="button" id="approveVoiceLink">Vincular con mi cuenta</button></div></div></div>
+<div id="voiceShortcutsModal" class="overlay" style="display:none"><div class="modal"><h2>Atajos de voz</h2><p class="sub" id="voiceDeviceHelp">Instala accesos rápidos para crear tareas por voz.</p><div id="iosShortcutPanel"><h3>iPhone / iPad</h3><p class="sub">Los nuevos atajos se vinculan solos con la cuenta de TareasPlus la primera vez que se ejecutan. No tendrás que copiar claves ni identificar tu usuario.</p><div style="display:grid;gap:8px"><button type="button" class="ghost shortcutInstall" data-shortcut="quick">🎙 Tarea rápida</button><button type="button" class="ghost shortcutInstall" data-shortcut="today">🚩 Tarea para hoy</button><button type="button" class="ghost shortcutInstall" data-shortcut="new">＋ Nueva tarea</button></div><div id="shortcutLinkStatus" class="status"></div></div><div id="androidShortcutPanel" style="margin-top:18px"><h3>Android</h3><p class="sub">Accesos de voz integrados en TareasPlus. Puedes usarlos desde Chrome o desde la app instalada en la pantalla de inicio.</p><div style="display:grid;gap:8px"><button type="button" class="ghost androidVoiceAction" data-mode="quick">🎙 Tarea rápida</button><button type="button" class="ghost androidVoiceAction" data-mode="today">🚩 Tarea para hoy</button><button type="button" class="ghost androidVoiceAction" data-mode="new">＋ Nueva tarea</button></div><p class="sub" style="margin-top:10px">Para tener TareasPlus como app: en Chrome abre ⋮ → <b>Añadir a pantalla de inicio</b> o <b>Instalar aplicación</b>.</p><div id="androidVoiceStatus" class="status"></div></div><div class="actions"><button type="button" class="ghost" id="closeVoiceShortcuts">Cerrar</button></div></div></div>
+<div id="editModal" class="overlay" style="display:none"><form id="editForm" class="modal"><h2>Editar tarea</h2>
+<input type="hidden" name="id"><label>Título<input name="title" required></label><label>Descripción<textarea name="description"></textarea></label>
+<label>Lista<select name="project" id="editTaskProject" required></select></label><label>Responsables<div id="editAssignees" class="checks chips"></div></label>
+<label class="monthSelectWrap" id="editMonthWrap">Mes<select name="month" id="editTaskMonth"></select></label><label id="editDateWrap">Fecha límite<input type="date" name="date"></label><label>Prioridad<div class="priorityChoices"><label class="priorityLow"><input type="radio" name="priority" value="Baja"><span>Baja</span></label><label class="priorityNormal"><input type="radio" name="priority" value="Normal"><span>Normal</span></label><label class="priorityHigh"><input type="radio" name="priority" value="Alta"><span>Alta</span></label></div></label><label>Repetir<select name="repeatPreset" id="editRepeatPreset"><option value="none">No repetir</option><option value="day:1">Cada día</option><option value="week:1">Cada semana</option><option value="week:2">Cada 2 semanas</option><option value="month:1">Cada mes</option><option value="year:1">Cada año</option><option value="custom">Personalizado…</option></select><span class="repeatCustom" id="editRepeatCustom"><input type="number" name="repeatEvery" min="1" max="999" value="1"><select name="repeatUnit"><option value="day">días</option><option value="week">semanas</option><option value="month">meses</option><option value="year">años</option></select></span></label><label>Checklist / subtareas<div class="checklistEditor"><div id="editChecklist" class="checklistRows"></div><button type="button" class="addcheck" id="addEditCheck">＋ Añadir elemento</button></div></label>
+<div class="actions"><button type="button" class="ghost closeEdit">Cancelar</button><button>Guardar cambios</button></div></form></div>
+
+<div id="commentsModal" class="overlay" style="display:none">
+  <div class="modal commentsModal">
+    <h2>💬 Comentarios</h2>
+    <div id="commentsTaskTitle" class="sub"></div>
+    <div id="commentsList" class="commentsList"></div>
+    <form id="commentForm" class="commentComposer">
+      <textarea name="text" required maxlength="2000" placeholder="Escribe un comentario…"></textarea>
+      <button type="submit">Enviar</button>
+    </form>
+    <div class="actions"><button type="button" class="ghost closeComments">Cerrar</button></div>
+  </div>
+</div>
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+import{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+import{getFirestore,collection,addDoc,onSnapshot,serverTimestamp,updateDoc,setDoc,doc,query,where,getDocs,arrayUnion,arrayRemove,deleteField,deleteDoc,increment}from"https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+const cfg={apiKey:"AIzaSyDca0zhf5ECMHG3tIuKqpcTnO1vGHY0uh4",authDomain:"tareas-6e2c1.firebaseapp.com",projectId:"tareas-6e2c1",storageBucket:"tareas-6e2c1.firebasestorage.app",messagingSenderId:"958876171362",appId:"1:958876171362:web:886628c7adaf159008a53b"};
+const app=initializeApp(cfg),auth=getAuth(app),db=getFirestore(app),provider=new GoogleAuthProvider();
+let user=null,projects=[],tasks=[],selectedProject=null,view="mine",taskSearchQuery="",unsubs=[],taskUnsub=null,syncedProjectOrder=[],defaultProjectId=null,taskViewOrders={},commentsUnsub=null,commentsTaskId=null;
+let activeTaskDragId=null,touchTaskDragId=null,touchTaskPointerId=null,taskDragPointerId=null,taskDragStarted=false;
+const $=id=>document.getElementById(id), esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function closeAll(){["modal","listModal","inviteModal","editModal","editListModal","commentsModal","importModal","councilImportModal","instantiateTemplateModal"].forEach(x=>$(x).style.display="none");if(commentsUnsub){commentsUnsub();commentsUnsub=null}commentsTaskId=null}document.querySelectorAll(".close").forEach(x=>x.onclick=closeAll);document.querySelectorAll(".closeEdit").forEach(x=>x.onclick=closeAll);document.querySelectorAll(".closeListEdit").forEach(x=>x.onclick=closeAll);document.querySelectorAll(".closeComments").forEach(x=>x.onclick=closeAll);document.querySelectorAll(".closeImport,.closeCouncilImport,.closeTemplateInstantiate").forEach(x=>x.onclick=closeAll);
+$("login").onclick=()=>signInWithPopup(auth,provider).catch(e=>$("authErr").textContent=e.message);$("logout").onclick=()=>signOut(auth);
+function pMembers(p){return p?.members||{}} function isMember(p){return !!pMembers(p)[user.uid]} function shortUserName(v){let s=String(v||"").trim();if(!s)return "";if(s.includes("@"))return s.split("@")[0];return s.split(/\s+/)[0]}
+const LIST_COLORS=["#2563eb","#16a34a","#f59e0b","#dc2626","#7c3aed","#0891b2","#db2777","#64748b","#1e3a8a","#65a30d","#a16207","#7f1d1d","#581c87","#0f766e","#c2410c","#111827"];
+const MONTHS=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+function monthOptions(selected=1){return MONTHS.map((m,i)=>`<option value="${i+1}" ${(i+1)==selected?"selected":""}>${m}</option>`).join("")}
+function isAnnualProject(p){return p?.type==="template"||!!p?.sourceTemplateId}
+function syncTaskTiming(mode="new",selectedMonth=1){let sel=$(mode==="new"?"taskProject":"editTaskProject"),p=projects.find(x=>x.id===sel?.value),annual=isAnnualProject(p),mw=$(mode==="new"?"newMonthWrap":"editMonthWrap"),dw=$(mode==="new"?"newDateWrap":"editDateWrap"),ms=$(mode==="new"?"newTaskMonth":"editTaskMonth");if(ms&&!ms.options.length)ms.innerHTML=monthOptions(selectedMonth);if(ms)ms.value=String(selectedMonth||1);if(mw)mw.style.display=annual?"grid":"none";if(dw)dw.style.display=annual?"none":"grid"}
+function listOrderKey(){return "tareasplus:listOrder:"+(user?.uid||"anon")}
+function orderedProjects(){let order=syncedProjectOrder||[];if(!order.length){try{order=JSON.parse(localStorage.getItem(listOrderKey())||"[]")}catch{}}return [...projects].sort((a,b)=>{let ai=order.indexOf(a.id),bi=order.indexOf(b.id);if(ai<0)ai=9999;if(bi<0)bi=9999;return ai-bi||(a.createdAt?.seconds||0)-(b.createdAt?.seconds||0)})}
+async function saveProjectOrder(ids){syncedProjectOrder=[...ids];localStorage.setItem(listOrderKey(),JSON.stringify(ids));if(user)await setDoc(doc(db,"userPreferences",user.uid),{projectOrder:ids,updatedAt:serverTimestamp()},{merge:true})}
+function subscribeProjectOrder(){if(!user)return;let prefUnsub=onSnapshot(doc(db,"userPreferences",user.uid),snap=>{let data=snap.exists()?snap.data():{};defaultProjectId=data.defaultProjectId||null;taskViewOrders=(data.taskViewOrders&&typeof data.taskViewOrders==="object")?data.taskViewOrders:{};if(Array.isArray(data.projectOrder)){syncedProjectOrder=data.projectOrder;localStorage.setItem(listOrderKey(),JSON.stringify(syncedProjectOrder));renderProjects()}else{let local=[];try{local=JSON.parse(localStorage.getItem(listOrderKey())||"[]")}catch{};syncedProjectOrder=local;if(local.length)saveProjectOrder(local);else renderProjects()}},e=>console.warn("No se pudieron sincronizar las preferencias",e));unsubs.push(prefUnsub)}
+async function setDefaultProject(id){defaultProjectId=id||null;if(user)await setDoc(doc(db,"userPreferences",user.uid),{defaultProjectId:defaultProjectId||deleteField(),updatedAt:serverTimestamp()},{merge:true});renderProjects()}
+function projectColor(p){if(p?.color)return p.color;let n=0;for(let c of (p?.id||""))n=(n+c.charCodeAt(0))%LIST_COLORS.length;return LIST_COLORS[n]}
+function colorPicker(containerId,input,selected){let el=$(containerId);el.innerHTML="";LIST_COLORS.forEach(c=>{let b=document.createElement("button");b.type="button";b.className="colorchoice"+(c===selected?" selected":"");b.style.background=c;b.title=c;b.onclick=()=>{input.value=c;[...el.children].forEach(x=>x.classList.toggle("selected",x===b))};el.appendChild(b)})}
+function openListMenu(ev,p){ev.stopPropagation();document.querySelectorAll(".listActions").forEach(x=>x.remove());let m=document.createElement("div");m.className="listActions";let owner=p.ownerId===user.uid,instantiate=p.type==="template"?`<button data-a="instantiate">↻ Crear lista desde plantilla</button>`:"",defaultAction=p.type!=="template"?`<button data-a="default">${defaultProjectId===p.id?"★ Quitar como predeterminada":"☆ Usar como lista predeterminada"}</button>`:"";m.innerHTML=owner?`${defaultAction}${instantiate}<button data-a="edit">✎ Editar lista</button><button data-a="delete" class="del">🗑 Eliminar lista</button>`:`${defaultAction}${instantiate}<button disabled style="opacity:.55">Solo el propietario puede editarla</button>`;document.body.appendChild(m);let r=ev.currentTarget.getBoundingClientRect();m.style.left=Math.min(r.left,innerWidth-250)+"px";m.style.top=Math.min(r.bottom+4,innerHeight-170)+"px";m.onclick=async e=>{let a=e.target.dataset.a;if(a==="default"){m.remove();await setDefaultProject(defaultProjectId===p.id?null:p.id)}if(a==="instantiate"){m.remove();openInstantiateTemplate(p)}if(a==="edit"){m.remove();openEditList(p)}if(a==="delete"){m.remove();await removeList(p)}};setTimeout(()=>document.addEventListener("click",()=>m.remove(),{once:true}),0)}
+function renderEditListMembers(p){let box=$("editListMembers");if(!box)return;let members=Object.entries(pMembers(p));box.innerHTML=members.map(([uid,m])=>{let owner=uid===p.ownerId;return `<div class="editmember"><span class="editmemberinfo"><b>${esc(m.name||m.email||"Usuario")}</b><small>${esc(m.email||"")}${owner?" · Propietario":""}</small></span>${owner?`<span class="ownerbadge">Propietario</span>`:`<button type="button" class="removeMember" data-uid="${esc(uid)}" data-name="${esc(m.name||m.email||"este miembro")}">Eliminar</button>`}</div>`}).join("")||`<div class="sub">No hay miembros.</div>`;box.querySelectorAll(".removeMember").forEach(b=>b.onclick=async()=>{if(p.ownerId!==user.uid)return alert("Solo el propietario puede gestionar los miembros.");let uid=b.dataset.uid,name=b.dataset.name;if(!confirm(`¿Eliminar a ${name} de la lista “${p.name}”? Perderá el acceso a la lista y a sus tareas.`))return;b.disabled=true;try{await updateDoc(doc(db,"projects",p.id),{memberIds:arrayRemove(uid),["members."+uid]:deleteField(),updatedAt:serverTimestamp(),updatedBy:user.uid});let fresh={...p,memberIds:(p.memberIds||[]).filter(x=>x!==uid),members:{...pMembers(p)}};delete fresh.members[uid];let i=projects.findIndex(x=>x.id===p.id);if(i>=0)projects[i]=fresh;renderEditListMembers(fresh);renderMembers()}catch(err){console.error(err);alert("No se pudo eliminar el miembro: "+err.message);b.disabled=false}})}
+function openEditList(p){let f=$("editListForm");f.elements.id.value=p.id;f.elements.name.value=p.name||"";f.elements.color.value=projectColor(p);colorPicker("editListColors",f.elements.color,projectColor(p));renderEditListMembers(p);$("editListModal").style.display="grid"}
+async function removeList(p){if(p.ownerId!==user.uid)return alert("Solo el propietario puede eliminar esta lista.");let count=tasks.filter(t=>t.projectId===p.id).length;if(!confirm(`¿Eliminar la lista “${p.name}”${count?` y sus ${count} tarea${count===1?"":"s"}`:""}? Esta acción no se puede deshacer.`))return;for(const t of tasks.filter(t=>t.projectId===p.id))await deleteDoc(doc(db,"tasks",t.id));await deleteDoc(doc(db,"projects",p.id));if(selectedProject===p.id){selectedProject=null;view="mine"}}
+async function moveTaskToProject(taskId,targetProjectId){let t=tasks.find(x=>x.id===taskId),target=projects.find(x=>x.id===targetProjectId);if(!t||!target||t.projectId===targetProjectId)return;if(!isMember(target))throw new Error("No tienes acceso a la lista de destino.");let annual=isAnnualProject(target),changes={projectId:targetProjectId,updatedAt:serverTimestamp(),updatedBy:user.uid};if(annual){changes.month=Number(t.month)||new Date().getMonth()+1;changes.date=""}else{changes.month=null}await updateDoc(doc(db,"tasks",taskId),changes)}
+function renderProjects(){let el=$("projects");el.innerHTML="";let arr=orderedProjects(),normal=arr.filter(p=>p.type!=="template"),templates=arr.filter(p=>p.type==="template");
+function addSection(title,items){if(!items.length)return;let h=document.createElement("div");h.className="projectSectionTitle";h.textContent=title;el.appendChild(h);items.forEach(p=>{let d=document.createElement("div");d.className="project"+(selectedProject===p.id?" active":"");d.dataset.projectId=p.id;d.draggable=true;let pendingCount=tasks.filter(t=>t.projectId===p.id&&!t.completed).length;d.innerHTML=`<span class="listdot" style="background:${projectColor(p)}"></span><span class="listname">${defaultProjectId===p.id?"★ ":""}${esc(p.name)} (${pendingCount})</span><button class="listmenu" title="Opciones">•••</button>`;d.querySelector(".listmenu").onclick=e=>openListMenu(e,p);d.onclick=e=>{if(e.target.closest(".listmenu"))return;selectedProject=p.id;view="project";renderAll();if(innerWidth<=700)mobileMenu(false)};d.ondragstart=e=>{d.classList.add("dragging");e.dataTransfer.setData("text/plain",p.id);e.dataTransfer.effectAllowed="move"};d.ondragend=()=>{d.classList.remove("dragging");el.querySelectorAll(".dragover").forEach(x=>x.classList.remove("dragover"))};d.ondragover=e=>{e.preventDefault();if(activeTaskDragId||[...(e.dataTransfer.types||[])].includes("text/task-id")){d.classList.add("dragover");return}let from=e.dataTransfer.getData("text/plain"),fp=projects.find(x=>x.id===from);if(fp&&((fp.type==="template")!==(p.type==="template")))return;d.classList.add("dragover")};d.ondragleave=()=>d.classList.remove("dragover");d.ondrop=async e=>{e.preventDefault();d.classList.remove("dragover");let taskId=activeTaskDragId||e.dataTransfer.getData("text/task-id");if(taskId){try{await moveTaskToProject(taskId,p.id)}catch(err){console.error(err);alert("No se pudo mover la tarea: "+err.message)}return}let from=e.dataTransfer.getData("text/plain"),to=p.id,fp=projects.find(x=>x.id===from);if(from===to||!fp||((fp.type==="template")!==(p.type==="template")))return;let ids=orderedProjects().map(x=>x.id),a=ids.indexOf(from),b=ids.indexOf(to);ids.splice(a,1);ids.splice(b,0,from);saveProjectOrder(ids).catch(console.error);renderProjects()};el.appendChild(d)})}
+addSection("LISTAS / PROYECTOS",normal);addSection("PLANTILLAS",templates);if(arr.length){let h=document.createElement("div");h.className="dragHint";h.textContent="Arrastra para ordenar dentro de cada apartado";el.appendChild(h)}$("taskProject").innerHTML=arr.map(p=>`<option value="${p.id}" style="color:${projectColor(p)}">● ${esc(p.name)}</option>`).join("")}
+
+let touchDragId=null,touchStartY=0;
+document.addEventListener("pointerdown",e=>{let row=e.target.closest("#projects .project");if(!row||e.target.closest("button")||e.pointerType==="mouse")return;touchDragId=row.dataset.projectId;touchStartY=e.clientY;row.setPointerCapture?.(e.pointerId)});
+document.addEventListener("pointermove",e=>{if(!touchDragId||Math.abs(e.clientY-touchStartY)<10)return;let target=document.elementFromPoint(e.clientX,e.clientY)?.closest("#projects .project");document.querySelectorAll("#projects .project").forEach(x=>x.classList.toggle("dragover",x===target&&x.dataset.projectId!==touchDragId))});
+document.addEventListener("pointerup",e=>{if(!touchDragId)return;let target=document.elementFromPoint(e.clientX,e.clientY)?.closest("#projects .project");if(target&&target.dataset.projectId!==touchDragId){let ids=orderedProjects().map(x=>x.id),a=ids.indexOf(touchDragId),b=ids.indexOf(target.dataset.projectId);if(a>=0&&b>=0){ids.splice(a,1);ids.splice(b,0,touchDragId);saveProjectOrder(ids).catch(console.error);renderProjects()}}touchDragId=null;document.querySelectorAll("#projects .dragover").forEach(x=>x.classList.remove("dragover"))});
+
+function currentP(){return projects.find(p=>p.id===selectedProject)}
+function renderMembers(){let p=currentP();$("projectName").textContent=p?p.name:"Mi espacio";$("members").innerHTML=p?Object.values(pMembers(p)).map(m=>`<div class="member">${esc(m.name||m.email)}<br><small>${esc(m.email)}</small></div>`).join(""):"Selecciona una lista para ver sus miembros."}
+function visibleTasks(){let a=tasks;if(taskSearchQuery){let q=taskSearchQuery.toLocaleLowerCase("es");return a.filter(t=>{let p=projects.find(x=>x.id===t.projectId),members=pMembers(p),responsibles=[...(t.assigneeNames||[]),...(t.assigneeIds||[]).map(id=>members[id]?.name||members[id]?.email||"")],haystack=[t.title,t.description,p?.name,...responsibles,...(t.checklist||[]).map(x=>x.text)].filter(Boolean).join(" ").toLocaleLowerCase("es");return haystack.includes(q)})}if(view==="mine")a=a.filter(t=>(t.assigneeIds||[]).includes(user.uid)&&!t.completed);if(view==="all")a=a.filter(t=>!t.completed&&projects.find(p=>p.id===t.projectId)?.type!=="template");if(view==="done")a=a.filter(t=>t.completed);if(view==="soon")a=a.filter(t=>!t.completed&&t.todaySelected);if(view==="high")a=a.filter(t=>!t.completed&&(t.priority||"Normal")==="Alta");if(view==="project")a=a.filter(t=>t.projectId===selectedProject&&!t.completed);return a}
+function checklistHTML(t){let a=t.checklist||[];if(!a.length)return "";let done=a.filter(x=>x.completed).length,pct=Math.round(done/a.length*100),shown=a.slice(0,5);return `<span class="taskcheck"><span class="checksummary">☑ ${done}/${a.length} comprobaciones · ${pct}%</span><span class="checkprogress"><b style="width:${pct}%"></b></span><span class="checkitems">${shown.map((x,i)=>`<label class="checkitem ${x.completed?"done":""}"><input type="checkbox" data-check-task="${t.id}" data-check-index="${i}" ${x.completed?"checked":""}><span>${esc(x.text)}</span></label>`).join("")}</span>${a.length>5?`<span class="checkmore">+ ${a.length-5} más</span>`:""}</span>`}
+function autoGrowChecklist(x){x.style.height="auto";x.style.height=Math.max(40,x.scrollHeight)+"px"}
+function addChecklistRow(containerId,item={}){let box=$(containerId),r=document.createElement("div");r.className="checkrow";r.innerHTML=`<button type="button" class="checkgrip" draggable="false" aria-label="Arrastrar subtarea para ordenar" title="Arrastrar subtarea">⠿</button><textarea class="checktext" rows="1" placeholder="Ej. Confirmar asistentes" data-completed="${item.completed?"1":"0"}">${esc(item.text||"")}</textarea><button type="button" class="checkremove" aria-label="Eliminar">×</button>`;let x=r.querySelector(".checktext");x.addEventListener("input",()=>autoGrowChecklist(x));r.querySelector(".checkremove").onclick=()=>r.remove();box.appendChild(r);requestAnimationFrame(()=>autoGrowChecklist(x))}
+// Reordenar subtareas en el formulario, sin usar HTML5 drag (iOS arrastraba el símbolo).
+let checklistPointerDrag=null;
+document.addEventListener("pointerdown",e=>{
+  const grip=e.target.closest(".checkgrip");if(!grip)return;
+  if(e.button!=null&&e.button!==0)return;
+  const row=grip.closest(".checkrow"),box=row?.parentElement;
+  if(!row||!box?.classList.contains("checklistRows"))return;
+  checklistPointerDrag={row,box,pointerId:e.pointerId};
+  grip.setPointerCapture?.(e.pointerId);
+  row.classList.add("checkdragging");
+  e.preventDefault();
+});
+document.addEventListener("pointermove",e=>{
+  const d=checklistPointerDrag;if(!d||e.pointerId!==d.pointerId)return;
+  document.querySelectorAll(".checkrow.checkdrop").forEach(x=>x.classList.remove("checkdrop"));
+  const other=document.elementFromPoint(e.clientX,e.clientY)?.closest(".checkrow");
+  if(other&&other!==d.row&&other.parentElement===d.box)other.classList.add("checkdrop");
+  e.preventDefault();
+},{passive:false});
+function finishChecklistDrag(e){
+  const d=checklistPointerDrag;if(!d||e.pointerId!==d.pointerId)return;
+  const other=document.elementFromPoint(e.clientX,e.clientY)?.closest(".checkrow");
+  if(e.type!=="pointercancel"&&other&&other!==d.row&&other.parentElement===d.box){
+    const rect=other.getBoundingClientRect();
+    d.box.insertBefore(d.row,e.clientY<rect.top+rect.height/2?other:other.nextSibling);
+  }
+  d.row.classList.remove("checkdragging");
+  d.box.querySelectorAll(".checkdrop").forEach(x=>x.classList.remove("checkdrop"));
+  checklistPointerDrag=null;
+}
+document.addEventListener("pointerup",finishChecklistDrag);
+document.addEventListener("pointercancel",finishChecklistDrag);
+
+// Desplegable propio: <option> coloreadas no se muestran consistentemente en iOS.
+function initializeColoredProjectSelector(id){
+  const select=$(id);if(!select||select.dataset.colorReady)return;
+  select.dataset.colorReady="1";
+  const wrap=document.createElement("div");wrap.className="coloredSelect";
+  select.parentNode.insertBefore(wrap,select);wrap.appendChild(select);
+  const trigger=document.createElement("button");trigger.type="button";trigger.className="coloredSelectTrigger";
+  trigger.setAttribute("aria-label","Seleccionar lista");trigger.setAttribute("aria-haspopup","listbox");
+  const dot=document.createElement("span");dot.className="coloredDot";
+  const text=document.createElement("span");text.className="coloredText";
+  const arrow=document.createElement("span");arrow.textContent="⌄";
+  trigger.append(dot,text,arrow);wrap.appendChild(trigger);
+  const menu=document.createElement("div");menu.className="coloredSelectMenu";menu.setAttribute("role","listbox");menu.hidden=true;wrap.appendChild(menu);
+  const sync=()=>{
+    const option=select.selectedOptions[0];const project=projects.find(p=>p.id===select.value);
+    dot.style.background=project?projectColor(project):"#8392a6";
+    text.textContent=project?.name||option?.textContent?.replace(/^●\s*/,"")||"Seleccionar lista";
+  };
+  function populate(){
+    menu.replaceChildren();
+    for(const option of select.options){
+      const project=projects.find(p=>p.id===option.value);
+      const b=document.createElement("button");b.type="button";
+      b.setAttribute("role","option");b.setAttribute("aria-selected",String(option.value===select.value));
+      const d=document.createElement("span");d.className="coloredDot";d.style.background=project?projectColor(project):"#8392a6";
+      const n=document.createElement("span");n.textContent=project?.name||option.textContent.replace(/^●\s*/,"");
+      b.append(d,n);b.onclick=()=>{select.value=option.value;select.dispatchEvent(new Event("change",{bubbles:true}));menu.hidden=true;trigger.setAttribute("aria-expanded","false");sync()};menu.appendChild(b);
+    }
+  }
+  trigger.onclick=()=>{if(menu.hidden){document.querySelectorAll(".coloredSelectMenu").forEach(m=>m.hidden=true);populate();menu.hidden=false}else menu.hidden=true;trigger.setAttribute("aria-expanded",String(!menu.hidden))};
+  select.addEventListener("change",sync);select.addEventListener("refresh-color",sync);
+  new MutationObserver(sync).observe(select,{childList:true,subtree:true,attributes:true,attributeFilter:["selected"]});
+  document.addEventListener("pointerdown",e=>{if(!wrap.contains(e.target)){menu.hidden=true;trigger.setAttribute("aria-expanded","false")}});
+  sync();
+}
+initializeColoredProjectSelector("taskProject");
+initializeColoredProjectSelector("editTaskProject");
+function readChecklist(containerId){return [...$(containerId).querySelectorAll(".checktext")].map(x=>({id:x.dataset.id||crypto.randomUUID(),text:x.value.trim(),completed:x.dataset.completed==="1"})).filter(x=>x.text)}
+function loadChecklist(containerId,items=[]){$(containerId).innerHTML="";(items||[]).forEach(item=>{addChecklistRow(containerId,item);let x=$(containerId).lastElementChild.querySelector(".checktext");x.dataset.id=item.id||crypto.randomUUID();x.dataset.completed=item.completed?"1":"0"})}
+$("addNewCheck").onclick=()=>addChecklistRow("newChecklist");$("addEditCheck").onclick=()=>addChecklistRow("editChecklist");
+function shortDate(v){if(!v)return "Sin fecha";let m=String(v).match(/^(\d{4})-(\d{2})-(\d{2})$/);return m?`${Number(m[3])}/${Number(m[2])}/${m[1].slice(2)}`:v}
+function taskOrderValue(t){return Number.isFinite(Number(t?.order))?Number(t.order):999999}
+function taskViewKey(){return ["mine","all","done","soon","high"].includes(view)?view:null}
+function orderedFilteredTasks(list){let key=taskViewKey();if(!key)return list;let saved=Array.isArray(taskViewOrders[key])?taskViewOrders[key]:[],pos=new Map(saved.map((id,i)=>[id,i]));return [...list].sort((a,b)=>{let flag=(b.todaySelected?1:0)-(a.todaySelected?1:0);if(flag)return flag;let ai=pos.has(a.id)?pos.get(a.id):999999,bi=pos.has(b.id)?pos.get(b.id):999999;return ai-bi||(a.createdAt?.seconds||0)-(b.createdAt?.seconds||0)})}
+async function saveTaskViewOrder(key,ids){if(!user||!key)return;taskViewOrders={...taskViewOrders,[key]:ids};await setDoc(doc(db,"userPreferences",user.uid),{taskViewOrders,updatedAt:serverTimestamp()},{merge:true})}
+async function reorderTaskInCurrentView(taskId,targetId){if(taskId===targetId)return;if(view==="project")return reorderTaskWithinList(taskId,targetId);let key=taskViewKey();if(!key)return;let list=orderedFilteredTasks(visibleTasks()),ids=list.map(t=>t.id),from=ids.indexOf(taskId),to=ids.indexOf(targetId);if(from<0||to<0)return;ids.splice(from,1);ids.splice(to,0,taskId);await saveTaskViewOrder(key,ids);renderTasks()}
+async function reorderTaskWithinList(taskId,targetId){let moving=tasks.find(t=>t.id===taskId),target=tasks.find(t=>t.id===targetId);if(!moving||!target||moving.projectId!==target.projectId||moving.id===target.id)return;let list=tasks.filter(t=>t.projectId===moving.projectId&&!t.completed);if(isAnnualProject(projects.find(p=>p.id===moving.projectId))&&Number(moving.month)!==Number(target.month))return;list.sort((a,b)=>taskOrderValue(a)-taskOrderValue(b)||(a.createdAt?.seconds||0)-(b.createdAt?.seconds||0));let ids=list.map(t=>t.id),from=ids.indexOf(taskId),to=ids.indexOf(targetId);if(from<0||to<0)return;ids.splice(from,1);ids.splice(to,0,taskId);await Promise.all(ids.map((id,i)=>updateDoc(doc(db,"tasks",id),{order:i+1,updatedAt:serverTimestamp(),updatedBy:user.uid})))}
+function repeatFromForm(f){let preset=String(f.get("repeatPreset")||"none");if(preset==="none")return null;if(preset==="custom"){let every=Math.max(1,Number(f.get("repeatEvery")||1)),unit=String(f.get("repeatUnit")||"day");return {unit,every}}let [unit,n]=preset.split(":");return {unit,every:Math.max(1,Number(n)||1)}}
+function repeatLabel(r){if(!r?.unit)return "";let n=Math.max(1,Number(r.every)||1),names={day:["día","días"],week:["semana","semanas"],month:["mes","meses"],year:["año","años"]},x=names[r.unit]||[r.unit,r.unit];return n===1?`Cada ${x[0]}`:`Cada ${n} ${x[1]}`}
+function nextRepeatDate(dateStr,r){let d=dateStr?new Date(dateStr+"T12:00:00"):new Date(),n=Math.max(1,Number(r?.every)||1);if(r?.unit==="day")d.setDate(d.getDate()+n);else if(r?.unit==="week")d.setDate(d.getDate()+7*n);else if(r?.unit==="month"){let day=d.getDate();d.setDate(1);d.setMonth(d.getMonth()+n);let last=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();d.setDate(Math.min(day,last))}else if(r?.unit==="year"){let m=d.getMonth(),day=d.getDate();d.setDate(1);d.setFullYear(d.getFullYear()+n);d.setMonth(m);let last=new Date(d.getFullYear(),m+1,0).getDate();d.setDate(Math.min(day,last))}return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
+async function completeTaskWithRepeat(t,checked){if(!checked){await updateDoc(doc(db,"tasks",t.id),{completed:false,updatedAt:serverTimestamp(),updatedBy:user.uid});return}if(t.repeat?.unit){let p=projects.find(x=>x.id===t.projectId),nextDate=isAnnualProject(p)?"":nextRepeatDate(t.date,t.repeat),nextMonth=isAnnualProject(p)?(((Number(t.month)||1)+(t.repeat.unit==="month"?Math.max(1,Number(t.repeat.every)||1):0)-1)%12)+1:(t.month??null);await addDoc(collection(db,"tasks"),{projectId:t.projectId,createdBy:t.createdBy||user.uid,title:t.title||"Tarea",description:t.description||"",assigneeIds:[...(t.assigneeIds||[])],assigneeNames:[...(t.assigneeNames||[])],month:nextMonth,date:nextDate,priority:t.priority||"Normal",todaySelected:false,repeat:{...t.repeat},checklist:(t.checklist||[]).map(x=>({...x,id:crypto.randomUUID(),completed:false})),completed:false,commentCount:0,createdAt:serverTimestamp(),updatedAt:serverTimestamp()})}await updateDoc(doc(db,"tasks",t.id),{completed:true,updatedAt:serverTimestamp(),updatedBy:user.uid})}
+function syncRepeatCustom(prefix){let sel=$(prefix+"RepeatPreset"),box=$(prefix+"RepeatCustom");if(sel&&box)box.classList.toggle("show",sel.value==="custom")}
+function renderTasks(){let tb=$("table");tb.querySelectorAll(".tr:not(.head),.monthGroup").forEach(x=>x.remove());let list=visibleTasks(),cp=currentP(),grouped=!taskSearchQuery&&view==="project"&&isAnnualProject(cp);if(taskSearchQuery){list=[...list].sort((a,b)=>Number(a.completed)-Number(b.completed)||((b.todaySelected?1:0)-(a.todaySelected?1:0))||taskOrderValue(a)-taskOrderValue(b)||(a.title||"").localeCompare(b.title||"","es"));let info=$("searchInfo");if(info)info.textContent=`${list.length} resultado${list.length===1?"":"s"} · incluye tareas pendientes y completadas`;}else{let info=$("searchInfo");if(info)info.textContent="";if(view!=="project")list=orderedFilteredTasks(list);}if(view==="project"&&!taskSearchQuery){if(grouped){let currentMonth=new Date().getMonth()+1,monthOrder=m=>{let n=Number(m);return n>=1&&n<=12?(n-currentMonth+12)%12:12};list=[...list].sort((a,b)=>monthOrder(a.month)-monthOrder(b.month)||((b.todaySelected?1:0)-(a.todaySelected?1:0))||taskOrderValue(a)-taskOrderValue(b)||(a.title||"").localeCompare(b.title||"","es"));}else list=[...list].sort((a,b)=>((b.todaySelected?1:0)-(a.todaySelected?1:0))||taskOrderValue(a)-taskOrderValue(b)||(a.createdAt?.seconds||0)-(b.createdAt?.seconds||0));}let lastMonth=null;list.forEach(t=>{if(grouped){let mn=Number(t.month)||0;if(mn!==lastMonth){lastMonth=mn;let g=document.createElement("div");g.className="monthGroup";g.dataset.month=mn;g.textContent=mn>=1&&mn<=12?MONTHS[mn-1]:"Sin mes";g.ondragover=e=>{e.preventDefault();g.classList.add("monthDropTarget")};g.ondragleave=()=>g.classList.remove("monthDropTarget");g.ondrop=async e=>{e.preventDefault();g.classList.remove("monthDropTarget");let taskId=activeTaskDragId||e.dataTransfer.getData("text/task-id");if(taskId&&mn>=1&&mn<=12)await updateDoc(doc(db,"tasks",taskId),{month:mn,updatedAt:serverTimestamp(),updatedBy:user.uid})};tb.appendChild(g)}}let p=projects.find(x=>x.id===t.projectId),linkedNames=(t.assigneeIds||[]).map(id=>shortUserName(pMembers(p)[id]?.name||pMembers(p)[id]?.email||"")).filter(Boolean),importedNames=(t.assigneeNames||[]).map(shortUserName).filter(n=>n&&!linkedNames.some(x=>String(x).toLowerCase()===String(n).toLowerCase())),names=[...linkedNames,...importedNames].join(", "),namesDisplay=names||"Sin asignar",timing=grouped&&t.month?MONTHS[Number(t.month)-1]:shortDate(t.date),priority=t.priority||"Normal";let r=document.createElement("div");r.className="tr taskCompact";r.draggable=false;r.innerHTML=`<span class="taskmain"><span class="dragHandle" draggable="false" data-drag-task="${t.id}" title="Arrastrar tarea" aria-label="Arrastrar tarea">⠿</span><input type="checkbox" data-id="${t.id}" ${t.completed?"checked":""}><span class="tasktext"><span class="tasktitle" data-edit="${t.id}">${esc(t.title)}</span>${t.description?`<span class="taskdesc">${esc(t.description)}</span>`:""}<span class="taskCompactMeta"><span><span class="listdot" style="background:${projectColor(p)};width:8px;height:8px;display:inline-block;margin-right:5px;vertical-align:1px"></span>${esc(p?.name||"")}</span><span>👤 ${esc(namesDisplay)}</span><span>📅 ${esc(timing)}</span><span class="priorityText ${esc(priority.toLowerCase())}">${esc(priority)}</span></span>${checklistHTML(t)}${t.repeat?.unit?`<span class="repeatBadge">↻ ${esc(repeatLabel(t.repeat))}</span>`:""}<span class="taskCompactActions"><button class="todayFlag ${t.todaySelected?"active":""}" type="button" data-today="${t.id}" title="${t.todaySelected?"Quitar de Hoy":"Marcar para Hoy"}">🚩</button><button class="commentBtn" type="button" data-comments="${t.id}">💬 ${Number(t.commentCount||0)}</button><button class="mini danger" data-del="${t.id}">Eliminar</button><button class="mini copyBtn" data-copy="${t.id}" title="Copiar subtareas">Copiar</button></span></span></span>`;tb.appendChild(r);r.dataset.taskId=t.id;r.ondragover=e=>{let taskId=activeTaskDragId||e.dataTransfer.getData("text/task-id");if(view!=="project"||!taskId||taskId===t.id)return;let moving=tasks.find(x=>x.id===taskId);if(!moving||moving.projectId!==t.projectId)return;if(grouped&&Number(moving.month)!==Number(t.month))return;e.preventDefault();r.classList.add("taskDropTarget")};r.ondragleave=()=>r.classList.remove("taskDropTarget");r.ondrop=async e=>{let taskId=activeTaskDragId||e.dataTransfer.getData("text/task-id");r.classList.remove("taskDropTarget");if(!taskId)return;e.preventDefault();try{await reorderTaskInCurrentView(taskId,t.id)}catch(err){console.error(err);alert("No se pudo ordenar la tarea: "+err.message)}};let handle=r.querySelector("[data-drag-task]");handle.ondragstart=e=>e.preventDefault();handle.onpointerdown=e=>{if(e.button!=null&&e.button!==0)return;touchTaskDragId=t.id;touchTaskPointerId=e.pointerId;taskDragPointerId=e.pointerId;taskDragStarted=false;activeTaskDragId=t.id;r.classList.add("dragging");e.preventDefault();e.stopPropagation()}});
+tb.querySelectorAll('input[type="checkbox"][data-id]').forEach(c=>c.onchange=async()=>{let t=tasks.find(x=>x.id===c.dataset.id);if(t)await completeTaskWithRepeat(t,c.checked)});tb.querySelectorAll('[data-check-task]').forEach(c=>c.onchange=async()=>{let t=tasks.find(x=>x.id===c.dataset.checkTask);if(!t)return;let a=(t.checklist||[]).map(x=>({...x})),i=Number(c.dataset.checkIndex);if(a[i]){a[i].completed=c.checked;await updateDoc(doc(db,"tasks",t.id),{checklist:a,updatedAt:serverTimestamp(),updatedBy:user.uid})}});tb.querySelectorAll("[data-comments]").forEach(b=>b.onclick=e=>{e.stopPropagation();openComments(b.dataset.comments)});tb.querySelectorAll("[data-today]").forEach(b=>b.onclick=async e=>{e.stopPropagation();let t=tasks.find(x=>x.id===b.dataset.today);if(t)await updateDoc(doc(db,"tasks",t.id),{todaySelected:!t.todaySelected,updatedAt:serverTimestamp(),updatedBy:user.uid})});tb.querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>openEdit(b.dataset.edit));tb.querySelectorAll("[data-del]").forEach(b=>b.onclick=async()=>{let t=tasks.find(x=>x.id===b.dataset.del);if(t&&confirm(`¿Eliminar "${t.title}"? Esta acción no se puede deshacer.`))await deleteDoc(doc(db,"tasks",t.id))});tb.querySelectorAll("[data-copy]").forEach(b=>b.onclick=async e=>{e.stopPropagation();let t=tasks.find(x=>x.id===b.dataset.copy);if(!t)return;let txt=(t.checklist||[]).map(x=>(x.text||"").trim()).filter(Boolean).join("\n");if(!txt){alert("Esta tarea no tiene subtareas para copiar.");return;}try{await navigator.clipboard.writeText(txt);let old=b.textContent;b.textContent="Copiado ✓";setTimeout(()=>b.textContent=old,1400)}catch(err){console.error(err);alert("No se pudo copiar el texto de la tarea.")}});let pending=tasks.filter(t=>!t.completed),pendingNonTemplate=pending.filter(t=>projects.find(p=>p.id===t.projectId)?.type!=="template");$("nPending").textContent=pendingNonTemplate.length;$("nMine").textContent=pending.filter(t=>(t.assigneeIds||[]).includes(user.uid)).length;$("nDone").textContent=tasks.filter(t=>t.completed).length;$("nSoon").textContent=pending.filter(t=>t.todaySelected).length;$("nHigh").textContent=pending.filter(t=>(t.priority||"Normal")==="Alta").length}
+function renderHead(){let p=currentP(),map={mine:["Mis tareas","Tareas que tienes asignadas"],all:["Todas las tareas","Tareas de tus listas compartidas"],done:["Completadas","Historial de tareas completadas"],soon:["Hoy","Tareas marcadas con 🚩 para hacer hoy"],high:["Prioridad alta","Tareas pendientes con prioridad alta"],project:[p?.name||"Lista",p?.type==="template"?"Plantilla anual · tareas organizadas por meses":p?.sourceTemplateId?`Plan anual ${p.year||""} · tareas organizadas por meses`:"Tareas pendientes de esta lista"]};let head=map[view];$("subtitle").textContent=head[1];if(view==="project"&&p){$("title").innerHTML=`<span class="selectedListTitle"><span class="selectedListTitleDot" style="background:${projectColor(p)}"></span><span>${esc(p.name||"Lista")}</span></span>`}else{$("title").textContent=head[0]}$("invite").style.display=(p&&view==="project")?"inline-block":"none";$("importCsv").style.display=(p&&view==="project")?"inline-block":"none";$("importCouncilTasks").style.display=(p&&view==="project")?"inline-block":"none"}
+function renderAll(){renderProjects();renderMembers();renderTasks();renderHead()}
+function subscribe(){unsubs.forEach(f=>f());unsubs=[];if(taskUnsub){taskUnsub();taskUnsub=null}subscribeProjectOrder();const pq=query(collection(db,"projects"),where("memberIds","array-contains",user.uid));unsubs.push(onSnapshot(pq,s=>{projects=s.docs.map(d=>({id:d.id,...d.data()}));if(selectedProject&&!projects.some(p=>p.id===selectedProject))selectedProject=null;renderAll();subscribeTasks()},e=>$("status").textContent=e.message))}
+function subscribeTasks(){if(taskUnsub){taskUnsub();taskUnsub=null}if(!projects.length){tasks=[];renderAll();return}let ids=projects.map(p=>p.id);const tq=query(collection(db,"tasks"),where("projectId","in",ids.slice(0,30)));taskUnsub=onSnapshot(tq,s=>{tasks=s.docs.map(d=>({id:d.id,...d.data()}));tasks.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));$("status").textContent="✓ Sincronizado";renderAll()},e=>$("status").textContent=e.message)}
+$("taskSearch").addEventListener("input",e=>{taskSearchQuery=String(e.target.value||"").trim();$("taskSearchWrap").classList.toggle("hasValue",!!taskSearchQuery);renderTasks()});
+$("taskSearchClear").onclick=()=>{taskSearchQuery="";$("taskSearch").value="";$("taskSearchWrap").classList.remove("hasValue");$("taskSearch").focus();renderTasks()};
+$("navMine").onclick=()=>goView("mine");$("navAll").onclick=()=>goView("all");$("navDone").onclick=()=>goView("done");
+function goView(v){view=v;selectedProject=null;renderAll();if(innerWidth<=700)mobileMenu(false)}
+$("cardPending").onclick=()=>goView("all");$("cardMine").onclick=()=>goView("mine");$("cardSoon").onclick=()=>goView("soon");$("cardHigh").onclick=()=>goView("high");$("cardDone").onclick=()=>goView("done");
+$("newList").onclick=()=>{if(innerWidth<=700)mobileMenu(false);let f=$("listForm");f.elements.color.value="#2f80ed";colorPicker("newListColors",f.elements.color,"#2f80ed");$("listModal").style.display="grid"};$("listForm").onsubmit=async e=>{e.preventDefault();let f=new FormData(e.target),ref=await addDoc(collection(db,"projects"),{name:f.get("name"),type:f.get("type")==="template"?"template":"normal",color:f.get("color")||"#2f80ed",ownerId:user.uid,memberIds:[user.uid],members:{[user.uid]:{email:user.email||"",name:user.displayName||user.email||"Usuario",role:"owner"}},createdAt:serverTimestamp()});let ids=orderedProjects().map(x=>x.id);ids.push(ref.id);await saveProjectOrder(ids);selectedProject=ref.id;view="project";closeAll();e.target.reset()};
+$("editListForm").onsubmit=async e=>{e.preventDefault();let f=new FormData(e.target),p=projects.find(x=>x.id===f.get("id"));if(!p||p.ownerId!==user.uid)return alert("Solo el propietario puede editar esta lista.");await updateDoc(doc(db,"projects",p.id),{name:String(f.get("name")||"").trim(),color:f.get("color")||projectColor(p),updatedAt:serverTimestamp(),updatedBy:user.uid});closeAll()};
+function normalizeCsvHeader(x){return String(x||"").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/\s+/g,"")}
+function parseCsv(text){
+  text=String(text||"").replace(/^\uFEFF/,"");
+  let rows=[],row=[],cell="",quoted=false;
+  for(let i=0;i<text.length;i++){let c=text[i];if(quoted){if(c==='"'&&text[i+1]==='"'){cell+='"';i++}else if(c==='"')quoted=false;else cell+=c}else{if(c==='"')quoted=true;else if(c===','||c===';'){row.push(cell);cell=""}else if(c==='\n'){row.push(cell);rows.push(row);row=[];cell=""}else if(c!=='\r')cell+=c}}
+  if(cell.length||row.length){row.push(cell);rows.push(row)}return rows.filter(r=>r.some(x=>String(x).trim()))
+}
+function csvDelimiter(text){let first=String(text||"").replace(/^\uFEFF/,"").split(/\r?\n/,1)[0]||"";let commas=(first.match(/,/g)||[]).length,semis=(first.match(/;/g)||[]).length;return semis>commas?";":","}
+function parseCsvWithDelimiter(text,delim){
+  text=String(text||"").replace(/^\uFEFF/,"");let rows=[],row=[],cell="",quoted=false;
+  for(let i=0;i<text.length;i++){let c=text[i];if(quoted){if(c==='"'&&text[i+1]==='"'){cell+='"';i++}else if(c==='"')quoted=false;else cell+=c}else{if(c==='"')quoted=true;else if(c===delim){row.push(cell);cell=""}else if(c==='\n'){row.push(cell);rows.push(row);row=[];cell=""}else if(c!=='\r')cell+=c}}
+  if(cell.length||row.length){row.push(cell);rows.push(row)}return rows.filter(r=>r.some(x=>String(x).trim()))
+}
+let csvImportRows=[],csvImportHeaders=[];
+const CSV_FIELDS=[
+  ["title","Título",true,["titulo","title","tarea","nombre"]],
+  ["description","Descripción",false,["descripcion","description","detalle","detalles"]],
+  ["date","Fecha límite",false,["fecha","date","fechalimite","vencimiento"]],
+  ["month","Mes",false,["mes","month"]],
+  ["priority","Prioridad",false,["prioridad","priority"]],
+  ["assignees","Responsables",false,["responsables","responsable","assignees","asignados","correo","email"]],
+  ["completed","Completada",false,["completada","completado","completed","estado"]]
+];
+function csvFieldsForProject(p){return CSV_FIELDS.filter(([key])=>isAnnualProject(p)?key!=="date":key!=="month")}
+function csvMonthNumber(value){let raw=String(value||"").trim();if(!raw)return null;let n=Number(raw);if(Number.isInteger(n)&&n>=1&&n<=12)return n;let names={enero:1,febrero:2,marzo:3,abril:4,mayo:5,junio:6,julio:7,agosto:8,septiembre:9,setiembre:9,octubre:10,noviembre:11,diciembre:12};return names[normalizeCsvHeader(raw)]||null}
+function renderCsvMapping(){let p=currentP(),fields=csvFieldsForProject(p),box=$("csvMappingFields"),opts=csvImportHeaders.map((h,i)=>`<option value="${i}">${esc(h||`Columna ${i+1}`)}</option>`).join("");box.innerHTML=fields.map(([key,label,required,aliases])=>`<label>${label}${required||key==="month"&&isAnnualProject(p)?" *":""}<select id="csvMap_${key}"><option value="">— No importar —</option>${opts}</select></label>`).join("");fields.forEach(([key,,required,aliases])=>{let sel=$("csvMap_"+key),normalized=csvImportHeaders.map(normalizeCsvHeader),match=aliases.map(a=>normalized.indexOf(a)).find(i=>i>=0);if(match>=0)sel.value=String(match);else if((required||key==="month"&&isAnnualProject(p))&&csvImportHeaders.length)sel.value=""});$("csvMapping").style.display="block";$("csvPreview").textContent=`${Math.max(0,csvImportRows.length-1)} fila${csvImportRows.length-1===1?"":"s"} detectada${csvImportRows.length-1===1?"":"s"} · ${csvImportHeaders.length} columnas.${isAnnualProject(p)?" En una plantilla anual, Mes es obligatorio.":""}`}
+async function loadCsvForMapping(){let file=$("importFile").files[0];csvImportRows=[];csvImportHeaders=[];$("csvMapping").style.display="none";$("importStatus").textContent="";if(!file)return;try{let text=await file.text();csvImportRows=parseCsvWithDelimiter(text,csvDelimiter(text));if(csvImportRows.length<2)throw new Error("El CSV no contiene tareas.");csvImportHeaders=csvImportRows[0].map(x=>String(x||"").trim());renderCsvMapping()}catch(err){$("importStatus").textContent="Error: "+err.message}}
+$("importCsv").onclick=()=>{let p=currentP();if(!p)return;$("importProjectName").textContent=p.name;$("importStatus").textContent="";$("importFile").value="";csvImportRows=[];csvImportHeaders=[];$("csvMapping").style.display="none";$("importModal").style.display="grid";if(innerWidth<=700)mobileMenu(false)};
+$("importFile").onchange=loadCsvForMapping;
+$("downloadCsvTemplate").onclick=()=>{let p=currentP(),csv=isAnnualProject(p)?'titulo,descripcion,mes,prioridad,responsables,completada\n"Preparar reunión","Revisar documentación","Septiembre","Alta","usuario@ejemplo.com","no"\n':'titulo,descripcion,fecha,prioridad,responsables,completada\n"Preparar reunión","Revisar documentación","2026-10-15","Alta","usuario@ejemplo.com","no"\n';let a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"}));a.download=isAnnualProject(p)?"plantilla-anual-tareasplus.csv":"plantilla-tareasplus.csv";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+$("importForm").onsubmit=async e=>{e.preventDefault();let p=currentP(),file=$("importFile").files[0];if(!p||!file)return;let status=$("importStatus"),btn=$("importSubmit");btn.disabled=true;status.textContent="Preparando importación…";try{if(!csvImportRows.length)await loadCsvForMapping();if(!csvImportRows.length)throw new Error("No se pudo leer el CSV.");let map={};CSV_FIELDS.forEach(([key])=>{let v=$("csvMap_"+key)?.value;map[key]=v===""||v==null?null:Number(v)});if(map.title==null)throw new Error("Selecciona qué columna contiene el Título.");if(isAnnualProject(p)&&map.month==null)throw new Error("Selecciona qué columna contiene el Mes.");let members=Object.entries(pMembers(p)),memberByEmail=new Map(members.map(([id,m])=>[String(m.email||"").trim().toLowerCase(),id]));let ok=0,errors=[];const val=(r,key)=>map[key]==null?"":String(r[map[key]]||"").trim();for(let n=1;n<csvImportRows.length;n++){let r=csvImportRows[n],title=val(r,"title");if(!title){errors.push(`Fila ${n+1}: título vacío`);continue}let desc=val(r,"description"),date=val(r,"date"),month=isAnnualProject(p)?csvMonthNumber(val(r,"month")):null,priority=val(r,"priority")||"Normal";if(!["Alta","Normal","Baja"].includes(priority)){let norm=normalizeCsvHeader(priority);priority=norm==="alta"?"Alta":norm==="baja"?"Baja":"Normal"}if(isAnnualProject(p)&&!month){errors.push(`Fila ${n+1}: mes no válido (${val(r,"month")||"vacío"})`);continue}if(!isAnnualProject(p)&&date&&!/^\d{4}-\d{2}-\d{2}$/.test(date)){errors.push(`Fila ${n+1}: fecha no válida (${date})`);continue}let resp=val(r,"assignees"),assigneeIds=[],assigneeNames=[];if(resp){for(let raw of resp.split(/[|;]/).map(x=>x.trim()).filter(Boolean)){let lookup=raw.toLowerCase(),id=memberByEmail.get(lookup);if(id)assigneeIds.push(id);else assigneeNames.push(raw)}}let done=/^(si|sí|true|1|yes|x|completada|completado|hecha|hecho)$/i.test(val(r,"completed"));await addDoc(collection(db,"tasks"),{projectId:p.id,createdBy:user.uid,title,description:desc,assigneeIds:[...new Set(assigneeIds)],assigneeNames:[...new Set(assigneeNames)],month:isAnnualProject(p)?month:null,date:isAnnualProject(p)?"":date,priority,checklist:[],completed:done,commentCount:0,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});ok++;status.textContent=`Importando ${ok}…`}status.textContent=`✓ ${ok} tarea${ok===1?"":"s"} importada${ok===1?"":"s"}`+(errors.length?` · ${errors.length} aviso${errors.length===1?"":"s"}: ${errors.slice(0,3).join(" | ")}`:"");if(ok&&!errors.length)setTimeout(closeAll,900)}catch(err){status.textContent="Error: "+err.message}finally{btn.disabled=false}};
+$("invite").onclick=()=>{$("inviteModal").style.display="grid"};$("inviteForm").onsubmit=async e=>{e.preventDefault();let p=currentP();if(!p)return;let email=String(new FormData(e.target).get("email")).trim().toLowerCase();await addDoc(collection(db,"invites"),{projectId:p.id,projectName:p.name,email,invitedBy:user.uid,invitedByName:user.displayName||user.email||"Un usuario",status:"pending",createdAt:serverTimestamp()});
+const inviteText=`${user.displayName||user.email||"Un usuario"} te invita a colaborar en la lista "${p.name}" de TareasPlus.\n\nAbre TareasPlus e inicia sesión con ${email}:\nhttps://gabrielbailly.github.io/tareas/`;
+closeAll();e.target.reset();
+const mailSubject=`Invitación a «${p.name}» — TareasPlus`;
+const mailBody=inviteText;
+const mailUrl=`mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+
+const choice=document.createElement("div");
+choice.className="overlay show";
+choice.innerHTML=`<div class="modal" style="max-width:460px">
+  <button class="x" aria-label="Cerrar">×</button>
+  <h2>Invitación registrada</h2>
+  <p style="color:var(--muted);margin-bottom:20px">¿Cómo quieres enviar la invitación a <strong>${esc(email)}</strong>?</p>
+  <div style="display:grid;gap:10px">
+    <button class="primary" id="sendInviteMail">✉️ Enviar por Mail</button>
+    <button class="secondary" id="shareInviteNative">↗️ Compartir</button>
+    <button class="secondary" id="copyInviteText">📋 Copiar invitación</button>
+  </div>
+</div>`;
+document.body.appendChild(choice);
+const closeChoice=()=>choice.remove();
+choice.querySelector(".x").onclick=closeChoice;
+choice.onclick=e=>{if(e.target===choice)closeChoice()};
+choice.querySelector("#sendInviteMail").onclick=()=>{window.location.href=mailUrl;setTimeout(closeChoice,250)};
+choice.querySelector("#copyInviteText").onclick=async()=>{
+  await navigator.clipboard.writeText(inviteText);
+  closeChoice(); alert("Invitación copiada al portapapeles.");
+};
+choice.querySelector("#shareInviteNative").onclick=async()=>{
+  if(navigator.share){
+    try{await navigator.share({title:mailSubject,text:inviteText});closeChoice()}
+    catch(err){if(err.name!=="AbortError"){await navigator.clipboard.writeText(inviteText);closeChoice();alert("Invitación copiada al portapapeles.")}}
+  }else{
+    await navigator.clipboard.writeText(inviteText);closeChoice();alert("Tu navegador no dispone del menú Compartir. La invitación se ha copiado.");
+  }
+};
+};
+async function acceptInvites(){
+ if(!user.email)return;
+ const email=user.email.trim().toLowerCase();
+ const q=query(collection(db,"invites"),where("email","==",email),where("status","==","pending"));
+ const s=await getDocs(q);
+ for(const inv of s.docs){
+   const x=inv.data();
+   await updateDoc(doc(db,"projects",x.projectId),{
+     memberIds:arrayUnion(user.uid),
+     ["members."+user.uid]:{email:user.email,name:user.displayName||user.email,role:"member"}
+   });
+   await updateDoc(doc(db,"invites",inv.id),{status:"accepted",acceptedBy:user.uid,acceptedAt:serverTimestamp()});
+ }
+}
+
+function fmtCommentDate(ts){
+  try{let d=ts?.toDate?ts.toDate():null;return d?new Intl.DateTimeFormat("es-ES",{dateStyle:"short",timeStyle:"short"}).format(d):"Ahora"}catch{return ""}
+}
+function commentProjectOwner(task){
+  let p=projects.find(x=>x.id===task?.projectId);return p?.ownerId||Object.entries(pMembers(p)).find(([,m])=>m.role==="owner")?.[0]||"";
+}
+function openComments(taskId){
+  const t=tasks.find(x=>x.id===taskId);if(!t)return;
+  commentsTaskId=taskId;$("commentsTaskTitle").textContent=t.title||"Tarea";$("commentsModal").style.display="grid";
+  if(commentsUnsub)commentsUnsub();
+  const cq=collection(db,"tasks",taskId,"comments");
+  commentsUnsub=onSnapshot(cq,s=>{
+    let arr=s.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(a.createdAt?.seconds||0)-(b.createdAt?.seconds||0));
+    const owner=commentProjectOwner(t), box=$("commentsList");
+    if(!arr.length){box.innerHTML='<div class="commentEmpty">Todavía no hay comentarios.</div>';return}
+    box.innerHTML=arr.map(c=>{
+      const canEdit=c.authorId===user.uid,canDelete=canEdit||owner===user.uid;
+      return `<div class="commentItem" data-comment="${c.id}"><div class="commentMeta"><b>${esc(c.authorName||c.authorEmail||"Usuario")}</b><span>${esc(fmtCommentDate(c.createdAt))}${c.updatedAt?" · editado":""}</span></div><div class="commentText">${esc(c.text)}</div>${canEdit||canDelete?`<div class="commentActions">${canEdit?`<button type="button" data-comment-edit="${c.id}">Editar</button>`:""}${canDelete?`<button type="button" class="dangerText" data-comment-del="${c.id}">Eliminar</button>`:""}</div>`:""}</div>`
+    }).join("");
+    box.querySelectorAll("[data-comment-edit]").forEach(b=>b.onclick=async()=>{
+      let c=arr.find(x=>x.id===b.dataset.commentEdit);if(!c)return;let text=prompt("Editar comentario:",c.text||"");if(text===null)return;text=text.trim();if(!text)return;
+      await updateDoc(doc(db,"tasks",taskId,"comments",c.id),{text,updatedAt:serverTimestamp()});
+    });
+    box.querySelectorAll("[data-comment-del]").forEach(b=>b.onclick=async()=>{
+      if(!confirm("¿Eliminar este comentario?"))return;
+      await deleteDoc(doc(db,"tasks",taskId,"comments",b.dataset.commentDel));
+      await updateDoc(doc(db,"tasks",taskId),{commentCount:increment(-1),updatedAt:serverTimestamp()});
+    });
+    requestAnimationFrame(()=>box.scrollTop=box.scrollHeight);
+  },e=>$("commentsList").innerHTML=`<div class="commentEmpty">No se pudieron cargar los comentarios: ${esc(e.message)}</div>`);
+}
+$("commentForm").onsubmit=async e=>{
+  e.preventDefault();if(!commentsTaskId)return;
+  const text=e.target.elements.text.value.trim();if(!text)return;
+  const t=tasks.find(x=>x.id===commentsTaskId);if(!t)return;
+  const ref=await addDoc(collection(db,"tasks",commentsTaskId,"comments"),{
+    text,authorId:user.uid,authorName:user.displayName||user.email||"Usuario",authorEmail:user.email||"",
+    projectId:t.projectId,createdAt:serverTimestamp()
+  });
+  await updateDoc(doc(db,"tasks",commentsTaskId),{commentCount:increment(1),updatedAt:serverTimestamp()});
+  e.target.reset();
+  await notifyCommentUsers(commentsTaskId,ref.id);
+};
+async function notifyCommentUsers(taskId,commentId){
+  if(!NOTIFICATION_WORKER_URL)return;
+  try{
+    const token=await user.getIdToken();
+    const res=await fetch(NOTIFICATION_WORKER_URL+"/comment-added",{
+      method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},
+      body:JSON.stringify({taskId,commentId})
+    });
+    if(!res.ok)console.error("Push de comentario no enviado:",await res.text());
+  }catch(e){console.error("Error enviando push de comentario:",e)}
+}
+
+$("newTask").onclick=()=>{if(!projects.length){alert("Crea primero una lista.");return}let activeList=(view==="project"&&selectedProject&&projects.some(p=>p.id===selectedProject))?selectedProject:null,fallback=orderedProjects().find(p=>p.type!=="template")?.id||projects[0].id,preferred=activeList||(projects.some(p=>p.id===defaultProjectId&&p.type!=="template")?defaultProjectId:fallback);$("taskProject").value=preferred;$("newTaskToday").checked=false;fillAssignees();syncTaskTiming("new",1);loadChecklist("newChecklist",[]);$("modal").style.display="grid";$("taskProject").dispatchEvent(new Event("refresh-color"))};$("taskProject").onchange=()=>{fillAssignees();syncTaskTiming("new",1)};function fillAssignees(){let p=projects.find(x=>x.id===$("taskProject").value);$("assignees").innerHTML=Object.entries(pMembers(p)).map(([id,m])=>`<label><input type="checkbox" name="assignee" value="${id}" ${id===user.uid?"checked":""}><span>${esc(m.name||m.email)}</span></label>`).join("")}
+
+async function notifyAssignedUsers(taskId,assigneeIds){
+  const recipients=(assigneeIds||[]).filter(id=>id&&id!==user.uid);
+  if(!recipients.length||!NOTIFICATION_WORKER_URL)return;
+  try{
+    const token=await user.getIdToken();
+    const res=await fetch(NOTIFICATION_WORKER_URL+"/task-assigned",{
+      method:"POST",
+      headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},
+      body:JSON.stringify({taskId,notifyUserIds:recipients})
+    });
+    if(!res.ok)console.error("Push no enviado:",await res.text());
+  }catch(e){console.error("Error enviando push:",e)}
+}
+
+
+$("newRepeatPreset").onchange=()=>syncRepeatCustom("new");$("editRepeatPreset").onchange=()=>syncRepeatCustom("edit");syncRepeatCustom("new");syncRepeatCustom("edit");
+$("form").onsubmit=async e=>{e.preventDefault();let f=new FormData(e.target),pid=f.get("project"),p=projects.find(x=>x.id===pid),ids=f.getAll("assignee");if(!isMember(p))return;const newTask=await addDoc(collection(db,"tasks"),{projectId:pid,createdBy:user.uid,title:f.get("title"),description:f.get("description")||"",assigneeIds:ids,month:isAnnualProject(p)?Number(f.get("month")||1):null,date:isAnnualProject(p)?"":f.get("date")||"",priority:f.get("priority"),repeat:repeatFromForm(f),todaySelected:f.get("todaySelected")==="on",checklist:readChecklist("newChecklist"),completed:false,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});await notifyAssignedUsers(newTask.id,ids);closeAll();e.target.reset()};
+function fillEditAssignees(selected=[]){let p=projects.find(x=>x.id===$("editTaskProject").value);$("editAssignees").innerHTML=Object.entries(pMembers(p)).map(([id,m])=>`<label><input type="checkbox" name="assignee" value="${id}" ${selected.includes(id)?"checked":""}><span>${esc(m.name||m.email)}</span></label>`).join("")}
+function openEdit(id){let t=tasks.find(x=>x.id===id);if(!t)return;let f=$("editForm");f.elements.id.value=t.id;f.elements.title.value=t.title||"";f.elements.description.value=t.description||"";f.elements.date.value=t.date||"";f.elements.priority.value=t.priority||"Normal";let rr=t.repeat||null,ep=$("editRepeatPreset");if(rr?.unit){let key=`${rr.unit}:${Number(rr.every)||1}`;ep.value=["day:1","week:1","week:2","month:1","year:1"].includes(key)?key:"custom";f.elements.repeatEvery.value=Number(rr.every)||1;f.elements.repeatUnit.value=rr.unit}else ep.value="none";syncRepeatCustom("edit");$("editTaskProject").innerHTML=orderedProjects().map(p=>`<option value="${p.id}" style="color:${projectColor(p)}">● ${esc(p.name)}</option>`).join("");$("editTaskProject").value=t.projectId;fillEditAssignees(t.assigneeIds||[]);syncTaskTiming("edit",t.month||1);loadChecklist("editChecklist",t.checklist||[]);$("editModal").style.display="grid";$("editTaskProject").dispatchEvent(new Event("refresh-color"))}
+$("editTaskProject").onchange=()=>{fillEditAssignees([]);syncTaskTiming("edit",1)};
+$("editForm").onsubmit=async e=>{e.preventDefault();let btn=e.submitter,f=new FormData(e.target),id=f.get("id"),old=tasks.find(x=>x.id===id),ids=f.getAll("assignee"),pid=f.get("project"),newIds=ids.filter(x=>!(old?.assigneeIds||[]).includes(x));if(btn)btn.disabled=true;try{await updateDoc(doc(db,"tasks",id),{projectId:pid,title:f.get("title"),description:f.get("description")||"",assigneeIds:ids,month:isAnnualProject(projects.find(x=>x.id===pid))?Number(f.get("month")||1):null,date:isAnnualProject(projects.find(x=>x.id===pid))?"":f.get("date")||"",priority:f.get("priority"),repeat:repeatFromForm(f),checklist:readChecklist("editChecklist"),updatedAt:serverTimestamp(),updatedBy:user.uid});if(newIds.length)await notifyAssignedUsers(id,newIds);closeAll()}catch(err){console.error(err);alert("No se pudieron guardar los cambios. Si has cambiado la tarea de lista, publica también las nuevas reglas de Firestore que te adjunto.\n\n"+err.message)}finally{if(btn)btn.disabled=false}};
+function openInstantiateTemplate(p){if(p.type!=="template")return;let f=$("instantiateTemplateForm"),year=new Date().getFullYear()+1;f.elements.templateId.value=p.id;f.elements.year.value=year;f.elements.name.value=`${p.name} ${year}`;$("templateSourceName").textContent=p.name;$("instantiateStatus").textContent="";$("instantiateSubmit").disabled=false;$("instantiateTemplateModal").style.display="grid"}
+$("instantiateTemplateForm").onsubmit=async e=>{e.preventDefault();let f=new FormData(e.target),template=projects.find(p=>p.id===f.get("templateId"));if(!template)return;let year=Number(f.get("year")),name=String(f.get("name")||"").trim(),status=$("instantiateStatus"),btn=$("instantiateSubmit");btn.disabled=true;status.textContent="Creando lista y copiando tareas…";try{let ref=await addDoc(collection(db,"projects"),{name,type:"annual",year,sourceTemplateId:template.id,sourceTemplateName:template.name,color:projectColor(template),ownerId:user.uid,memberIds:[user.uid],members:{[user.uid]:{email:user.email||"",name:user.displayName||user.email||"Usuario",role:"owner"}},createdAt:serverTimestamp()});let source=tasks.filter(t=>t.projectId===template.id);let copied=0;for(const t of source){await addDoc(collection(db,"tasks"),{projectId:ref.id,createdBy:user.uid,title:t.title||"Tarea",description:t.description||"",assigneeIds:[],assigneeNames:[...(t.assigneeNames||[]),...(t.assigneeIds||[]).map(id=>pMembers(template)[id]?.name||pMembers(template)[id]?.email||"").filter(Boolean)],month:Number(t.month)||1,date:"",priority:t.priority||"Normal",checklist:(t.checklist||[]).map(x=>({...x,completed:false})),completed:false,commentCount:0,sourceTemplateTaskId:t.id,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});copied++}let ids=orderedProjects().map(x=>x.id);ids.push(ref.id);await saveProjectOrder(ids);selectedProject=ref.id;view="project";status.textContent=`✓ Lista creada con ${copied} tarea${copied===1?"":"s"}.`;setTimeout(closeAll,700)}catch(err){console.error(err);status.textContent="Error: "+err.message;btn.disabled=false}};
+
+// Arrastre tactil de tareas (iPhone/iPad/Android)
+document.addEventListener("pointermove",e=>{if(!touchTaskDragId||e.pointerId!==touchTaskPointerId)return;taskDragStarted=true;let hit=document.elementFromPoint(e.clientX,e.clientY);document.querySelectorAll(".taskDropTarget,.monthDropTarget,#projects .dragover").forEach(x=>x.classList.remove("taskDropTarget","monthDropTarget","dragover"));let row=hit?.closest("#table .taskCompact");let month=hit?.closest(".monthGroup");let project=hit?.closest("#projects .project");if(project)project.classList.add("dragover");else if(month)month.classList.add("monthDropTarget");else if(row&&row.dataset.taskId!==touchTaskDragId)row.classList.add("taskDropTarget");e.preventDefault()},{passive:false});
+document.addEventListener("pointerup",async e=>{if(!touchTaskDragId||e.pointerId!==touchTaskPointerId)return;let taskId=touchTaskDragId,hit=document.elementFromPoint(e.clientX,e.clientY),row=hit?.closest("#table .taskCompact"),month=hit?.closest(".monthGroup"),project=hit?.closest("#projects .project"),didDrag=taskDragStarted;touchTaskDragId=null;touchTaskPointerId=null;taskDragPointerId=null;taskDragStarted=false;activeTaskDragId=null;document.querySelectorAll(".taskDropTarget,.monthDropTarget,#projects .dragover,.taskCompact.dragging").forEach(x=>x.classList.remove("taskDropTarget","monthDropTarget","dragover","dragging"));if(!didDrag)return;try{if(project){await moveTaskToProject(taskId,project.dataset.projectId)}else if(month&&Number(month.dataset.month)){await updateDoc(doc(db,"tasks",taskId),{month:Number(month.dataset.month),updatedAt:serverTimestamp(),updatedBy:user.uid})}else if(row&&row.dataset.taskId!==taskId){await reorderTaskInCurrentView(taskId,row.dataset.taskId)}}catch(err){console.error(err);alert("No se pudo mover la tarea: "+err.message)}});
+document.addEventListener("pointercancel",e=>{if(e.pointerId!==touchTaskPointerId)return;touchTaskDragId=null;touchTaskPointerId=null;taskDragPointerId=null;taskDragStarted=false;activeTaskDragId=null;document.querySelectorAll(".taskDropTarget,.monthDropTarget,#projects .dragover,.taskCompact.dragging").forEach(x=>x.classList.remove("taskDropTarget","monthDropTarget","dragover","dragging"))});
+const COUNCIL_ORIGIN="https://consejo.gecoas.es";
+function connectCouncilAccount(){return new Promise((resolve,reject)=>{let popup=window.open(COUNCIL_ORIGIN+"/auth/google?prompt=select_account&next="+encodeURIComponent("/integrations/tareas/connect"),"tareasplusConsejo","width=520,height=720");if(!popup)return reject(new Error("El navegador ha bloqueado la ventana de acceso a Consejo."));let timer=setTimeout(()=>{cleanup();reject(new Error("Se agotó el tiempo para conectar con Consejo."))},120000);function cleanup(){clearTimeout(timer);window.removeEventListener("message",onMessage)}function onMessage(ev){if(ev.origin!==COUNCIL_ORIGIN||ev.data?.type!=="tareasplus-council-import"||!ev.data?.user)return;cleanup();try{popup.close()}catch{}resolve(ev.data)}window.addEventListener("message",onMessage)})}
+$("importCouncilTasks").onclick=()=>{if(!projects.length)return alert("Necesitas tener al menos una lista de destino en TareasPlus.");let select=$("councilImportProject"),ordered=orderedProjects();select.innerHTML=ordered.map(p=>`<option value="${esc(p.id)}">${esc(p.name)}</option>`).join("");let current=currentP();select.value=current?.id||ordered[0].id;$("councilImportStatus").textContent="Consejo de Dirección solo enviará las tareas pendientes asignadas a tu cuenta.";$("councilImportSubmit").disabled=false;$("councilImportSubmit").type="submit";$("councilImportSubmit").onclick=null;$("councilImportSubmit").textContent="Importar tareas";$("councilImportModal").style.display="grid"};
+$("councilImportForm").onsubmit=async e=>{e.preventDefault();if(!user)return;let submit=$("councilImportSubmit"),status=$("councilImportStatus"),project=projects.find(p=>p.id===$("councilImportProject").value);if(!project)return;submit.disabled=true;status.textContent="Elige la cuenta de Google con la que quieres entrar en Consejo…";try{let payload=await connectCouncilAccount();status.textContent=`Cuenta de Consejo: ${payload.user?.email||""}. Preparando importación…`;let pending=Array.isArray(payload.tasks)?payload.tasks:[],existing=new Set(tasks.map(t=>t.sourceCouncil?.id).filter(Boolean)),fresh=pending.filter(t=>t.id&&!existing.has(t.id));if(!fresh.length){status.textContent=pending.length?"Todas tus tareas pendientes de Consejo ya estaban importadas.":"No tienes tareas pendientes asignadas en Consejo.";submit.disabled=false;submit.type="button";submit.textContent="Hecho";submit.onclick=closeAll;return}let imported=0;for(const task of fresh){await addDoc(collection(db,"tasks"),{projectId:project.id,createdBy:user.uid,title:`${task.task||"Tarea de Consejo"}${task.issue?.title?` (${task.issue.title})`:""}`,description:task.description||"",assigneeIds:[user.uid],date:task.dueDate||"",priority:"Normal",checklist:[],completed:false,sourceCouncil:{id:task.id,taskId:task.taskId,dashboardId:task.dashboard?.id||"",dashboardName:task.dashboard?.name||"Consejo",issueId:task.issue?.id||"",issueTitle:task.issue?.title||"",status:task.status||"nuevo",url:task.url||""},createdAt:serverTimestamp(),updatedAt:serverTimestamp()});imported++;status.textContent=`Importando ${imported} de ${fresh.length}…`}status.textContent=`✓ ${imported} tarea${imported===1?"":"s"} importada${imported===1?"":"s"} a «${project.name}».`;submit.disabled=false;submit.type="button";submit.textContent="Hecho";submit.onclick=closeAll}catch(error){console.error("Error al importar tareas de Consejo",error);status.textContent=error.message||"No se pudieron importar las tareas.";submit.disabled=false}};
+onAuthStateChanged(auth,async u=>{user=u;unsubs.forEach(f=>f());unsubs=[];if(!u){$("auth").style.display="grid";$("shell").style.display="none";return}$("auth").style.display="none";$("shell").style.display="grid";$("who").textContent=u.displayName||u.email;linkOneSignal(u);try{await acceptInvites()}catch(e){console.error(e);$("status").textContent="Error al aceptar invitaciones: "+e.message}subscribe();try{await approvePendingVoiceLink(u)}catch(e){console.error("Vinculación de atajo",e)}});
+
+// OneSignal Web Push
+const ONESIGNAL_APP_ID="c83e67e2-505f-4970-8e3e-f1f352037ab3";
+// Pega aquí la URL que te dará Cloudflare al publicar notification-worker.js.
+const NOTIFICATION_WORKER_URL="https://tareas.gbailly.workers.dev";
+let oneSignalReady=false;
+window.OneSignalDeferred=window.OneSignalDeferred||[];
+window.OneSignalDeferred.push(async function(OneSignal){
+  try{
+    await OneSignal.init({
+      appId:ONESIGNAL_APP_ID,
+      serviceWorkerPath:"/tareas/OneSignalSDKWorker.js",
+      serviceWorkerParam:{scope:"/tareas/"},
+      notifyButton:{enable:false}
+    });
+    oneSignalReady=true;
+    updateNotifyButton();
+    OneSignal.Notifications.addEventListener("permissionChange",updateNotifyButton);
+    OneSignal.User.PushSubscription.addEventListener("change",updateNotifyButton);
+  }catch(e){console.error("OneSignal:",e)}
+});
+function linkOneSignal(u){
+  if(!u)return;
+  window.OneSignalDeferred.push(async function(OneSignal){
+    try{await OneSignal.login(u.uid);updateNotifyButton()}catch(e){console.error(e)}
+  });
+}
+function updateNotifyButton(){
+  const b=document.getElementById("notifyBtn"),label=document.getElementById("notifyLabel");if(!b||!label)return;
+  window.OneSignalDeferred.push(async function(OneSignal){
+    const subscriptionId=OneSignal.User.PushSubscription.id;
+    const active=OneSignal.Notifications.permission&&OneSignal.User.PushSubscription.optedIn&&!!subscriptionId;
+    label.textContent=active?"Notificaciones activas":"Activar notificaciones";
+    b.classList.toggle("notifyActive",active);b.classList.toggle("notifyInactive",!active);
+    b.title=active?"Suscripción OneSignal activa":"Activar las notificaciones en este dispositivo";
+  });
+}
+document.addEventListener("click",e=>{
+  if(e.target?.id!=="notifyBtn")return;
+  window.OneSignalDeferred.push(async function(OneSignal){
+    try{
+      if(user)await OneSignal.login(user.uid);
+      if(!OneSignal.Notifications.permission)await OneSignal.Notifications.requestPermission();
+      if(!OneSignal.User.PushSubscription.optedIn)await OneSignal.User.PushSubscription.optIn();
+      updateNotifyButton();
+      const sid=OneSignal.User.PushSubscription.id;
+      if(OneSignal.Notifications.permission&&OneSignal.User.PushSubscription.optedIn&&sid){
+        alert("Notificaciones activadas correctamente.\nSuscripción OneSignal: "+sid);
+      }else{
+        alert("El navegador ha dado permiso, pero OneSignal todavía no ha creado una suscripción push válida. Revisa la configuración Web Push de OneSignal y vuelve a intentarlo.");
+      }
+    }catch(err){console.error(err);alert("No se han podido activar las notificaciones.")}
+  });
+});
+
+
+// Enlaces de los NUEVOS atajos con vinculación automática.
+// Déjalos vacíos hasta publicar las nuevas versiones en iCloud; así nadie instala por error los atajos antiguos ligados a una sola cuenta.
+const VOICE_SHORTCUT_LINKS={quick:"https://www.icloud.com/shortcuts/ea68e2ed133840fa981bf2e8be4c5647",today:"https://www.icloud.com/shortcuts/c053a6abe4a841a190095353c5bb1e6d",new:"https://www.icloud.com/shortcuts/04e42c699d244151963bdc95d14e0922"};
+const VOICE_WORKER_URL="https://tareas-voice.gbailly.workers.dev";
+
+async function approvePendingVoiceLink(u){
+  const params=new URLSearchParams(location.search);
+  const code=(params.get("voiceLink")||"").trim().toUpperCase();
+  if(!code)return;
+
+  const modal=$("voiceLinkModal");
+  const account=$("voiceLinkAccount");
+  const status=$("voiceLinkStatus");
+  const approve=$("approveVoiceLink");
+  const cancel=$("cancelVoiceLink");
+  const cleanUrl=new URL(location.href);
+  cleanUrl.searchParams.delete("voiceLink");
+
+  account.innerHTML=`<b>${esc(u.displayName||"Usuario")}</b><br><span class="sub">${esc(u.email||"")}</span>`;
+  status.textContent=`Código de vinculación: ${code}`;
+  modal.style.display="flex";
+
+  cancel.onclick=()=>{
+    modal.style.display="none";
+    history.replaceState({},"",cleanUrl);
+    $("status").textContent="Vinculación cancelada.";
+  };
+
+  approve.onclick=async()=>{
+    approve.disabled=true;
+    cancel.disabled=true;
+    status.textContent="Vinculando con tu cuenta…";
+    try{
+      const idToken=await u.getIdToken(true);
+      const r=await fetch(VOICE_WORKER_URL+"/link/approve",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({code,idToken})
+      });
+      const d=await r.json().catch(()=>({}));
+      if(!r.ok||!d.ok)throw new Error(d.error||`Error ${r.status}`);
+      status.textContent="✓ Vinculado correctamente. Ya puedes volver a Atajos.";
+      $("status").textContent="✓ Atajos de voz vinculados con tu cuenta.";
+      history.replaceState({},"",cleanUrl);
+      approve.textContent="Vinculado ✓";
+      setTimeout(()=>{modal.style.display="none"},1800);
+    }catch(e){
+      console.error("Vinculación de atajo",e);
+      status.textContent="No se pudo vincular: "+(e.message||e);
+      approve.disabled=false;
+      cancel.disabled=false;
+    }
+  };
+}
+
+const voiceShortcutsModal=document.getElementById("voiceShortcutsModal");
+const voiceShortcutsBtn=document.getElementById("voiceShortcutsBtn");
+const closeVoiceShortcuts=document.getElementById("closeVoiceShortcuts");
+function openVoiceShortcuts(){
+  setUserMenu(false);
+  voiceShortcutsModal.style.display="flex";
+  const ua=navigator.userAgent||"";
+  const apple=/iPhone|iPad|iPod|Macintosh/.test(ua);
+  const android=/Android/i.test(ua);
+  document.getElementById("voiceDeviceHelp").textContent=android?"En Android puedes instalar TareasPlus como app. Los atajos de Siri son exclusivos de Apple.":apple?"Pulsa un atajo para instalarlo en Apple Atajos y usarlo después con Siri.":"Elige el sistema en el que quieres configurar los accesos de voz.";
+}
+voiceShortcutsBtn?.addEventListener("click",openVoiceShortcuts);
+closeVoiceShortcuts?.addEventListener("click",()=>voiceShortcutsModal.style.display="none");
+voiceShortcutsModal?.addEventListener("click",e=>{if(e.target===voiceShortcutsModal)voiceShortcutsModal.style.display="none"});
+document.querySelectorAll(".shortcutInstall").forEach(b=>b.addEventListener("click",()=>{
+  const url=VOICE_SHORTCUT_LINKS[b.dataset.shortcut];
+  const st=document.getElementById("shortcutLinkStatus");
+  if(!url){st.className="status error";st.textContent="Este atajo todavía no está publicado en su nueva versión con vinculación automática.";return}
+  location.href=url;
+}));
+
+// Accesos de voz para Android. Usa Web Speech cuando Chrome lo ofrece y abre el formulario normal de TareasPlus.
+function androidDictateTitle(){
+  return new Promise((resolve,reject)=>{
+    const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+    if(!SR){
+      const typed=prompt("Dime el título de la tarea");
+      if(typed&&typed.trim()) resolve(typed.trim()); else reject(new Error("No se ha indicado un título."));
+      return;
+    }
+    const r=new SR();
+    r.lang="es-ES";r.interimResults=false;r.maxAlternatives=1;
+    r.onresult=e=>resolve((e.results?.[0]?.[0]?.transcript||"").trim());
+    r.onerror=e=>reject(new Error(e.error==="not-allowed"?"Activa el permiso de micrófono para TareasPlus.":"No se pudo reconocer la voz."));
+    r.onnomatch=()=>reject(new Error("No he entendido el título."));
+    r.start();
+  });
+}
+function prepareAndroidTask(title,mode){
+  if(!projects.length){alert("Crea primero una lista.");return}
+  const fallback=selectedProject||orderedProjects().find(p=>p.type!=="template")?.id||projects[0].id;
+  const preferred=projects.some(p=>p.id===defaultProjectId&&p.type!=="template")?defaultProjectId:fallback;
+  $("taskProject").value=preferred;
+  $("newTaskToday").checked=mode==="today";
+  fillAssignees();syncTaskTiming("new",1);loadChecklist("newChecklist",[]);
+  const f=$("form");f.elements.title.value=title||"";
+  $("modal").style.display="grid";$("taskProject").dispatchEvent(new Event("refresh-color"));
+  setTimeout(()=>{(mode==="new"?$("taskProject"):f.elements.title)?.focus?.()},80);
+}
+document.querySelectorAll(".androidVoiceAction").forEach(b=>b.addEventListener("click",async()=>{
+  const st=document.getElementById("androidVoiceStatus");
+  try{
+    st.className="status";st.textContent="Escuchando…";
+    const title=await androidDictateTitle();
+    if(!title)throw new Error("No se ha indicado un título.");
+    voiceShortcutsModal.style.display="none";
+    prepareAndroidTask(title,b.dataset.mode);
+    st.textContent="";
+  }catch(err){st.className="status error";st.textContent=err.message||"No se pudo iniciar el dictado."}
+}));
+
+// Accesos directos de la PWA en Android (pulsacion larga sobre el icono).
+// El manifest abre la app con ?androidVoice=quick|today|new.
+let pendingAndroidVoiceMode=(new URLSearchParams(location.search).get("androidVoice")||"").trim();
+async function runPendingAndroidVoice(){
+  if(!pendingAndroidVoiceMode||!user||!projects.length)return;
+  const mode=["quick","today","new"].includes(pendingAndroidVoiceMode)?pendingAndroidVoiceMode:"";
+  pendingAndroidVoiceMode="";
+  if(!mode)return;
+  const clean=new URL(location.href);clean.searchParams.delete("androidVoice");history.replaceState({},"",clean);
+  try{
+    const title=await androidDictateTitle();
+    if(!title)throw new Error("No se ha indicado un titulo.");
+    prepareAndroidTask(title,mode);
+  }catch(err){
+    console.error("Acceso de voz Android",err);
+    alert(err.message||"No se pudo iniciar el dictado.");
+  }
+}
+const androidVoiceTimer=setInterval(()=>{
+  if(!pendingAndroidVoiceMode){clearInterval(androidVoiceTimer);return}
+  runPendingAndroidVoice();
+},700);
+setTimeout(runPendingAndroidVoice,400);
+
+const userMenuBtn=document.getElementById("userMenuBtn"),userDropdown=document.getElementById("userDropdown");
+function setUserMenu(open){if(!userDropdown||!userMenuBtn)return;userDropdown.classList.toggle("open",open);userMenuBtn.setAttribute("aria-expanded",open?"true":"false")}
+userMenuBtn?.addEventListener("click",e=>{e.stopPropagation();setUserMenu(!userDropdown.classList.contains("open"))});
+document.addEventListener("click",e=>{if(userDropdown?.classList.contains("open")&&!e.target.closest(".userMenuWrap"))setUserMenu(false)});
+const mm=document.getElementById("mobileMenuBtn"),sb=document.getElementById("sideBackdrop");function mobileMenu(v){document.body.classList.toggle("mobileMenuOpen",v)}mm?.addEventListener("click",()=>mobileMenu(!document.body.classList.contains("mobileMenuOpen")));sb?.addEventListener("click",()=>mobileMenu(false));document.querySelector(".side")?.addEventListener("click",e=>{if(innerWidth<=700&&(e.target.closest("a")||e.target.closest("button")))mobileMenu(false)});addEventListener("resize",()=>{if(innerWidth>700)mobileMenu(false)});</script>
+<button id="newTask" class="newTaskFab" type="button" aria-label="Nueva tarea" title="Nueva tarea">+</button></body></html>
